@@ -1,0 +1,201 @@
+@import "../../styles/app";
+
+td {
+  vertical-align: middle !important;
+}
+
+.table-bordered th {
+  background: $blue;
+  color: $gray-light;
+  border: none;
+}
+
+.balanceBox {
+  width: 100%;
+
+  &__content {
+    text-align: right;
+  }
+}
+
+.toggle_button {
+  color: black;
+}
+
+.currency-dropdown {
+  width: 100px;
+
+  &__label-blue {
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: #ffffff;
+    background-color: #444444;
+
+    &:hover {
+      color: #ffffff;
+      background-color: #444444;
+    }
+
+    &:active {
+      color: #ffffff;
+      background-color: #444444 !important;
+    }
+
+    &:focus {
+      color: #ffffff;
+      background-color: #444444;
+    }
+  }
+
+  &__label-yellow {
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: #000000;
+    background-color: #ffffff;
+
+    &:hover {
+      color: #000000;
+      background-color: #ffffff;
+    }
+
+    &:active {
+      color: #000000;
+      background-color: #ffffff !important;
+    }
+
+    &:focus {
+      color: #000000;
+      background-color: #ffffff;
+    }
+  }
+
+  &__option {
+    color: black;
+  }
+}
+
+.currency-dropdown {
+  &__label-blue {
+    &__light {
+
+      color: #444444;
+      background-color: #ffffff;
+      border: 1px solid black;
+
+      &:hover {
+        color: #444444;
+        background-color: #ffffff;
+        border: 1px solid black;
+      }
+
+      &:active {
+        color: #444444;
+        background-color: #ffffff;
+        border: 1px solid black;
+      }
+
+      &:focus {
+        color: #444444;
+        background-color: #ffffff;
+        border: 1px solid black;
+      }
+    }
+
+    &__dark {
+      color: #ffffff;
+      background-color: #444444;
+      border: 1px solid transparent;
+
+      &:hover {
+        color: #ffffff;
+        background-color: #444444;
+        border: 1px solid transparent;
+      }
+
+      &:active {
+        color: #ffffff;
+        background-color: #444444;
+        border: 1px solid transparent;
+      }
+
+      &:focus {
+        color: #ffffff;
+        background-color: #444444;
+        border: 1px solid transparent;
+      }
+
+    }
+  }
+}
+
+.input-amount {
+  font-size: 40px;
+  border: none;
+}
+.input-amount-light{
+  background-color: transparent;
+  color: black;
+}
+.input-amount-dark{
+  background-color: transparent;
+  color: #ffffff;
+}
+
+
+
+.borrow-power {
+  padding-right: 20px;
+
+  &__option {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+
+.collateral {
+  border: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.collateral-light {
+  border-color: #000000;
+}
+
+.collateral-dark {
+  border-color: #ffffff;
+}
+
+.collateral-text {
+  margin: 5px;
+  font-size: 14px;
+}
+
+.collateral-text-light {
+  color: black;
+}
+
+.collateral-text-dark {
+  color: #888888;
+}
+
+.trade-button {
+  float: right;
+}
+
+.trade-button-light {
+  color: black;
+  background-color: transparent;
+  border: 1px solid black;
+}
+
+.trade-button-dark {
+  color: rgb(255, 255, 255);
+  background-color: rgb(68, 68, 68);
+  border: 1px solid transparent;
+}
