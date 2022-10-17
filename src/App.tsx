@@ -94,6 +94,7 @@ function App() {
                 <Route path="main/dashboard" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/borrow" element={<Tables></Tables>}></Route>
                 <Route path="main/manage" element={<Dashboard></Dashboard>}></Route>
+                <Route path="main/more" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/smartVault1" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/smartVault2" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/smartVault3" element={<Dashboard></Dashboard>}></Route>

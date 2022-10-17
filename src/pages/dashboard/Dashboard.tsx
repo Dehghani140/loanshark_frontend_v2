@@ -60,26 +60,36 @@ function Dashboard() {
 					</Grid>
 				</Grid>
 				<Grid item xs={12}>
-					<Grid container>
-						<Grid item xs={4}>
+					<Grid container spacing={2}>
+						<Grid item xl={4} lg={4} xs={12}>		
 							<Widget
-							title={"Your Collateral"}
+								title={"Your Collateral"}
 							>
-								<div>Card 1 av	ilable balance</div>
+								<div>$0.00</div>
 							</Widget>
-
-							
 						</Grid>
-						<Grid item xs={4}>
-							Card 2 total deposited
+						<Grid item xl={4} lg={4} xs={12}>
+							<Widget
+								title={"Your Debt"}
+							>
+								<div>$0.00</div>
+							</Widget>
 						</Grid>
-						<Grid item xs={4}>
-							Card 3 total borrowed
+						<Grid item xl={4} lg={4} xs={12}>
+							<Widget
+								title={"Your Smart Vault Balance"}
+							>
+								<div>$0.00</div>
+							</Widget>
 						</Grid>
 					</Grid>
 				</Grid>
 				<Grid item xs={12}>
-					My Borrowing Position
+					<span style={{
+						fontWeight: "800",
+						fontSize: "20px",
+					}}
+					>My Borrowing Position</span>
 				</Grid>
 				<Grid item xs={12}>
 					<Grid container>
@@ -95,7 +105,11 @@ function Dashboard() {
 					</Grid>
 				</Grid>
 				<Grid item xs={12}>
-					My Smart Value Position
+					<span style={{
+						fontWeight: "800",
+						fontSize: "20px",
+					}}
+					>My Smart Value Position</span>
 				</Grid>
 				<Grid item xs={12}>
 					<Grid container>

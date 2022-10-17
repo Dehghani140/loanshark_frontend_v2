@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import logo from "../../../../images/logo.png";
 
 const ListWrapper = styled(Box)(
   ({ theme }) => `
@@ -36,7 +37,6 @@ const ListWrapper = styled(Box)(
                             transition: all .2s;
                             border-radius: ${theme.general.borderRadiusLg};
                             content: "";
-                            background: ${theme.colors.primary.main};
                         }
                     }
                 }
@@ -58,7 +58,18 @@ const ListWrapper = styled(Box)(
                     }
                 }
             }
+
+            &.active {
+              .MuiListItemText-root {
+                .MuiTypography-root {
+                    font-weight:1000;
+                    color:black;
+                }
+            }
+
+            }
         }
+      
 `
 );
 
@@ -76,7 +87,7 @@ function HeaderMenu() {
 
   return (
     <>
-    <div>this is loan shark logo</div>
+
       <ListWrapper
         sx={{
           display: {
@@ -86,6 +97,18 @@ function HeaderMenu() {
         }}
       >
         <List disablePadding component={Box} display="flex">
+          <ListItem>
+            <div style={{ maxWidth: "200px", maxHeight: "80px" }}>
+              <img
+                style={{ maxWidth: "200px", maxHeight: "60px", backgroundColor: "black" }}
+                src={logo}
+                alt="Loan Shark"></img>
+            </div>
+          </ListItem>
+          <ListItem>
+            <div style={{ width: "300px" }}>
+            </div>
+          </ListItem>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
@@ -123,12 +146,12 @@ function HeaderMenu() {
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={NavLink}
-            to="/app/main/dashboard"
+            to="/app/main/more"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="More"
-            />
+            ></ListItemText>
           </ListItem>
         </List>
       </ListWrapper>

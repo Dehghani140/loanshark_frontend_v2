@@ -35,6 +35,9 @@ const HeaderWrapper = styled(Box)(
             left: ${theme.sidebar.width};
             width: auto;
         }
+        border-bottom-width: 5px;
+        border-style: solid;
+        border-image: linear-gradient(90deg, rgba(98,184,208,1) 0%, rgba(150,255,231,1) 100%) 0 0 1 0;
 `
 );
 
