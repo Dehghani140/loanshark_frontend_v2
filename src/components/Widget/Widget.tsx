@@ -44,13 +44,17 @@ function Widget(props: WidgetProps) {
       // {...attributes}
       >
         {
-          <h5
-          // className={[s.title, (this.props.theme === "light" ? s.titleLight : s.titleDark)]}
-          >{props.title}</h5>
+          <div style={{ padding: "23px 30px 0" }}>
+            <span
+            style={{fontSize:"40px",fontWeight:"700"}}
+            // className={[s.title, (this.props.theme === "light" ? s.titleLight : s.titleDark)]}
+            >{props.children}
+              </span>
+          </div>
         }
 
-        <div className={`${s.widgetBody} widget-body`}>
-          {props.children}
+        <div style={{ padding: "0 30px 23px" }} className={`${s.widgetBody} widget-body`}>
+        {props.title}
         </div>
 
       </section>
