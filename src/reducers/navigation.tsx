@@ -1,10 +1,4 @@
-import { 
-  TOGGLE_SIDEBAR, 
-  OPEN_SIDEBAR, 
-  CLOSE_SIDEBAR, 
-  CHANGE_ACTIVE_SIDEBAR_ITEM, 
-  TOGGLE_LOADING
-} from '../actions/navigation';
+import {ActionType} from '../action-types/navigation'
 
 const initialState = {
   sidebarOpened: true,
@@ -13,27 +7,27 @@ const initialState = {
   loadingActive: false
 };
 
-export default function runtime(state = initialState, action) {
+export default function runtime(action: any,state: any = initialState) {
   switch (action.type) {
-    case TOGGLE_SIDEBAR:
+    case ActionType.TOGGLE_SIDEBAR:
       return {
         ...state,
         sidebarOpened: !state.sidebarOpened,
       };
-    case OPEN_SIDEBAR:
+    case ActionType.OPEN_SIDEBAR:
       return Object.assign({}, state, {
         sidebarOpened: true,
       });
-    case CLOSE_SIDEBAR:
+    case ActionType.CLOSE_SIDEBAR:
       return Object.assign({}, state, {
         sidebarOpened: false,
       });
-    case CHANGE_ACTIVE_SIDEBAR_ITEM:
+    case ActionType.CHANGE_ACTIVE_SIDEBAR_ITEM:
       return {
         ...state,
         activeItem: action.activeItem,
       };
-    case TOGGLE_LOADING:
+    case ActionType.TOGGLE_LOADING:
       return {
         ...state,
         loadingActive: !state.loadingActive,

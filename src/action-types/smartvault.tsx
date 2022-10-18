@@ -1,0 +1,3 @@
+export enum ActionType {
+    CHANGE_MY_PROTECTION_TYPE = 'CHANGE_MY_PROTECTION_TYPE'
+}

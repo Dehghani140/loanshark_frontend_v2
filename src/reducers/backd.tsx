@@ -1,24 +1,6 @@
-import {
-  CHANGE_LP_POOL_BTC,
-  CHANGE_LP_POOL_ETH,
-  CHANGE_LP_TOKEN_BTC,
-  CHANGE_LP_TOKEN_ETH,
-  CHANGE_VAULT_BTC,
-  CHANGE_VAULT_ETH,
-  CHANGE_TOPUP_ACTION,
-  CHANGE_GAS_BANK,
-  CHANGE_MY_BTC_LP_AMOUNT,
-  CHANGE_MY_ETH_LP_AMOUNT,
-  CHANGE_TOTAL_BTC_LP_AMOUNT,
-  CHANGE_TOTAL_ETH_LP_AMOUNT,
-  CHANGE_MY_PROTECTION,
-  CHANGE_MY_PROTECTION_ETH,
-  CHANGE_BTC_LP_EXCHANGE_RATE,
-  CHANGE_ETH_LP_EXCHANGE_RATE,
-  CHANGE_MY_GAS_BANK_BALANCE
-} from '../actions/backd';
+import { ActionType } from '../action-types/backd'
 
-const defaultState = {
+const initialState = {
   lpPoolBtc: null,
   lpPoolEth: null,
   lpTokenBtc: null,
@@ -38,43 +20,43 @@ const defaultState = {
   myGasBankBalance: null,
 }
 
-export default function backdReducer(state = defaultState, action) {
+export default function backdReducer(action: any, state: any = initialState) {
   switch (action.type) {
-    case CHANGE_LP_POOL_BTC:
+    case ActionType.CHANGE_LP_POOL_BTC:
       return { ...state, lpPoolBtc: action.payload };
-    case CHANGE_LP_TOKEN_BTC:
+    case ActionType.CHANGE_LP_TOKEN_BTC:
       return { ...state, lpTokenBtc: action.payload };
-    case CHANGE_VAULT_BTC:
+    case ActionType.CHANGE_VAULT_BTC:
       return { ...state, vaultBtc: action.payload };
-    case CHANGE_TOPUP_ACTION:
+    case ActionType.CHANGE_TOPUP_ACTION:
       return { ...state, topupAction: action.payload };
-    case CHANGE_GAS_BANK:
+    case ActionType.CHANGE_GAS_BANK:
       return { ...state, gasBank: action.payload };
-    case CHANGE_MY_BTC_LP_AMOUNT:
+    case ActionType.CHANGE_MY_BTC_LP_AMOUNT:
       return { ...state, myBtcLpAmount: action.payload };
-    case CHANGE_TOTAL_BTC_LP_AMOUNT:
+    case ActionType.CHANGE_TOTAL_BTC_LP_AMOUNT:
       return { ...state, totalBtcLpAmount: action.payload };
-    case CHANGE_BTC_LP_EXCHANGE_RATE:
+    case ActionType.CHANGE_BTC_LP_EXCHANGE_RATE:
       return { ...state, btcLpExchangeRate: action.payload };
-    case CHANGE_MY_PROTECTION:
+    case ActionType.CHANGE_MY_PROTECTION:
       return { ...state, myProtection: action.payload };
-    case CHANGE_MY_PROTECTION_ETH:
+    case ActionType.CHANGE_MY_PROTECTION_ETH:
       return { ...state, myProtectionEth: action.payload };
-    case CHANGE_MY_GAS_BANK_BALANCE:
+    case ActionType.CHANGE_MY_GAS_BANK_BALANCE:
       return { ...state, myGasBankBalance: action.payload };
 
 
-    case CHANGE_LP_POOL_ETH:
+    case ActionType.CHANGE_LP_POOL_ETH:
       return { ...state, lpPoolEth: action.payload };
-    case CHANGE_LP_TOKEN_ETH:
+    case ActionType.CHANGE_LP_TOKEN_ETH:
       return { ...state, lpTokenEth: action.payload };
-    case CHANGE_VAULT_ETH:
+    case ActionType.CHANGE_VAULT_ETH:
       return { ...state, vaultEth: action.payload };
-    case CHANGE_MY_ETH_LP_AMOUNT:
+    case ActionType.CHANGE_MY_ETH_LP_AMOUNT:
       return { ...state, myEthLpAmount: action.payload };
-    case CHANGE_TOTAL_ETH_LP_AMOUNT:
+    case ActionType.CHANGE_TOTAL_ETH_LP_AMOUNT:
       return { ...state, totalEthLpAmount: action.payload };
-    case CHANGE_ETH_LP_EXCHANGE_RATE:
+    case ActionType.CHANGE_ETH_LP_EXCHANGE_RATE:
       return { ...state, ethLpExchangeRate: action.payload };
 
 
