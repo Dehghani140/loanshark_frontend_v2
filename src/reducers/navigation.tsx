@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export default function runtime(action: any,state: any = initialState) {
-  switch (action.type) {
+  switch (action?.type??null) {
     case ActionType.TOGGLE_SIDEBAR:
       return {
         ...state,
