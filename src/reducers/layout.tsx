@@ -5,7 +5,7 @@ import {ActionType} from '../action-types/layout'
   }
   
   export default function backdReducer(action:any,state:any = initialState) {
-    switch (action.type) {
+    switch (action?.type??null) {
       case ActionType.CHANGE_THEME:
         return { ...state, theme: action.payload };
       default:

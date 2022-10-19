@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export default function loansharkReducer(action:any,state:any = initialState) {
-  switch (action.type) {
+  switch (action?.type??null) {
     case ActionType.CHANGE_MY_PROTECTION_TYPE:
       return {...state,myProtectionType: action.payload};
      default:

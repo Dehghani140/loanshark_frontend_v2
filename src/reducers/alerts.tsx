@@ -20,7 +20,7 @@ const initialState = {
 
 export default function alertsReducer(action:any,state:any = initialState) {
   let index;
-  switch (action.type) {
+  switch (action?.type??null) {
     case ActionType.DISMISS_ALERT:
       state.alertsList.forEach((alert, alertIndex) => {
         if (alert.id === action.id) {
