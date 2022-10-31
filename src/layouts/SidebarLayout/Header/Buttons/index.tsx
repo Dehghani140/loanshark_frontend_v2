@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Dispatch, bindActionCreators } from "redux"
+import * as loansharkActionCreators from '../../../../action-createors/loanshark';
+import * as backdActionCreators from '../../../../action-createors/backd';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Box, Grid } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faRotateRight, faArrowLeftLong, faLightbulb } from "@fortawesome/free-solid-svg-icons"
@@ -8,7 +12,26 @@ import HeaderNotifications from './Notifications';
 import RoundShapeButton from '../../../../components/Button/RoundShapeButton/RoundShapeButton'
 import Popup from '../../../../components/Popup/Popup'
 import HongContract from '../../../../abi/Hong.json'
-//
+
+import Controller from '../../../../abi/fujidao/Controller.json';
+import FujiVaultAVAX from '../../../../abi/fujidao/FujiVaultAVAX.json';
+import FliquidatorAVAX from '../../../../abi/fujidao/FliquidatorAVAX.json';
+import FujiOracle from '../../../../abi/fujidao/FujiOracle.json';
+import ProviderAAVEAVAX from '../../../../abi/fujidao/ProviderAAVEAVAX.json';
+import SmartVault from '../../../../abi/fujidao/SmartVault.json';
+
+import lpPoolAbi from '../../../../abi/backd/lpPool.json';
+import lpTokenAbi from '../../../../abi/backd/lpToken.json';
+import topupActionAbi from '../../../../abi/backd/topupAction.json';
+import vaultBtcAbi from '../../../../abi/backd/vaultBtc.json';
+import gasBankAbi from '../../../../abi/backd/gasBank.json';
+
+// import API from '../../utils/API'
+
+// import arrowUnactive from '../../images/Arrow 6.svg'
+// import arrowActive from '../../images/Arrow 5.svg'
+
+
 const CHIAN_ID = 43113 //AVAX TESTNET
 //Fujidao Contracts
 const MY_FujiVaultETHBTC = process.env.REACT_APP_MY_FujiVaultETHBTC;
@@ -44,14 +67,81 @@ function HeaderButtons() {
   const [modal, setModal] = useState<Boolean>(false)
   const [modalTitle, setModalTitle] = useState<String | null>("")
   const [modalAction, setModalAction] = useState<String | null>("")
-  const [myAccount,setMyAccount]=useState<any>("")
-  
+  const [myAccount, setMyAccount] = useState<any>("")
+
+  const [myFliquidatorAVAX, setMyFliquidatorAVAX] = useState<any>("")
+  const [myFujiController, setMyFujiController] = useState<any>("")
+  const [myFujiOracle, setMyFujiOracle] = useState<any>("")
+  const [myETHContract, setMyETHContract] = useState<any>("")
+  const [myBTCContract, setMyBTCContract] = useState<any>("")
+  const [myUSDTContract, setMyUSDTContract] = useState<any>("")
+
+  const state = useSelector((state: any) => state.loanshark)
+  const dispatch = useDispatch();
+  const {
+    reset,
+    changeMyAccount,
+    changeSelectedPair,
+    changeNumberOfEth,
+    changeNumberOfAvax,
+    changeAaveBtcBorrowRate,
+    changeUserDepositBalanceEth,
+    changeUserDepositBalanceAvax,
+    changeUserDebtBalanceBtc,
+    changeUserDebtBalanceUsdt,
+    changeMyFujiVaultETHBTC,
+    changeMyFujiVaultAVAXUSDT,
+    changeMyFliquidatorAvax,
+    changeMyFujiController,
+    changeMyFujiOracle,
+    changeMySmartVaultBtc,
+    changeMySmartVaultUsdt,
+    changeMyEthContract,
+    changeMyBtcContract,
+    changeMyUsdtContract,
+    changePriceOfEth,
+    changePriceOfBtc,
+    changePriceOfAvax,
+    changePriceOfUsdt,
+    changeProviderAAVEAVAX,
+    changeProviderTraderJoe,
+    changeSmartVaultBtc,
+    changeSmartVaultUsdt,
+    changeInputEthDeposit,
+    changeInputBtcDebt,
+    changeMyETHAmount,
+    changeMyBTCAmount,
+    changeMyAVAXAmount,
+    changeMyUSDTAmount,
+    changeLTV,
+    changeLiqudationPrice
+  } = bindActionCreators(loansharkActionCreators, dispatch)
+
+  const {
+    changeLpPoolBtc,
+    changeLpPoolEth,
+    changeLpTokenBtc,
+    changeLpTokenEth,
+    changeVaultBtc,
+    changeVaultEth,
+    changeTopupAction,
+    changeGasBank,
+    changeMyBtcLpAmount,
+    changeMyEthLpAmount,
+    changeTotalBtcLpAmount,
+    changeTotalEthLpAmount,
+    changeBtcLpExchangeRateAmount,
+    changeEthLpExchangeRateAmount,
+    changeMyProtection,
+    changeMyProtectionEth,
+    changeMyGasBankBalance,
+  } = bindActionCreators(backdActionCreators, dispatch)
+
   useEffect(() => {
     (async () => {
-      console.log(`HeaderButtons`,window)
       if (localStorage.getItem("isWalletConnected") === "true") {
         //check metamask are connected before
-        
+
         window.web3 = new Web3(window.web3.currentProvider);
         window.ethereum.enable();
         let validAccount = await window.ethereum.request({ method: "eth_accounts" });
@@ -65,13 +155,13 @@ function HeaderButtons() {
   }, [])
 
   function setAccount(val) {
-		// this.setState({
-		// 	myAccount: val,
-		// });
-		// this.props.dispatch(changeMyAccount(val));
+    // this.setState({
+    // 	myAccount: val,
+    // });
+    // this.props.dispatch(changeMyAccount(val));
     setMyAccount(val)
     // changeMyAccount(val)
-	}
+  }
 
   function ethEnabled() {
     if (window.web3 === undefined) {
@@ -108,60 +198,72 @@ function HeaderButtons() {
                     ]
                   }).then(() => {
                     const dataHong = HongContract
-                    // this.setMyFujiVaultETHBTC(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultETHBTC));
-                    // this.setMyFujiVaultAVAXUSDT(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultAVAXUSDT));
-                    // this.setMyFliquidatorAVAX(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
-                    // this.setMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
-                    // this.setMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
-                    // this.setMyETHContract(new window.web3.eth.Contract(dataHong, WETH));
-                    // this.setMyBTCContract(new window.web3.eth.Contract(dataHong, WBTC));
-                    // this.setMyUSDTContract(new window.web3.eth.Contract(dataHong, USDT));
-                    // this.setMyAAVEAVAXContract(new window.web3.eth.Contract(ProviderAAVEAVAX.abi, ProviderAAVEAVAX));
-                    // this.setMySmartVaultContractBtc(new window.web3.eth.Contract(SmartVault, SMART_VAULT_BTC));
-                    // this.setMySmartVaultContractUsdt(new window.web3.eth.Contract(SmartVault, SMART_VAULT_USDT));
+                    changeMyFujiVaultETHBTC(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultETHBTC));
+                    // changeMyFujiVaultAVAXUSDT(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultAVAXUSDT));
+                    // setMyFliquidatorAVAX(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
+                    // changeMyFliquidatorAvax(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
+                    // setMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
+                    // changeMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
+                    // setMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
+                    // changeMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
+                    // setMyETHContract(new window.web3.eth.Contract(dataHong, WETH));
+                    // changeMyEthContract(new window.web3.eth.Contract(dataHong, WETH));
+                    // setMyBTCContract(new window.web3.eth.Contract(dataHong, WBTC));
+                    // changeMyBtcContract(new window.web3.eth.Contract(dataHong, WBTC));
+                    // setMyUSDTContract(new window.web3.eth.Contract(dataHong, USDT));
+                    // changeMyUsdtContract(new window.web3.eth.Contract(dataHong, USDT));
+                    // changeProviderAAVEAVAX(new window.web3.eth.Contract(ProviderAAVEAVAX.abi, ProviderAAVEAVAX));
+                    // changeMySmartVaultBtc(new window.web3.eth.Contract(SmartVault, SMART_VAULT_BTC));
+                    // changeMySmartVaultUsdt(new window.web3.eth.Contract(SmartVault, SMART_VAULT_USDT));
 
-                    // this.props.dispatch(changeLpPoolBtc(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_BTC)));
-                    // this.props.dispatch(changeLpTokenBtc(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_BTC)));
-                    // this.props.dispatch(changeVaultBtc(new window.web3.eth.Contract(vaultBtcAbi, VAULT_BTC)));
-                    // this.props.dispatch(changeTopupAction(new window.web3.eth.Contract(topupActionAbi, TOPUP_ACTION)));
-                    // this.props.dispatch(changeGasBank(new window.web3.eth.Contract(gasBankAbi, GAS_BANK)));
+                    // changeLpPoolBtc(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_BTC));
+                    // changeLpTokenBtc(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_BTC));
+                    // changeVaultBtc(new window.web3.eth.Contract(vaultBtcAbi, VAULT_BTC));
+                    // changeTopupAction(new window.web3.eth.Contract(topupActionAbi, TOPUP_ACTION));
+                    // changeGasBank(new window.web3.eth.Contract(gasBankAbi, GAS_BANK));
 
-                    // this.props.dispatch(changeLpPoolEth(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_ETH)));
-                    // this.props.dispatch(changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH)));
-                    // this.props.dispatch(changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH)));
+                    // changeLpPoolEth(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_ETH));
+                    // changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH));
+                    // changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH));
 
-                    // this.props.dispatch(changeSelectedPair('AVAXUSDT'));
+                    // changeSelectedPair('AVAXUSDT');
 
                     // this.getNeededCollateralFor("GET_NEW")
                   });
                 }
               })
               .then(() => {
-                // const dataHong = require('../../abi/Hong.json');
-                // localStorage.setItem("isWalletConnected", "true")
-                // this.setMyFujiVaultETHBTC(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultETHBTC));
-                // this.setMyFujiVaultAVAXUSDT(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultAVAXUSDT));
-                // this.setMyFliquidatorAVAX(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
-                // this.setMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
-                // this.setMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
-                // this.setMyETHContract(new window.web3.eth.Contract(dataHong, WETH));
-                // this.setMyBTCContract(new window.web3.eth.Contract(dataHong, WBTC));
-                // this.setMyUSDTContract(new window.web3.eth.Contract(dataHong, USDT));
-                // this.setMyAAVEAVAXContract(new window.web3.eth.Contract(ProviderAAVEAVAX.abi, AAVEAVAX));
-                // this.setMySmartVaultContractBtc(new window.web3.eth.Contract(SmartVault, SMART_VAULT_BTC));
-                // this.setMySmartVaultContractUsdt(new window.web3.eth.Contract(SmartVault, SMART_VAULT_USDT));
+                const dataHong = HongContract
+                localStorage.setItem("isWalletConnected", "true")
+                changeMyFujiVaultETHBTC(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultETHBTC));
+                // changeMyFujiVaultAVAXUSDT(new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultAVAXUSDT));
+                // setMyFliquidatorAVAX(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
+                // changeMyFliquidatorAvax(new window.web3.eth.Contract(FliquidatorAVAX.abi, MY_FliquidatorAVAX));
+                // setMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
+                // changeMyFujiController(new window.web3.eth.Contract(Controller.abi, MY_FujiController));
+                // setMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
+                // changeMyFujiOracle(new window.web3.eth.Contract(FujiOracle.abi, MY_FujiOracle));
+                // setMyETHContract(new window.web3.eth.Contract(dataHong, WETH));
+                // changeMyEthContract(new window.web3.eth.Contract(dataHong, WETH));
+                // setMyBTCContract(new window.web3.eth.Contract(dataHong, WBTC));
+                // changeMyBtcContract(new window.web3.eth.Contract(dataHong, WBTC));
+                // setMyUSDTContract(new window.web3.eth.Contract(dataHong, USDT));
+                // changeMyUsdtContract(new window.web3.eth.Contract(dataHong, USDT));
+                // changeProviderAAVEAVAX(new window.web3.eth.Contract(ProviderAAVEAVAX.abi, ProviderAAVEAVAX));
+                // changeMySmartVaultBtc(new window.web3.eth.Contract(SmartVault, SMART_VAULT_BTC));
+                // changeMySmartVaultUsdt(new window.web3.eth.Contract(SmartVault, SMART_VAULT_USDT));
 
-                // this.props.dispatch(changeLpPoolBtc(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_BTC)));
-                // this.props.dispatch(changeLpTokenBtc(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_BTC)));
-                // this.props.dispatch(changeVaultBtc(new window.web3.eth.Contract(vaultBtcAbi, VAULT_BTC)));
-                // this.props.dispatch(changeTopupAction(new window.web3.eth.Contract(topupActionAbi, TOPUP_ACTION)));
-                // this.props.dispatch(changeGasBank(new window.web3.eth.Contract(gasBankAbi, GAS_BANK)));
+                // changeLpPoolBtc(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_BTC));
+                // changeLpTokenBtc(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_BTC));
+                // changeVaultBtc(new window.web3.eth.Contract(vaultBtcAbi, VAULT_BTC));
+                // changeTopupAction(new window.web3.eth.Contract(topupActionAbi, TOPUP_ACTION));
+                // changeGasBank(new window.web3.eth.Contract(gasBankAbi, GAS_BANK));
 
-                // this.props.dispatch(changeLpPoolEth(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_ETH)));
-                // this.props.dispatch(changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH)));
-                // this.props.dispatch(changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH)));
+                // changeLpPoolEth(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_ETH));
+                // changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH));
+                // changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH));
 
-                // this.props.dispatch(changeSelectedPair('ETHBTC'));
+                // changeSelectedPair('ETHBTC');
 
                 // this.getNeededCollateralFor("GET_NEW")
               })
@@ -193,8 +295,8 @@ function HeaderButtons() {
             style={{ padding: "10px", border: "1px solid #000000" }}
             onClick={() => {
               console.log("meta mask")
-              // this.ethEnabled()
-              // this.toggle()
+              ethEnabled();
+              setModal(!modal);
             }}>
             <div style={{ padding: "10px" }}>
               <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
@@ -251,19 +353,20 @@ function HeaderButtons() {
             </div>
           </div>
         </a>
-
       </Popup>
+
+
       <Grid container alignItems={"center"} spacing={1}>
         <Grid item>
           <Box sx={{ mr: 1 }}>
             <RoundShapeButton
               label={"connect wallet"}
               onClick={() => {
-                console.log(`clicked connect wallet`)
                 setModal(!modal)
                 setModalTitle("Please choose wallet type to connect")
                 setModalAction("connect_wallet")
               }}
+              color={"white"}
             ></RoundShapeButton>
           </Box>
         </Grid>

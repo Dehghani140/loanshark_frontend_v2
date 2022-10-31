@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-
+import { composeWithDevTools } from 'redux-devtools-extension'
 import 'nprogress/nprogress.css';
 import App from './App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
@@ -14,7 +14,9 @@ import reducers from './reducers';
 
 const store = createStore(
   reducers,
-  applyMiddleware(ReduxThunk)
+  composeWithDevTools(
+    applyMiddleware(ReduxThunk)
+  )
 );
 
 ReactDOM.render(

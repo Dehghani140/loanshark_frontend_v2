@@ -11,7 +11,6 @@ interface SidebarLayoutProps {
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();
-  console.log(theme)
   useEffect(()=>{
     console.log(`SidebarLayout`)
   },[])

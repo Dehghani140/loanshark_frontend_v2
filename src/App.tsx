@@ -14,6 +14,7 @@ import GlobalStyle from './components/global'
 import ThemeProvider from './theme/ThemeProvider';
 
 import Dashboard from './pages/dashboard/Dashboard'
+import Manage from './pages/manage/Manage'
 import LayoutComponent from './components/Layout/Layout';
 import SidebarLayout from './layouts/SidebarLayout';
 import Tables from './pages/tables/Tables';
@@ -76,14 +77,14 @@ function App(props:any) {
   // const content = useRoutes(router);
 
   const state = useSelector((state: any) => state.loanshark)  
-  console.log(state.myAccount)
   const dispatch = useDispatch();
   const { changeMyAccount } = bindActionCreators(loansharkActionCreators, dispatch)
 
-  useEffect(() => {
-    console.log(`app`)
 
-  }, [])
+  useEffect(() => {
+    console.log(`updatest store state`,state)
+  }, [state])
+
   return (
     <>
       <ThemeProvider>
@@ -102,7 +103,7 @@ function App(props:any) {
               <Route path="app" element={<SidebarLayout></SidebarLayout>} >
                 <Route path="main/dashboard" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/borrow" element={<Tables></Tables>}></Route>
-                <Route path="main/manage" element={<Dashboard></Dashboard>}></Route>
+                <Route path="main/manage" element={<Manage></Manage>}></Route>
                 <Route path="main/more" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/smartVault1" element={<Dashboard></Dashboard>}></Route>
                 <Route path="main/smartVault2" element={<Dashboard></Dashboard>}></Route>
