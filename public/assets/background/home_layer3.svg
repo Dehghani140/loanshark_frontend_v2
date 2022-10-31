@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="562px" height="529px" viewBox="0 0 562 529" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home_layer3</title>
+    <defs>
+        <radialGradient cx="93.5499919%" cy="19.4341695%" fx="93.5499919%" fy="19.4341695%" r="30.9617295%" gradientTransform="translate(0.935500,0.194342),scale(0.783809,1.000000),rotate(157.555361),scale(1.000000,0.467858),translate(-0.935500,-0.194342)" id="radialGradient-1">
+            <stop stop-color="#C0E0D2" offset="0%"></stop>
+            <stop stop-color="#52EDAC" stop-opacity="0.395376353" offset="22.7233137%"></stop>
+            <stop stop-color="#14F496" stop-opacity="0.0548357835" offset="100%"></stop>
+            <stop stop-color="#0AF593" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="new-branding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Home" transform="translate(-1358.000000, -1995.000000)" fill="url(#radialGradient-1)" fill-rule="nonzero">
+            <g id="color-morph(5)">
+                <rect id="home_layer3" transform="translate(960.000000, 1803.543698) scale(1, -1) translate(-960.000000, -1803.543698) " x="0" y="1051.0874" width="1920" height="1504.9126"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

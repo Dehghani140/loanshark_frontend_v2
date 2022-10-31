@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1160px" height="1866px" viewBox="0 0 1160 1866" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home_layer2</title>
+    <defs>
+        <radialGradient cx="11%" cy="57%" fx="11%" fy="57%" r="57.8298659%" gradientTransform="translate(0.110000,0.570000),scale(1.000000,0.751174),rotate(-44.311932),scale(1.000000,0.669018),translate(-0.110000,-0.570000)" id="radialGradient-1">
+            <stop stop-color="#6E90D9" stop-opacity="0.7" offset="0%"></stop>
+            <stop stop-color="#6FD4F6" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="new-branding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Home" transform="translate(0.000000, -517.000000)" fill="url(#radialGradient-1)" fill-rule="nonzero">
+            <g id="color-morph(5)">
+                <rect id="home_layer2" x="0" y="0" width="1920" height="2556"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

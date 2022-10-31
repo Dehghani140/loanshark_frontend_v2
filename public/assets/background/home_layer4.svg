@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="864px" height="1025px" viewBox="0 0 864 1025" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home_layer4</title>
+    <defs>
+        <radialGradient cx="104.211575%" cy="4.59038623%" fx="104.211575%" fy="4.59038623%" r="62.6886807%" gradientTransform="translate(1.042116,0.045904),scale(0.783809,1.000000),rotate(165.273408),scale(1.000000,1.018631),translate(-1.042116,-0.045904)" id="radialGradient-1">
+            <stop stop-color="#6E90D9" stop-opacity="0.7" offset="0%"></stop>
+            <stop stop-color="#6FC4EF" stop-opacity="0.168685681" offset="53.4625078%"></stop>
+            <stop stop-color="#6FD4F6" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="new-branding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Home" transform="translate(0.000000, -2460.000000)" fill="url(#radialGradient-1)" fill-rule="nonzero">
+            <g id="color-morph(5)">
+                <rect id="home_layer4" transform="translate(960.000000, 2732.456302) scale(-1, -1) translate(-960.000000, -2732.456302) " x="0" y="1980" width="1920" height="1504.9126"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
