@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 // import { NavLink } from "react-router-dom"
 import { Grid, TextField, Button } from '@mui/material';
+import { Doughnut, Bar } from 'react-chartjs-2';
+import { faker } from '@faker-js/faker';
 import Card from './Card/Card'
 import NoBorderCard from './Card/NoBorderCard'
 import RectangleShapeButton from '../../components/Button/RectangleShapeButton/RectangleShapeButton'
@@ -20,6 +22,7 @@ import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShap
 // import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 // import { Value } from "sass";
 
+const labels = ['ETH', 'BTC'];
 
 const lightTheme = {
 	primary: '#fff',
@@ -109,9 +112,11 @@ function Manage() {
 	useEffect(() => {
 		console.log(`Manage`)
 	}, [])
+
+	console.log(labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })))
 	return (
 		<>
-			<Grid container spacing={1}>
+			<Grid container spacing={3}>
 				<Grid item xs={7}>
 					<NoBorderCard>
 						<Grid container>
@@ -307,6 +312,7 @@ function Manage() {
 															height: "100%",
 															border: "0px",
 															backgroundColor: "transparent",
+															fontFamily: "Poppins-Bold",
 															overflow: "hidden",
 															fontSize: "48px",
 															fontWeight: "700",
@@ -389,8 +395,8 @@ function Manage() {
 				<Grid item xs={7}>
 					<Grid container spacing={2}>
 						<Grid item xs={6}>
-							<Card>
-								<Grid container spacing={2}>
+						<NoBorderCard>
+								<Grid container spacing={2} >
 									<Grid item xs={12}>
 										<CardTitle title={"Collateral"}></CardTitle>
 									</Grid>
@@ -424,12 +430,16 @@ function Manage() {
 														<Grid item xs={8}>
 															<input
 																style={{
+																	color: "rgba(51,51,51,1)",
+																	fontFamily: "Poppins-Bold",
+																	fontSize: "48px",
+																	fontWeight: "700",
+																	fontStyle: "normal",
+																	overflow: "hidden",
 																	width: "100%",
 																	height: "100%",
 																	border: "0px",
 																	backgroundColor: "transparent",
-																	overflow: "hidden",
-																	fontSize: "30px",
 																}}
 																value={value}
 																onChange={(e) => {
@@ -518,10 +528,10 @@ function Manage() {
 										></RoundShapeButton>
 									</Grid>
 								</Grid>
-							</Card>
+							</NoBorderCard>
 						</Grid>
 						<Grid item xs={6}>
-							<Card>
+						<NoBorderCard>
 								<Grid container spacing={2}>
 									<Grid item xs={12}>
 										<CardTitle title={"Debt"}></CardTitle>
@@ -556,13 +566,19 @@ function Manage() {
 														<Grid item xs={8}>
 															<input
 																style={{
+																	color: "rgba(51,51,51,1)",
+																	fontFamily: "Poppins-Bold",
+																	fontSize: "48px",
+																	fontWeight: "700",
+																	fontStyle: "normal",
+																	overflow: "hidden",
 																	width: "100%",
 																	height: "100%",
 																	border: "0px",
 																	backgroundColor: "transparent",
-																	overflow: "hidden",
-																	fontSize: "30px",
 																}}
+
+														
 																value={valueTwo}
 																onChange={(e) => {
 																	setValueTwo(e.target.value)
@@ -665,26 +681,102 @@ function Manage() {
 										></RoundShapeButton>
 									</Grid>
 								</Grid>
-							</Card>
+							</NoBorderCard>
 						</Grid>
 					</Grid>
 				</Grid>
 				<Grid item xs={5}>
 					<Grid container spacing={1}>
 						<Grid item xs={12}>
-							<Card>
+							<NoBorderCard>
 								<Grid container>
 									<Grid item xs={12}>
-										<span style={{ fontWeight: "800", fontSize: "24px" }}>Deposited Borrowed Health Factor</span>
+										<span style={{
+											color: "rgba(38,38,38,1)",
+											fontFamily: "ClashDisplay-Semibold",
+											fontSize: "18px",
+											fontWeight: "600",
+											fontStyle: "normal",
+										}}>Deposited Borrowed Health Factor</span>
 									</Grid>
 									<Grid item xs={12}>
-										<span>Health Factor <span style={{ fontWeight: "800", fontSize: "24px" }}>20.97</span></span>
+										<div style={{ width: "100%", textAlign: 'center' }}>
+											<span style={{
+												opacity: "0.5",
+												color: "rgba(0,0,0,1)",
+												fontFamily: "Poppins-Regular",
+												fontSize: "16px",
+												fontWeight: "400",
+											}}>Health Factor </span>											
+											<span style={{
+												opacity: "1",
+												color: "#387AFF",
+												fontFamily: "Poppins-Bold",
+												fontSize: "30px",
+												fontWeight: "700",
+											}}>20.97</span>
+										</div>
+
 									</Grid>
-									<Grid item xs={12}>
-										<span>bar chart</span>
+									<Grid item xs={12} style={{ height: "200px" }}>
+										<Bar
+											// width={10}
+											// height={100}
+											options={{
+												scales: {
+													xAxes: {
+														// display: false,        // show/ hide x-axis
+														grid: {
+															display: false      // show/hide grid line in x-axis
+														},
+														// weight:100,
+													},
+													yAxes: {
+														// display: false,      // same as x-axis
+														grid: {
+															display: false
+														}
+													},
+												},
+												indexAxis: 'y' as const,
+												elements: {
+													bar: {
+														borderWidth: 1,
+													},
+												},
+												responsive: true,
+												plugins: {
+													// legend: {
+													// 	position: 'right' as const,
+													// },
+													// title: {
+													// 	display: true,
+													// 	text: 'Health Factor 20.97',
+													// },
+												},
+												bar: {
+													datasets: {
+														barPercentage: 0.1,
+														barThickness: 0.1,
+														borderWidth: 10,
+													}
+												},
+												maintainAspectRatio: false,
+											}}
+											data={{
+												labels,
+												datasets: [
+													{
+														data: [{ x: 100, y: 'ETH' }, { x: 10, y: 'BTC' }],
+														backgroundColor: ['rgba(37, 145, 232, 1)', 'rgba(104, 202, 186, 1)'],
+														borderWidth: 1,
+													}
+												],
+											}}
+										></Bar>
 									</Grid>
 								</Grid>
-							</Card>
+							</NoBorderCard>
 						</Grid>
 						<Grid item xs={12}>
 							<NoBorderCard>
@@ -719,16 +811,16 @@ function Manage() {
 										value: "$350",
 										textColor: "black",
 									},
-									].map((item,index) => {
+									].map((item, index) => {
 										return (
 											<Grid item xs={12} key={item.title}>
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={'space-between'}>
 														<Grid item>
-															<span style={{fontSize:"16px",color:"#000000"}}>{item.title}</span>
+															<span style={{ fontSize: "16px", color: "#000000" }}>{item.title}</span>
 														</Grid>
 														<Grid item>
-															<span style={{fontSize:"16px",color:"#262626",fontWeight:"700"}}>{item.value}</span>
+															<span style={{ fontSize: "16px", color: "#262626", fontWeight: "700" }}>{item.value}</span>
 														</Grid>
 													</Grid>
 												</div>
