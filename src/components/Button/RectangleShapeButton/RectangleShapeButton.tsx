@@ -4,22 +4,23 @@ import {
   Button,
 } from '@mui/material';
 
-import './RoundShapeButton.scss'
+import './RectangleShapeButton.scss'
 
 
-interface RoundShapeButtonProps {
+interface RectangleShapeButtonProps {
   label: string;
   onClick: any;
   color: string;
 }
 
-function RoundShapeButton(props: RoundShapeButtonProps) {
+function RectangleShapeButton(props: RectangleShapeButtonProps) {
+  console.log(props)
   const openButtonSection = useMemo(() => {
-    if (props.color === "white") return "round-shape-button-white"
-    if (props.color === "black") return "round-shape-button-black"
-    return "round-shape-button-white"
+    if (props.color === "white") return "rectangle-shape-button-white"
+    if (props.color === "black") return "rectangle-shape-button-black"
+    return "rectangle-shape-button-white"
   }, [props.color])
-
+  console.log(openButtonSection)
 
   return (
     <Button
@@ -35,4 +36,4 @@ function RoundShapeButton(props: RoundShapeButtonProps) {
   );
 }
 
-export default RoundShapeButton;
+export default RectangleShapeButton;

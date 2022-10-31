@@ -82,6 +82,7 @@ export const changeUserDebtBalanceUsdt = (payload:any) => {
     }
 }
 export const changeMyFujiVaultETHBTC = (payload:any) => {
+    console.log(payload)
     return (dispatch: any) => {
         dispatch({
             type: ActionType.CHANGE_MY_FUJI_VALUT_ETHBTC,

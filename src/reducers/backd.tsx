@@ -24,7 +24,7 @@ export default function backdReducer(action: any, state: any = initialState) {
   switch (action?.type??null) {
     case ActionType.CHANGE_LP_POOL_BTC:
       return { ...state, lpPoolBtc: action.payload };
-    case ActionType.CHANGE_LP_TOKEN_BTC:
+    case ActionType.CHANGE_LP_TOKEN_BTC:  
       return { ...state, lpTokenBtc: action.payload };
     case ActionType.CHANGE_VAULT_BTC:
       return { ...state, vaultBtc: action.payload };

@@ -13,6 +13,8 @@ import { Grid } from '@mui/material';
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 import Widget from '../../components/Widget/Widget'
 import './Dashboard.scss'
+import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
+import { Value } from "sass";
 
 
 const lightTheme = {
@@ -34,97 +36,328 @@ function Dashboard() {
 	}, [])
 	return (
 		<>
-
-			<Grid container>
-				<Grid item xs={12}>
-					this is Dashboard
-				</Grid>
-				<Grid item xs={12} >
-					<Grid container spacing={1} justifyContent={"flex-end"}>
-						<Grid item>
-							<RoundShapeButton
-								label={"add borrow"}
-								onClick={() => {
-									console.log(`click add borrow`)
-								}}
-							></RoundShapeButton>
+			<div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+				<Grid container>
+					<Grid item xs={12} >
+						<Grid container spacing={1} justifyContent={"flex-end"} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+							<Grid item>
+								<RoundShapeButton
+									label={"add borrow"}
+									onClick={() => {
+										console.log(`click add borrow`)
+									}}
+									color={"white"}
+								></RoundShapeButton>
+							</Grid>
+							<Grid item>
+								<RoundShapeButton
+									label={"add smart vault"}
+									onClick={() => {
+										console.log(`click add smart vault`)
+									}}
+									color={"white"}
+								></RoundShapeButton>
+							</Grid>
 						</Grid>
-						<Grid item>
-							<RoundShapeButton
-								label={"add smart vault"}
-								onClick={() => {
-									console.log(`click add smart vault`)
-								}}
-							></RoundShapeButton>
+					</Grid>
+					<Grid item xs={12}>
+						<Grid container spacing={2}>
+							<Grid item xl={4} lg={4} xs={12}>
+								<Widget
+									title={"Your Collateral"}
+								>
+									<div>$0.00</div>
+								</Widget>
+							</Grid>
+							<Grid item xl={4} lg={4} xs={12}>
+								<Widget
+									title={"Your Debt"}
+								>
+									<div>$0.00</div>
+								</Widget>
+							</Grid>
+							<Grid item xl={4} lg={4} xs={12}>
+								<Widget
+									title={"Your Smart Vault Balance"}
+								>
+									<div>$0.00</div>
+								</Widget>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item xs={12}>
+						<span style={{
+							fontWeight: "800",
+							fontSize: "20px",
+						}}
+						>My Borrowing Position</span>
+					</Grid>
+					<Grid item xs={12}>
+						<Grid container spacing={1}>
+							<Grid item xs={4}>
+								<DashboardCard
+									label={`ETH/BTC`}
+									labelInUSD={`$19,294`}
+									numberOfAssest={2}
+									assest1Code={`eth`}
+									assest2Code={`btc`}
+									pair={
+										[
+											{
+												amountInUsdt: 34192.9,
+												amountInCurrency: 30.4,
+												currency: "ETH",
+											},
+											{
+												amountInUsdt: 413401.1,
+												amountInCurrency: 1.87,
+												currency: "BTC",
+											},
+										]
+									}
+									detail={
+										[
+											{
+												title: "Collateral",
+												value: "$34192.9 / 30.4ETH"
+											},
+											{
+												title: "Debt",
+												value: "$41340.3 / 1.87BTC"
+											},
+											{
+												title: "APY",
+												value: "20.4%"
+											},
+											{
+												title: "Health Factor",
+												value: "$20"
+											},
+											{
+												title: "Smart Value",
+												value: "$192294"
+											},
+											{
+												title: "Provider",
+												value: "AAVE"
+											},
+										]
+									}
+									button={[
+										{
+											label: "manage",
+											callbackFunction: (() => {
+												console.log(`on click manage`)
+											}),
+											color: "white"
+										},
+									]}
+								>
+								</DashboardCard>
+							</Grid>
+							<Grid item xs={4}>
+								<DashboardCard
+									label={`ETH/BTC`}
+									labelInUSD={`$19,294`}
+									numberOfAssest={2}
+									assest1Code={`one`}
+									assest2Code={`usdt`}
+									pair={
+										[
+											{
+												amountInUsdt: 34192.9,
+												amountInCurrency: 30.4,
+												currency: "ETH",
+											},
+											{
+												amountInUsdt: 413401.1,
+												amountInCurrency: 1.87,
+												currency: "BTC",
+											},
+										]
+									}
+									detail={
+										[
+											{
+												title: "Collateral",
+												value: "$34192.9 / 30.4ETH"
+											},
+											{
+												title: "Debt",
+												value: "$41340.3 / 1.87BTC"
+											},
+											{
+												title: "APY",
+												value: "20.4%"
+											},
+											{
+												title: "Health Factor",
+												value: "$20"
+											},
+											{
+												title: "Smart Value",
+												value: "$192294"
+											},
+											{
+												title: "Provider",
+												value: "AAVE"
+											},
+										]
+									}
+									button={[
+										{
+											label: "manage",
+											callbackFunction: (() => {
+												console.log(`on click manage`)
+											}),
+											color: "white"
+										},
+									]}
+								>
+								</DashboardCard>
+							</Grid>
+							<Grid item xs={4}>
+								<DashboardCard
+									label={`ETH/BTC`}
+									labelInUSD={`$19,294`}
+									numberOfAssest={2}
+									assest1Code={`one`}
+									assest2Code={`usdt`}
+									pair={
+										[
+											{
+												amountInUsdt: 34192.9,
+												amountInCurrency: 30.4,
+												currency: "ETH",
+											},
+											{
+												amountInUsdt: 413401.1,
+												amountInCurrency: 1.87,
+												currency: "BTC",
+											},
+										]
+									}
+									detail={
+										[
+											{
+												title: "Collateral",
+												value: "$34192.9 / 30.4ETH"
+											},
+											{
+												title: "Debt",
+												value: "$41340.3 / 1.87BTC"
+											},
+											{
+												title: "APY",
+												value: "20.4%"
+											},
+											{
+												title: "Health Factor",
+												value: "$20"
+											},
+											{
+												title: "Smart Value",
+												value: "$192294"
+											},
+											{
+												title: "Provider",
+												value: "AAVE"
+											},
+										]
+									}
+									button={[
+										{
+											label: "manage",
+											callbackFunction: (() => {
+												console.log(`on click manage`)
+											}),
+											color: "white"
+										},
+									]}
+								>
+								</DashboardCard>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item xs={12}>
+						<div style={{ height: "20px" }}></div>
+					</Grid>
+					<Grid item xs={12}>
+						<span style={{
+							fontWeight: "800",
+							fontSize: "20px",
+						}}
+						>My Smart Value Position</span>
+					</Grid>
+					<Grid item xs={12}>
+						<Grid container>
+							<Grid item xs={4}>
+								<DashboardCard
+									label={`BTC`}
+									labelInUSD={``}
+									numberOfAssest={1}
+									assest1Code={`btc`}
+									assest2Code={``}
+									pair={
+										[
+											{
+												amountInUsdt: 34192.9,
+												amountInCurrency: 30.4,
+												currency: "BTC",
+											},
+										]
+									}
+									detail={
+										[
+											{
+												title: "APY",
+												value: "20.4%"
+											},
+											{
+												title: "Health Factor",
+												value: "20"
+											},
+											{
+												title: "Liquidation",
+												value: "1.1"
+											},
+											{
+												title: "Single Top-up",
+												value: "0.4392BTC"
+											},
+										]
+									}
+									button={
+										[
+											{
+												label: "payback",
+												callbackFunction: (() => {
+													console.log(`on click payback`)
+												}),
+												color: "white"
+											},
+											{
+												label: "leave smart vault",
+												callbackFunction: (() => {
+													console.log(`on click leave smart vault`)
+												}),
+												color: "black"
+											},
+										]
+									}
+								>
+								</DashboardCard>
+							</Grid>
+							<Grid item xs={4}>
+								Card 2 USDT
+							</Grid>
+							<Grid item xs={4}>
+								Card 3 USDT
+							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={12}>
-					<Grid container spacing={2}>
-						<Grid item xl={4} lg={4} xs={12}>		
-							<Widget
-								title={"Your Collateral"}
-							>
-								<div>$0.00</div>
-							</Widget>
-						</Grid>
-						<Grid item xl={4} lg={4} xs={12}>
-							<Widget
-								title={"Your Debt"}
-							>
-								<div>$0.00</div>
-							</Widget>
-						</Grid>
-						<Grid item xl={4} lg={4} xs={12}>
-							<Widget
-								title={"Your Smart Vault Balance"}
-							>
-								<div>$0.00</div>
-							</Widget>
-						</Grid>
-					</Grid>
-				</Grid>
-				<Grid item xs={12}>
-					<span style={{
-						fontWeight: "800",
-						fontSize: "20px",
-					}}
-					>My Borrowing Position</span>
-				</Grid>
-				<Grid item xs={12}>
-					<Grid container>
-						<Grid item xs={4}>
-							Card 1 ETH/BTC
-						</Grid>
-						<Grid item xs={4}>
-							Card 2 ONE/USDT
-						</Grid>
-						<Grid item xs={4}>
-							Card 3 ONE/USDT
-						</Grid>
-					</Grid>
-				</Grid>
-				<Grid item xs={12}>
-					<span style={{
-						fontWeight: "800",
-						fontSize: "20px",
-					}}
-					>My Smart Value Position</span>
-				</Grid>
-				<Grid item xs={12}>
-					<Grid container>
-						<Grid item xs={4}>
-							Card 1 BTC
-						</Grid>
-						<Grid item xs={4}>
-							Card 2 USDT
-						</Grid>
-						<Grid item xs={4}>
-							Card 3 USDT
-						</Grid>
-					</Grid>
-				</Grid>
-			</Grid>
+			</div>
 		</>
 	)
 }

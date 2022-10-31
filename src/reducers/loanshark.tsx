@@ -60,6 +60,7 @@ export default function loansharkReducer(action:any, state:any = initialState) {
     case ActionType.CHANGE_USER_DEBT_BALANCE_USDT:
       return {...state,userDebtBalanceUsdt: action.payload};
     case ActionType.CHANGE_MY_FUJI_VALUT_ETHBTC:
+      console.log(action)
       return {...state,myFujiVaultETHBTC: action.payload};
     case ActionType.CHANGE_MY_FUJI_VALUT_AVAXUSDT:
       return {...state,myFujiVaultAVAXUSDT: action.payload};
