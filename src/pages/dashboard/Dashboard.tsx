@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-// import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate  } from "react-router-dom"
 import { Grid } from '@mui/material';
 // import { Row, Col, Table, Button, Modal, ModalBody } from 'reactstrap';
 // import { ThemeProvider, createGlobalStyle } from 'styled-components'
@@ -31,6 +31,7 @@ const darkTheme = {
 
 
 function Dashboard() {
+	let navigate = useNavigate();
 	useEffect(() => {
 		console.log(`Dashboard`)
 	}, [])
@@ -145,9 +146,11 @@ function Dashboard() {
 									}
 									button={[
 										{
-											label: "manage",
+											label: "can go manage page",
 											callbackFunction: (() => {
 												console.log(`on click manage`)
+												//to manage page
+												navigate("/app/main/manage");
 											}),
 											color: "white"
 										},
