@@ -100,8 +100,9 @@ function HeaderMenu() {
           <ListItem>
             <div style={{ maxWidth: "200px", maxHeight: "80px" }}>
               <img
-                style={{ maxWidth: "200px", maxHeight: "60px", backgroundColor: "black" }}
-                src={logo}
+                style={{ maxWidth: "200px", maxHeight: "60px"}}
+                // src={logo}
+                src='/assets/logo/Loanshark_Logo-01.png'
                 alt="Loan Shark"></img>
             </div>
           </ListItem>
@@ -113,22 +114,22 @@ function HeaderMenu() {
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={NavLink}
-            to="/app/main/borrow"
+            to="/app/main/dashboard"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Borrow"
+              primary="Dashboard"
             />
           </ListItem>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={NavLink}
-            to="/app/main/dashboard"
+            to="/app/main/borrow"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Dashboard"
+              primary="Borrow"
             />
           </ListItem>
           <ListItem
