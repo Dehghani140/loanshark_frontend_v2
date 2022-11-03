@@ -21,14 +21,16 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <HelmetProvider>
-      <SidebarProvider>
-          <App />
-      </SidebarProvider>
-    </HelmetProvider>,
-  </Provider>,
+  <HelmetProvider>
+    <SidebarProvider>
+      <App />
+    </SidebarProvider>
+  </HelmetProvider>,
+</Provider>
+  ,
 
   document.getElementById('root')
 );
 
 serviceWorker.unregister();
+

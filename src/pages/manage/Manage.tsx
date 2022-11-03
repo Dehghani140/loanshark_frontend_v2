@@ -719,7 +719,7 @@ function Manage() {
 
 									</Grid>
 									<Grid item xs={12} style={{ height: "200px" }}>
-										<Bar
+										{/* <Bar
 											// width={10}
 											// height={100}
 											options={{
@@ -773,7 +773,7 @@ function Manage() {
 													}
 												],
 											}}
-										></Bar>
+										></Bar> */}
 									</Grid>
 								</Grid>
 							</NoBorderCard>
