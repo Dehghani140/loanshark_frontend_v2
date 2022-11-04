@@ -5,6 +5,7 @@ import classNames from 'classnames';
 // import Loader from '../Loader'; // eslint-disable-line css-modules/no-unused-class
 // import AnimateHeight from 'react-animate-height';
 import uuidv4 from 'uuid/v4'
+import { AnyObject } from 'chart.js/types/basic';
 // import {
 //   Button,
 //   Modal,
@@ -17,12 +18,19 @@ import uuidv4 from 'uuid/v4'
 interface WidgetProps {
   title: string;
   children:React.ReactNode;
+  whiteBackgroundColor?: boolean;
   // label: string;
   // onClick: any;
 }
 
+const defaultProps = {
+  whiteBackgroundColor: false
+}
 
 function Widget(props: WidgetProps) {
+
+  props = { ...defaultProps, ...props }
+
   useEffect(() => {
     console.log(`widget`)
   }, [])
@@ -41,6 +49,7 @@ function Widget(props: WidgetProps) {
             // (reloading || fetchingData) ? s.reloading : ''
           )
         }
+        style={{backgroundColor: props.whiteBackgroundColor? "#ffffff" : "transparent"}}
       // {...attributes}
       >
         {
