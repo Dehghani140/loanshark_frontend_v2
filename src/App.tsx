@@ -19,6 +19,7 @@ import Borrow from './pages/borrow/Borrow'
 import LayoutComponent from './components/Layout/Layout';
 import SidebarLayout from './layouts/SidebarLayout';
 import Tables from './pages/tables/Tables';
+import './App.scss'
 // background
 // import background from './'
 // "./img/placeholder.png";

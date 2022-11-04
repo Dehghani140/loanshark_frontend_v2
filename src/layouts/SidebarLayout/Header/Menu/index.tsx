@@ -22,7 +22,7 @@ const ListWrapper = styled(Box)(
             transition: ${theme.transitions.create(['color', 'fill'])};
             
             &.MuiListItem-indicators {
-                padding: ${theme.spacing(1, 2)};
+                
             
                 .MuiListItemText-root {
                     .MuiTypography-root {
@@ -100,14 +100,9 @@ function HeaderMenu() {
           <ListItem>
             <div style={{ maxWidth: "200px", maxHeight: "80px" }}>
               <img
-                style={{ maxWidth: "200px", maxHeight: "60px"}}
-                // src={logo}
+                style={{ maxWidth: "200px", maxHeight: "60px" }}
                 src='/assets/logo/Loanshark_Logo-01.png'
                 alt="Loan Shark"></img>
-            </div>
-          </ListItem>
-          <ListItem>
-            <div style={{ width: "300px" }}>
             </div>
           </ListItem>
           <ListItem

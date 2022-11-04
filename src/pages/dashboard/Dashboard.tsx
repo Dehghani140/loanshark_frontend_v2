@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { NavLink, useNavigate  } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { Grid } from '@mui/material';
 // import { Row, Col, Table, Button, Modal, ModalBody } from 'reactstrap';
 // import { ThemeProvider, createGlobalStyle } from 'styled-components'
@@ -37,7 +37,11 @@ function Dashboard() {
 	}, [])
 	return (
 		<>
-			<div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+			<div style={{
+				width: '1260px',
+				marginLeft: 'auto',
+				marginRight: 'auto',
+			}}>
 				<Grid container>
 					<Grid item xs={12} >
 						<Grid container spacing={1} justifyContent={"flex-end"} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
@@ -67,7 +71,12 @@ function Dashboard() {
 								<Widget
 									title={"Your Collateral"}
 								>
-									<div>$0.00</div>
+									<div style={{
+										fontWeight:'700',
+										fontSize:'48px',
+										color:'#262626',
+										// fontFamily:'Poppins',
+									}}>$100,423.39</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
@@ -361,11 +370,13 @@ function Dashboard() {
 					</Grid>
 				</Grid>
 			</div>
+
 		</>
 	)
 }
 
 
 export default Dashboard;
+
 
 
