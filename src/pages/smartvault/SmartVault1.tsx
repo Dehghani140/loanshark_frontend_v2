@@ -1,0 +1,69 @@
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+
+import { NavLink, useNavigate } from "react-router-dom"
+import { Grid } from '@mui/material';
+
+import Widget from '../../components/Widget/Widget'
+import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
+
+import Repay from './Repay.svg';
+import Topup from './Topup.svg';
+
+function SmartVault1() {
+    let navigate = useNavigate();
+    useEffect(() => {
+        console.log(`SmartVault1`)
+    }, [])
+    return (
+        <>
+            <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <p>Protection Setup (1/4 steps)</p>
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <p>Please select the way to setup protection:</p>
+
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Widget whiteBackgroundColor={true} title={""}>
+                            <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+                                <div style={{textAlign: 'center'}}>Top-up</div>
+                                <img src={Topup} height={"220"} alt="logo" />
+                                <RoundShapeButton
+                                    label={"select"}
+                                    onClick={() => {
+                                        console.log(`click add borrow`)
+                                        navigate("/app/main/smartVault2")
+                                    }}
+                                    color={"white"}
+                                ></RoundShapeButton>
+                            </div>
+                        </Widget>
+                    </Grid>
+
+                    <Grid item xs={5}>
+                        <Widget whiteBackgroundColor={true} title={""}>
+                            <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+                                <div style={{textAlign: 'center'}}>Repay</div>
+                                <img src={Repay} height={"220"}  alt="logo" />
+                                <RoundShapeButton
+                                    label={"select"}
+                                    onClick={() => {
+                                        console.log(`click add borrow`)
+                                        navigate("/app/main/smartVault2")
+                                    }}
+                                    color={"white"}
+                                ></RoundShapeButton>
+                            </div>
+                        </Widget>
+                    </Grid></Grid>
+            </div>
+        </>
+    )
+}
+
+
+export default SmartVault1;

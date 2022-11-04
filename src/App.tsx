@@ -10,14 +10,18 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
 
-import GlobalStyle from './components/global'
+import GlobalStyle from './components/global';
 import ThemeProvider from './theme/ThemeProvider';
 
-import Dashboard from './pages/dashboard/Dashboard'
-import Manage from './pages/manage/Manage'
-import Borrow from './pages/borrow/Borrow'
-import LayoutComponent from './components/Layout/Layout';
+import Dashboard from './pages/dashboard/Dashboard';
+import Manage from './pages/manage/Manage';
+import Borrow from './pages/borrow/Borrow';
+import SmartVault1 from './pages/smartvault/SmartVault1';
+import SmartVault2 from './pages/smartvault/SmartVault2';
+import SmartVault3 from './pages/smartvault/SmartVault3';
+import SmartVault4 from './pages/smartvault/SmartVault4';
 import SidebarLayout from './layouts/SidebarLayout';
+import LayoutComponent from './components/Layout/Layout';
 import Tables from './pages/tables/Tables';
 // background
 // import background from './'
@@ -95,7 +99,9 @@ function App(props: any) {
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: "url(/assets/background/app_background_blur.svg)"
+        backgroundImage: "url(/assets/background/app_background_blur.svg)",
+        width: "100%",
+        height: "100%"
       }}>
         <ThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -115,10 +121,10 @@ function App(props: any) {
                   <Route path="main/borrow" element={<Borrow></Borrow>}></Route>
                   <Route path="main/manage" element={<Manage></Manage>}></Route>
                   <Route path="main/more" element={<Dashboard></Dashboard>}></Route>
-                  <Route path="main/smartVault1" element={<Dashboard></Dashboard>}></Route>
-                  <Route path="main/smartVault2" element={<Dashboard></Dashboard>}></Route>
-                  <Route path="main/smartVault3" element={<Dashboard></Dashboard>}></Route>
-                  <Route path="main/smartVault4" element={<Dashboard></Dashboard>}></Route>
+                  <Route path="main/smartVault1" element={<SmartVault1></SmartVault1>}></Route>
+                  <Route path="main/smartVault2" element={<SmartVault2></SmartVault2>}></Route>
+                  <Route path="main/smartVault3" element={<SmartVault3></SmartVault3>}></Route>
+                  <Route path="main/smartVault4" element={<SmartVault4></SmartVault4>}></Route>
                   <Route path="main/smartVault4ETH" element={<Dashboard></Dashboard>}></Route>
                 </Route>
                 <Route path="*" element={<RestUrl></RestUrl>}></Route>
