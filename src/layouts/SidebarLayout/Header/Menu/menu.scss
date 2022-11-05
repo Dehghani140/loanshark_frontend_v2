@@ -1,0 +1,13 @@
+.nav-item{
+    &:hover{
+        border-bottom: 1px solid #347bd3;
+    }
+    &__clicked{
+        color:#347bd3;
+        font-weight: 600;            
+    }
+    &:active{
+
+        
+    }
+}

@@ -14,6 +14,7 @@ import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShap
 import Widget from '../../components/Widget/Widget'
 import './Dashboard.scss'
 import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
+import NoBorderCard from '../../pages/manage/Card/NoBorderCard'
 import { Value } from "sass";
 
 
@@ -71,36 +72,33 @@ function Dashboard() {
 								<Widget
 									title={"Your Collateral"}
 								>
-									<div style={{
-										fontWeight:'700',
-										fontSize:'48px',
-										color:'#262626',
-										// fontFamily:'Poppins',
-									}}>$100,423.39</div>
+									<div className={'display-title'}>$100,423.39</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
 								<Widget
 									title={"Your Debt"}
 								>
-									<div>$0.00</div>
+									<div className={'display-title'}>$0.00</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
 								<Widget
 									title={"Your Smart Vault Balance"}
 								>
-									<div>$0.00</div>
+									<div className={'display-title'}>$0.00</div>
 								</Widget>
 							</Grid>
 						</Grid>
 					</Grid>
 					<Grid item xs={12}>
-						<span style={{
-							fontWeight: "800",
-							fontSize: "20px",
-						}}
-						>My Borrowing Position</span>
+						<div style={{ height: "53px" }}></div>
+					</Grid>
+					<Grid item xs={12}>
+						<span className={'card-title'}>My Borrowing Position</span>
+					</Grid>
+					<Grid item xs={12}>
+						<div style={{ height: "29px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container spacing={1}>
@@ -292,14 +290,13 @@ function Dashboard() {
 						</Grid>
 					</Grid>
 					<Grid item xs={12}>
-						<div style={{ height: "20px" }}></div>
+						<div style={{ height: "53px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<span style={{
-							fontWeight: "800",
-							fontSize: "20px",
-						}}
-						>My Smart Value Position</span>
+						<span className={'card-title'}>My Smart Value Position</span>
+					</Grid>
+					<Grid item xs={12}>
+						<div style={{ height: "29px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container>
