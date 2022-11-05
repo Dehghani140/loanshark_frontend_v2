@@ -355,7 +355,6 @@ function HeaderButtons() {
         </a>
       </Popup>
 
-
       <Grid container alignItems={"center"} spacing={1}>
         <Grid item>
           <Box sx={{ mr: 1 }}>
@@ -401,6 +400,7 @@ function HeaderButtons() {
             icon={faLightbulb} />
         </Grid>
       </Grid>
+
     </>
   );
 }

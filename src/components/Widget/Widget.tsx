@@ -6,6 +6,7 @@ import classNames from 'classnames';
 // import AnimateHeight from 'react-animate-height';
 import uuidv4 from 'uuid/v4'
 import { AnyObject } from 'chart.js/types/basic';
+import { Grid } from '@mui/material';
 // import {
 //   Button,
 //   Modal,
@@ -17,7 +18,7 @@ import { AnyObject } from 'chart.js/types/basic';
 
 interface WidgetProps {
   title: string;
-  children:React.ReactNode;
+  children: React.ReactNode;
   whiteBackgroundColor?: boolean;
   // label: string;
   // onClick: any;
@@ -37,39 +38,64 @@ function Widget(props: WidgetProps) {
 
   return (
     <>
-      <section
-        // style={{ display: hideWidget ? 'none' : '' }}
-        className={
-          classNames('widget',
-            s.widgetBorderLeft,
-            // { 'fullscreened': !!fullscreened, 'collapsed': !!collapseWidget },
-            s.widget,
-            // (this.props.theme === "light" ? s.widgetLight : s.widgetDark),
-            // className,
-            // (reloading || fetchingData) ? s.reloading : ''
-          )
-        }
-        style={{backgroundColor: props.whiteBackgroundColor? "#ffffff" : "transparent"}}
-      // {...attributes}
-      >
-        {
-          <div style={{ padding: "23px 30px 0" }}>
+      
+      <div style={{
+        borderRadius: '6px',
+        boxShadow: '0px 0px 10px rgba(138,171,170, 0.3)',
+        opacity: '0.902725',
+        background: 'transparent',
+        padding: "18px 0px 29px 40px",
+      }}>
+        <Grid container>
+          <Grid item xs={12}>
+          {
+          <div>
             <span
-            style={{fontSize:"40px",fontWeight:"700"}}
-            // className={[s.title, (this.props.theme === "light" ? s.titleLight : s.titleDark)]}
+              style={{ 
+                color: 'rgba(38,38,38,1)',
+                fontFamily: 'Poppins-Bold',
+                fontSize: '48px',
+                fontWeight: '700',
+              }}
             >{props.children}
-              </span>
+            </span>
           </div>
         }
-
-        <div style={{ padding: "0 30px 23px" }} className={`${s.widgetBody} widget-body`}>
-        {props.title}
+          </Grid>
+          <Grid item xs={12}>
+          <div className={`${s.widgetTitle}`}>  
+          {props.title}
         </div>
+          </Grid>
+        </Grid>
+      </div>
 
-      </section>
-      {/* <div style={{ display: fullscreened ? 'block' : 'none' }} className={s.widgetBackground}></div> */}
     </>
   )
 }
 
 export default Widget;
+
+
+// border - radius: 6px;
+// box - shadow: 2px 2px 10px rgba(116, 116, 128, 0.076022);
+// opacity: 0.7;
+// background - color: rgba(255, 255, 255, 1);
+
+// border - radius: 6px;
+// box - shadow: 2px 2px 10px rgba(116, 116, 128, 0.076022);
+// opacity: 0.7;
+// background - color: rgba(255, 255, 255, 1);
+
+// <section
+//         className={
+//           classNames('widget',
+//             s.widgetBorderLeft,
+//             s.widget,
+//           )
+//         }
+//         style={{ backgroundColor: props.whiteBackgroundColor ? "#ffffff" : "transparent" }}
+//       >
+        
+        
+//       </section>

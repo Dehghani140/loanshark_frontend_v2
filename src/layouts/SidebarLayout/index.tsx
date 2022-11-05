@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
-import { Box, alpha, lighten, useTheme } from '@mui/material';
+import { Box, alpha, lighten, useTheme, Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
@@ -11,6 +11,7 @@ interface SidebarLayoutProps {
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();
+  console.log(theme)
   useEffect(() => {
     console.log(`SidebarLayout`)
   }, [])
@@ -20,7 +21,6 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         sx={{
           flex: 1,
           height: '100%',
-
           '.MuiPageTitle-wrapper': {
             background:
               theme.palette.mode === 'dark'
@@ -43,8 +43,14 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           }
         }}
       >
-        <Header />
+        <Grid container justifyContent={'center'}>
+          <Grid item>
+            <Header />
+          </Grid>
+        </Grid>
+
         {/* <Sidebar /> */}
+
         <Box
           sx={{
             position: 'relative',
@@ -57,10 +63,14 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
             }
           }}
         >
+
           <Box display="block">
-            <Outlet />
+            <div style={{ width: '100vw' }}>
+              <Outlet />
+            </div>
           </Box>
         </Box>
+
       </Box>
     </>
   );

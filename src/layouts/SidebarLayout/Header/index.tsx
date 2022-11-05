@@ -9,7 +9,8 @@ import {
   IconButton,
   Tooltip,
   styled,
-  useTheme
+  useTheme,
+  Grid
 } from '@mui/material';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
@@ -65,17 +66,31 @@ function Header() {
             )}`
       }}
     >
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
-        spacing={2}
-      >
-        <HeaderMenu />
-      </Stack>
+
+      <div style={{ width: '100vw' }}>
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          spacing={2}
+        >
+          <div style={{
+            width: '1260px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}>
+            <Grid container justifyContent={'space-between'}>
+              <Grid item>
+              <HeaderMenu />
+              </Grid>
+              <Grid item>
+              <HeaderButtons />
+              </Grid>
+            </Grid>
+          </div>
+        </Stack>
+      </div>
       <Box display="flex" alignItems="center">
-        <HeaderButtons />
-        {/* <HeaderUserbox /> */}
         <Box
           component="span"
           sx={{
@@ -99,6 +114,7 @@ function Header() {
 }
 
 export default Header;
+
 
 
 

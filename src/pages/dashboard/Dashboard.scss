@@ -251,3 +251,24 @@
 //   width: 32px;
 //   height: 32px;
 // }
+
+.display-title{
+    font-weight:'700';
+    font-size:'48px';
+    color:'#262626';
+}
+.display-description{
+    opacity: 0.5;
+    color: rgba(0,0,0,1);
+    // font-family: "ClashDisplayVariable-Bold_Medium";
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.card-title{
+    color: rgba(38,38,38,1);
+font-family: "ClashDisplay-Bold";
+font-size: 21px;
+font-weight: 700;
+}   
