@@ -16,6 +16,7 @@ import './Dashboard.scss'
 import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 import NoBorderCard from '../../pages/manage/Card/NoBorderCard'
 import { Value } from "sass";
+import '../../App.scss'
 
 
 const lightTheme = {
@@ -38,11 +39,7 @@ function Dashboard() {
 	}, [])
 	return (
 		<>
-			<div style={{
-				width: '1260px',
-				marginLeft: 'auto',
-				marginRight: 'auto',
-			}}>
+			<div className={'main-content-layout'}>
 				<Grid container>
 					<Grid item xs={12} >
 						<Grid container spacing={1} justifyContent={"flex-end"} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
@@ -101,7 +98,7 @@ function Dashboard() {
 						<div style={{ height: "29px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<Grid container spacing={1}>
+						<Grid container spacing={2}>
 							<Grid item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
@@ -299,7 +296,7 @@ function Dashboard() {
 						<div style={{ height: "29px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<Grid container>
+						<Grid container spacing={2}>
 							<Grid item xs={4}>
 								<DashboardCard
 									label={`BTC`}

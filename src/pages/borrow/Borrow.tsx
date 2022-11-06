@@ -13,6 +13,7 @@ import { Button, Grid } from '@mui/material';
 import Widget from '../../components/Widget/Widget'
 import NoBorderCard from '../../pages/manage/Card/NoBorderCard'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
+import '../../App.scss'
 // import './Dashboard.scss'
 // import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 
@@ -39,7 +40,8 @@ function Borrow() {
 	}, [])
 	return (
 		<>
-			<Grid container spacing={3}>
+		<div className={'main-content-layout'}>
+		<Grid container spacing={3}>
 				<Grid item xs={7}>
 					<NoBorderCard>
 						<Grid container>
@@ -482,6 +484,8 @@ function Borrow() {
 					</Grid>
 				</Grid>
 			</Grid>
+		</div>
+		
 		</>
 	)
 }
