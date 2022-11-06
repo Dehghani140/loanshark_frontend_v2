@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import logo from "../../../../images/logo.png";
-
+import './menu.scss'
 const ListWrapper = styled(Box)(
   ({ theme }) => `
         .MuiTouchRipple-root {
@@ -22,7 +22,7 @@ const ListWrapper = styled(Box)(
             transition: ${theme.transitions.create(['color', 'fill'])};
             
             &.MuiListItem-indicators {
-                padding: ${theme.spacing(1, 2)};
+                
             
                 .MuiListItemText-root {
                     .MuiTypography-root {
@@ -35,18 +35,15 @@ const ListWrapper = styled(Box)(
                             position: absolute;
                             bottom: -10px;
                             transition: all .2s;
-                            border-radius: ${theme.general.borderRadiusLg};
                             content: "";
                         }
                     }
                 }
-
                 &.active,
                 &:active,
-                &:hover {
-                
+                &:hover
+                {
                     background: transparent;
-                
                     .MuiListItemText-root {
                         .MuiTypography-root {
                             &:before {
@@ -58,16 +55,6 @@ const ListWrapper = styled(Box)(
                     }
                 }
             }
-
-            &.active {
-              .MuiListItemText-root {
-                .MuiTypography-root {
-                    font-weight:1000;
-                    color:black;
-                }
-            }
-
-            }
         }
       
 `
@@ -76,7 +63,8 @@ const ListWrapper = styled(Box)(
 function HeaderMenu() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
-
+  const [menubar, setMenubar] = useState([true, false, false, false]);
+  console.log(menubar)
   const handleOpen = (): void => {
     setOpen(true);
   };
@@ -84,6 +72,21 @@ function HeaderMenu() {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  function clickMenu(position: number): void {
+    let originMenubar = [false, false, false, false]
+    originMenubar[position] = true
+    setMenubar(originMenubar)
+  }
+  //   opacity: 1;
+  // color: rgba(51,51,51,1);
+  // font-family: "ClashDisplay-Regular";
+  // font-size: 16px;
+  // font-weight: 400;
+  // font-style: normal;
+  // letter-spacing: 0px;
+  // text-align: left;
+
 
   return (
     <>
@@ -97,19 +100,12 @@ function HeaderMenu() {
         }}
       >
         <List disablePadding component={Box} display="flex">
-          <ListItem>
-            <div style={{ maxWidth: "200px", maxHeight: "80px" }}>
-              <img
-                style={{ maxWidth: "200px", maxHeight: "60px"}}
-                // src={logo}
-                src='/assets/logo/Loanshark_Logo-01.png'
-                alt="Loan Shark"></img>
-            </div>
-          </ListItem>
-          <ListItem>
-            <div style={{ width: "300px" }}>
-            </div>
-          </ListItem>
+          <div style={{ maxWidth: "200px", maxHeight: "80px" }}>
+            <img
+              style={{ maxWidth: "200px", maxHeight: "60px" }}
+              src='/assets/logo/Loanshark_Logo-01.png'
+              alt="Loan Shark"></img>
+          </div>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
@@ -119,6 +115,8 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="Dashboard"
+              className={`nav-item${menubar[0] === true ? "__clicked" : ""}`}
+              onClick={() => { clickMenu(0) }}
             />
           </ListItem>
           <ListItem
@@ -130,6 +128,8 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="Borrow"
+              className={`nav-item${menubar[1] === true ? "__clicked" : ""}`}
+              onClick={() => { clickMenu(1) }}
             />
           </ListItem>
           <ListItem
@@ -141,6 +141,8 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="Smart Vault"
+              className={`nav-item${menubar[2] === true ? "__clicked" : ""}`}
+              onClick={() => { clickMenu(2) }}
             />
           </ListItem>
           <ListItem
@@ -152,6 +154,7 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="More"
+              className={'nav-item'}
             ></ListItemText>
           </ListItem>
         </List>

@@ -22,6 +22,7 @@ import SmartVault4 from './pages/smartvault/SmartVault4';
 import SidebarLayout from './layouts/SidebarLayout';
 import LayoutComponent from './components/Layout/Layout';
 import Tables from './pages/tables/Tables';
+import './App.scss'
 // background
 // import background from './'
 // "./img/placeholder.png";

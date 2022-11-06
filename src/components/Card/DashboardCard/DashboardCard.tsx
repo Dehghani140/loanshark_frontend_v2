@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import { Grid } from '@mui/material';
 import uuidv4 from 'uuid/v4'
 import RoundShapeButton from '../../../components/Button/RoundShapeButton/RoundShapeButton'
+// import './DashboardCard.scss'
+import "../DashboardCard/DashboardCard.scss"
 // import {
 //   Button,
 //   Modal,
@@ -76,11 +78,7 @@ function DashboardCard(props: any) {
 
     return (
         <>
-            <div style={{
-                padding: "25px",
-                border: "1px solid black",
-                borderRadius: "10px",
-            }}>
+            <div className={`dashboard-card-layout`}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Grid container justifyContent={'space-between'}>
@@ -94,7 +92,7 @@ function DashboardCard(props: any) {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <div style={{ height: "5px" }}></div>
+                        <div style={{ height: "30px" }}></div>
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container>
@@ -109,12 +107,14 @@ function DashboardCard(props: any) {
                             })}
                         </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <div style={{ height: "5px" }}></div>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <div style={{ height: '50px' }}>
+                            <hr></hr>
+                            </div>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <hr></hr>
-                    </Grid>
+
                     <Grid item xs={12}>
                         {detail.map((item, index) => {
                             return (
