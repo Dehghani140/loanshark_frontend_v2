@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { NavLink, useNavigate  } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { Grid } from '@mui/material';
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 import Widget from '../../components/Widget/Widget'
@@ -26,7 +26,8 @@ function Dashboard() {
 		console.log(`Dashboard`)
 	}, [])
 
-	const userDepositBalanceEth = useAppSelector((state) => state.loanshark.userDepositBalanceEth)
+	const state = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
 
 	return (
 		<>
@@ -60,21 +61,21 @@ function Dashboard() {
 								<Widget
 									title={"Your Collateral"}
 								>
-									<div>${userDepositBalanceEth}</div>
+									<div>${((state.userDepositBalanceEth * state.priceOfEth / 100) + (state.userDepositBalanceAvax * state.priceOfAvax / 100)).toFixed(2)}</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
 								<Widget
 									title={"Your Debt"}
 								>
-									<div>$0.00</div>
+									<div>${((state.userDebtBalanceBtc * state.priceOfBtc / 100) + (state.userDebtBalanceUsdt * state.priceOfUsdt / 100)).toFixed(2)}</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
 								<Widget
 									title={"Your Smart Vault Balance"}
 								>
-									<div>$0.00</div>
+									<div>${(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)}</div>
 								</Widget>
 							</Grid>
 						</Grid>

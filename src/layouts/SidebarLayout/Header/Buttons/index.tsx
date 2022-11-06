@@ -15,6 +15,8 @@ import {
     reset
 } from '../../../../slice/loansharkSlice';
 
+import { connectContract, refreshPrice } from '../../../../utils/API'
+
 const MY_FujiVaultETHBTC = process.env.REACT_APP_MY_FujiVaultETHBTC;
 const METAMASK_INSTALL_URL = process.env.REACT_APP_METAMASK_INSTALL_URL;
 
@@ -25,7 +27,7 @@ function HeaderButtons() {
     const [modalAction, setModalAction] = useState<String | null>("")
 
     const state = useAppSelector((state) => state.loanshark)
-    const myFujiVaultETHBTC = useAppSelector((state) => state.loanshark.myFujiVaultETHBTC)
+    const stateBackd = useAppSelector((state) => state.backd)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -43,17 +45,20 @@ function HeaderButtons() {
             ()
     }, [])
 
+
+    useEffect(() => {
+        if (state.selectedPair) {
+            refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+        }
+    }, [state.selectedPair])
+
     function clearAccount() {
         dispatch(reset())
     }
 
     function afterWalletConnected(accountAddress) {
         localStorage.setItem("isWalletConnected", "true")
-        const contract = new window.web3.eth.Contract(FujiVaultAVAX.abi, MY_FujiVaultETHBTC);
-        dispatch(changeMyFujiVaultETHBTC(contract));
-        contract.methods.userDepositBalance(accountAddress).call({}, (error, result) => {
-            dispatch(changeUserDepositBalanceEth(window.web3.utils.fromWei(result, 'ether')));
-        });
+        connectContract(dispatch);
     }
 
     function ethEnabled() {
