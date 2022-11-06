@@ -110,7 +110,7 @@ function DashboardCard(props: any) {
                     <Grid container>
                         <Grid item xs={12}>
                             <div style={{ height: '50px' }}>
-                            <hr></hr>
+                                <hr></hr>
                             </div>
                         </Grid>
                     </Grid>
@@ -119,13 +119,12 @@ function DashboardCard(props: any) {
                         {detail.map((item, index) => {
                             return (
                                 <>
-                                    <Grid container justifyContent={'space-between'} style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                                    <Grid container justifyContent={'space-between'} className={`card-detail-spacing`}>
                                         <Grid item>
-                                            <span>{item.title}</span>
+                                            <span className={`card-detail-title`}>{item.title}</span>
                                         </Grid>
                                         <Grid item>
-                                            <span style={{ fontWeight: "700" }}
-                                            >{item.value}</span>
+                                            <span className={`card-detail-value`}>{item.value}</span>
                                         </Grid>
                                     </Grid>
                                 </>

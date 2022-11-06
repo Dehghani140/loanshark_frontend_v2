@@ -5,7 +5,6 @@ import classNames from 'classnames';
 // import Loader from '../Loader'; // eslint-disable-line css-modules/no-unused-class
 // import AnimateHeight from 'react-animate-height';
 import uuidv4 from 'uuid/v4'
-import { AnyObject } from 'chart.js/types/basic';
 import { Grid } from '@mui/material';
 // import {
 //   Button,

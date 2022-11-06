@@ -21,17 +21,24 @@
   
 
 .round-shape-button-white{
-  background-color: transparent !important;
-  border: 1px solid black !important;
+  background-color: rgba(255,255,255, 1) !important;
+  border: 1px solid rgba(51,51,51, 1) !important;
   color: black !important;
-  border-radius: 100px !important;
+  border-radius: 20px !important;
   width: 100%;
+  &:hover{
+    background-color: rgb(40, 40, 40) !important;
+    color: white !important;
+  }
 }
 
 .round-shape-button-black{
-  background-color: rgb(62 62 62 / 84%) !important;
-  border: 1px solid black  !important;
+  background-color: rgba(97,97,97, 1) !important;
+  border: 1px solid rgba(51,51,51, 1)  !important;
   color: white !important;
-  border-radius: 100px !important;
+  border-radius: 20px !important;
   width: 100%;
+  &:hover{
+    background-color: rgb(40, 40, 40) !important;
+  }
 }

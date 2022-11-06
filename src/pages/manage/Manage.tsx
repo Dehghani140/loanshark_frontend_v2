@@ -2,27 +2,159 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 // import { NavLink } from "react-router-dom"
 import { Grid, TextField, Button } from '@mui/material';
-import { Doughnut, Bar } from 'react-chartjs-2';
+import Chart from 'react-apexcharts'
 import { faker } from '@faker-js/faker';
 import Card from './Card/Card'
 import NoBorderCard from './Card/NoBorderCard'
 import RectangleShapeButton from '../../components/Button/RectangleShapeButton/RectangleShapeButton'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
-// import { Row, Col, Table, Button, Modal, ModalBody } from 'reactstrap';
-// import { ThemeProvider, createGlobalStyle } from 'styled-components'
-// import {
-// 	Title
-// } from './TestExpport'
-// import { toggleLoading } from "../../actions/navigation";
-// import API from '../../utils/API'
-// import Widget from "../../components/Widget";
-// import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
-// import Widget from '../../components/Widget/Widget'
-// import './Dashboard.scss'
-// import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
-// import { Value } from "sass";
+import { element } from "prop-types";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import '../../App.scss'	
 
-const labels = ['ETH', 'BTC'];
+const options = {
+	chart: {
+		id: 'apexchart-example',
+		width:'70%'
+	},
+	grid:{
+		show: false,
+	},
+	plotOptions: {
+		bar: {
+			horizontal: true,
+			columnWidth: '30%',
+			barHeight: '30%',
+				// dataLabels: {
+				// 	position: 'top',
+				// 	maxItems: 100,
+				// 	hideOverflowingLabels: true,
+				// 	// orientation: horizontal,
+				// 	total: {
+				// 	  enabled: false,
+				// 	  formatter: undefined,
+				// 	  offsetX: 0,
+				// 	  offsetY: 0,
+				// 	  style: {
+				// 		color: '#373d3f',
+				// 		fontSize: '12px',
+				// 		fontFamily: undefined,
+				// 		fontWeight: 600
+				// 	  }
+				// 	}
+				// }
+		}
+	},
+	xaxis: {
+		categories: ["ETH", "BTC"],
+		labels: {
+			show: true,
+			// rotate: -45,
+			// rotateAlways: false,
+			// hideOverlappingLabels: true,
+			// showDuplicates: false,
+			// trim: false,
+			// minHeight: undefined,
+			maxHeight: 100,
+			style: {
+				// colors: [],
+				fontSize: '12px',
+				fontFamily: 'Helvetica, Arial, sans-serif',
+				fontWeight: 400,
+				// cssClass: 'apexcharts-xaxis-label',
+			},
+			// axisBorder: {
+			// 	show: false,
+			// 	color: '#78909C',
+			// 	height: 1,
+			// 	width: '100%',
+			// 	offsetX: 0,
+			// 	offsetY: 0
+			// },
+			// axisTicks: {
+			// 	show: false,
+			// 	borderType: 'solid',
+			// 	color: '#78909C',
+			// 	height: 6,
+			// 	offsetX: 0,
+			// 	offsetY: 0
+			// },
+			// offsetX: 0,
+			// offsetY: 0,
+			// format: undefined,
+			// formatter: undefined,
+			// datetimeUTC: true,
+			// datetimeFormatter: {
+			// 	year: 'yyyy',
+			// 	month: "MMM 'yy",
+			// 	day: 'dd MMM',
+			// 	hour: 'HH:mm',
+			// },
+		},
+	},
+	series: [{
+		data: [{
+			x: 'ETH',
+			y: 1500,
+			fillColor: '#8fc1e9',
+    //   strokeColor: '#C23829'
+		}, {
+			x: 'BTC',
+			y: 400,
+			fillColor: '#4dcab6',
+			
+		}]
+	}],
+	tooltip: {
+		enabled: false,
+	}
+	// dataLabels: {
+	// 	enabled: true,
+	// 	// enabledOnSeries: undefined,
+	// 	// formatter: function (val, opts) {
+	// 	// 	return val
+	// 	// },
+	// 	textAnchor: 'middle',
+	// 	distributed: false,
+	// 	offsetX: 0,
+	// 	offsetY: 0,
+	// 	style: {
+	// 		fontSize: '14px',
+	// 		fontFamily: 'Helvetica, Arial, sans-serif',
+	// 		fontWeight: 'bold',
+	// 		// colors: undefined
+	// 	},
+	// 	background: {
+	// 	  enabled: true,
+	// 	  foreColor: '#fff',
+	// 	  padding: 4,
+	// 	  borderRadius: 2,
+	// 	  borderWidth: 1,
+	// 	  borderColor: '#fff',
+	// 	  opacity: 0.9,
+	// 	  dropShadow: {
+	// 		enabled: false,
+	// 		top: 1,
+	// 		left: 1,
+	// 		blur: 1,
+	// 		color: '#000',
+	// 		opacity: 0.45
+	// 	  }
+	// 	},
+	// 	dropShadow: {
+	// 		enabled: false,
+	// 		top: 1,
+	// 		left: 1,
+	// 		blur: 1,
+	// 		color: '#000',
+	// 		opacity: 0.45
+	// 	}
+	//   }
+}
+// const series = [{
+// 	name: 'series-1',
+// 	data: [1500, 400]
+// }]
 
 const lightTheme = {
 	primary: '#fff',
@@ -113,10 +245,10 @@ function Manage() {
 		console.log(`Manage`)
 	}, [])
 
-	console.log(labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })))
 	return (
 		<>
-			<Grid container spacing={3}>
+		<div className={'main-content-layout'}>
+		<Grid container spacing={3}>
 				<Grid item xs={7}>
 					<NoBorderCard>
 						<Grid container>
@@ -395,7 +527,7 @@ function Manage() {
 				<Grid item xs={7}>
 					<Grid container spacing={2}>
 						<Grid item xs={6}>
-						<NoBorderCard>
+							<NoBorderCard>
 								<Grid container spacing={2} >
 									<Grid item xs={12}>
 										<CardTitle title={"Collateral"}></CardTitle>
@@ -531,7 +663,7 @@ function Manage() {
 							</NoBorderCard>
 						</Grid>
 						<Grid item xs={6}>
-						<NoBorderCard>
+							<NoBorderCard>
 								<Grid container spacing={2}>
 									<Grid item xs={12}>
 										<CardTitle title={"Debt"}></CardTitle>
@@ -578,7 +710,7 @@ function Manage() {
 																	backgroundColor: "transparent",
 																}}
 
-														
+
 																value={valueTwo}
 																onChange={(e) => {
 																	setValueTwo(e.target.value)
@@ -707,7 +839,7 @@ function Manage() {
 												fontFamily: "Poppins-Regular",
 												fontSize: "16px",
 												fontWeight: "400",
-											}}>Health Factor </span>											
+											}}>Health Factor </span>
 											<span style={{
 												opacity: "1",
 												color: "#387AFF",
@@ -718,7 +850,15 @@ function Manage() {
 										</div>
 
 									</Grid>
-									<Grid item xs={12} style={{ height: "200px" }}>
+									<Grid item xs={12} 
+									// style={{ height: "200px" }}
+									>
+										<Chart options={options} series={options.series} type="bar" 
+										// width={500} 
+										height={180} 
+										/>
+										{/* <Bar options={options} data={data}>
+										</Bar> */}
 										{/* <Bar
 											// width={10}
 											// height={100}
@@ -834,6 +974,7 @@ function Manage() {
 					</Grid>
 				</Grid>
 			</Grid>
+		</div>
 		</>
 	)
 }
