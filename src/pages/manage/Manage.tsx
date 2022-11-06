@@ -3,20 +3,6 @@ import { connect } from "react-redux";
 // import { NavLink } from "react-router-dom"
 import { Grid, TextField, Button } from '@mui/material';
 import Chart from 'react-apexcharts'
-import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	Title,
-	Tooltip,
-	Legend,
-	BarOptions,
-	BarHoverOptions,
-	ScriptableContext,
-} from 'chart.js';
-
-import { Doughnut, Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import Card from './Card/Card'
 import NoBorderCard from './Card/NoBorderCard'
