@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Dispatch, bindActionCreators } from "redux"
 import { connect, useDispatch, useSelector } from 'react-redux';
-import * as loansharkActionCreators from './action-createors/loanshark';
 import { useRoutes, HashRouter, BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { redirect as Redirect, Router } from 'react-router';
 // import router from 'src/router';
@@ -82,15 +81,6 @@ function LoanSharkDiscord() {
 
 function App(props: any) {
   // const content = useRoutes(router);
-
-  const state = useSelector((state: any) => state.loanshark)
-  const dispatch = useDispatch();
-  const { changeMyAccount } = bindActionCreators(loansharkActionCreators, dispatch)
-
-
-  useEffect(() => {
-    console.log(`updatest store state`, state)
-  }, [state])
 
   return (
     <>

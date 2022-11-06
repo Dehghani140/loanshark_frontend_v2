@@ -2,20 +2,12 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { NavLink, useNavigate  } from "react-router-dom"
 import { Grid } from '@mui/material';
-// import { Row, Col, Table, Button, Modal, ModalBody } from 'reactstrap';
-// import { ThemeProvider, createGlobalStyle } from 'styled-components'
-// import {
-// 	Title
-// } from './TestExpport'
-// import { toggleLoading } from "../../actions/navigation";
-// import API from '../../utils/API'
-// import Widget from "../../components/Widget";
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 import Widget from '../../components/Widget/Widget'
 import './Dashboard.scss'
 import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
-import { Value } from "sass";
 
+import { useAppSelector } from '../../hooks'
 
 const lightTheme = {
 	primary: '#fff',
@@ -28,13 +20,14 @@ const darkTheme = {
 	fontFamily: 'Segoe UI'
 }
 
-
-
 function Dashboard() {
 	let navigate = useNavigate();
 	useEffect(() => {
 		console.log(`Dashboard`)
 	}, [])
+
+	const userDepositBalanceEth = useAppSelector((state) => state.loanshark.userDepositBalanceEth)
+
 	return (
 		<>
 			<div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
@@ -67,7 +60,7 @@ function Dashboard() {
 								<Widget
 									title={"Your Collateral"}
 								>
-									<div>$0.00</div>
+									<div>${userDepositBalanceEth}</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
