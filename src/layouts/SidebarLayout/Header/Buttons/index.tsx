@@ -229,52 +229,6 @@ function HeaderButtons() {
                         icon={faLightbulb} />
                 </Grid>
             </Grid>
-            <Grid container alignItems={"center"} spacing={1}>
-                <Grid item>
-                    <Box sx={{ mr: 1 }}>
-                        <RoundShapeButton
-                            label={"connect wallet"}
-                            onClick={() => {
-                                setModal(!modal)
-                                setModalTitle("Please choose wallet type to connect")
-                                setModalAction("connect_wallet")
-                            }}
-                            color={"white"}
-                        ></RoundShapeButton>
-                    </Box>
-                </Grid>
-                <Grid item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click refresh`)
-                        // this.getNeededCollateralFor("GET_NEW");
-                    }}
-                        icon={faRotateRight} />
-                </Grid>
-
-                <Grid item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click resize`)
-                        // this.handleResize();
-                    }}
-                        icon={faBars} />
-                </Grid>
-
-                <Grid item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click dark light mod`)
-                        // if (this.props.theme === "light") {
-                        //   this.setAppThemeMode("dark")
-                        //   localStorage.setItem("theme", "dark");
-                        // }
-                        // else {
-                        //   this.setAppThemeMode("light")
-                        //   localStorage.setItem("theme", "light");
-                        // }
-                    }}
-                        icon={faLightbulb} />
-                </Grid>
-            </Grid>
-
         </>
     );
 }
