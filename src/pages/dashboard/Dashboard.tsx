@@ -23,6 +23,11 @@ const darkTheme = {
 	fontFamily: 'Segoe UI'
 }
 
+function calculateHealthFactor(depositeAmouont, priceOfDeposite, LTV, debtAmount, priceOfDebt) {
+	if (debtAmount === undefined || debtAmount === null || debtAmount === 0) return "-"
+	return ((depositeAmouont * priceOfDeposite / 100) * LTV / (debtAmount * priceOfDebt / 100)).toFixed(2)
+}
+
 function Dashboard() {
 	let navigate = useNavigate();
 	useEffect(() => {
@@ -94,7 +99,7 @@ function Dashboard() {
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container spacing={2}>
-							<Grid item xs={4}>
+							<Grid hidden={state.userDepositBalanceEth <= 0} item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
 									labelInUSD={`$19,294`}
@@ -104,13 +109,13 @@ function Dashboard() {
 									pair={
 										[
 											{
-												amountInUsdt: 34192.9,
-												amountInCurrency: 30.4,
+												amountInUsdt: (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2),
+												amountInCurrency: state.userDepositBalanceEth,
 												currency: "ETH",
 											},
 											{
-												amountInUsdt: 413401.1,
-												amountInCurrency: 1.87,
+												amountInUsdt: (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2),
+												amountInCurrency: state.userDebtBalanceBtc,
 												currency: "BTC",
 											},
 										]
@@ -119,19 +124,31 @@ function Dashboard() {
 										[
 											{
 												title: "Collateral",
-												value: "$34192.9 / 30.4ETH"
+												value: "$" + (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2) + "/" + state.userDepositBalanceEth + "ETH"
 											},
 											{
 												title: "Debt",
-												value: "$41340.3 / 1.87BTC"
+												value: "$" + (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2) + "/" + state.userDebtBalanceBtc + "ETH"
 											},
 											{
 												title: "APY",
-												value: "20.4%"
+												value: (
+													(
+														0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
+														- state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
+														+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
+													) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
+												).toString() + "%"
 											},
 											{
 												title: "Health Factor",
-												value: "$20"
+												value: calculateHealthFactor(
+													state.userDepositBalanceEth, 
+													state.priceOfEth, 
+													state.LTV["ETHBTC"], 
+													state.userDebtBalanceBtc, 
+													state.priceOfBtc
+												)
 											},
 											{
 												title: "Smart Value",
@@ -150,128 +167,6 @@ function Dashboard() {
 												console.log(`on click manage`)
 												//to manage page
 												navigate("/app/main/manage");
-											}),
-											color: "white"
-										},
-									]}
-								>
-								</DashboardCard>
-							</Grid>
-							<Grid item xs={4}>
-								<DashboardCard
-									label={`ETH/BTC`}
-									labelInUSD={`$19,294`}
-									numberOfAssest={2}
-									assest1Code={`one`}
-									assest2Code={`usdt`}
-									pair={
-										[
-											{
-												amountInUsdt: 34192.9,
-												amountInCurrency: 30.4,
-												currency: "ETH",
-											},
-											{
-												amountInUsdt: 413401.1,
-												amountInCurrency: 1.87,
-												currency: "BTC",
-											},
-										]
-									}
-									detail={
-										[
-											{
-												title: "Collateral",
-												value: "$34192.9 / 30.4ETH"
-											},
-											{
-												title: "Debt",
-												value: "$41340.3 / 1.87BTC"
-											},
-											{
-												title: "APY",
-												value: "20.4%"
-											},
-											{
-												title: "Health Factor",
-												value: "$20"
-											},
-											{
-												title: "Smart Value",
-												value: "$192294"
-											},
-											{
-												title: "Provider",
-												value: "AAVE"
-											},
-										]
-									}
-									button={[
-										{
-											label: "manage",
-											callbackFunction: (() => {
-												console.log(`on click manage`)
-											}),
-											color: "white"
-										},
-									]}
-								>
-								</DashboardCard>
-							</Grid>
-							<Grid item xs={4}>
-								<DashboardCard
-									label={`ETH/BTC`}
-									labelInUSD={`$19,294`}
-									numberOfAssest={2}
-									assest1Code={`one`}
-									assest2Code={`usdt`}
-									pair={
-										[
-											{
-												amountInUsdt: 34192.9,
-												amountInCurrency: 30.4,
-												currency: "ETH",
-											},
-											{
-												amountInUsdt: 413401.1,
-												amountInCurrency: 1.87,
-												currency: "BTC",
-											},
-										]
-									}
-									detail={
-										[
-											{
-												title: "Collateral",
-												value: "$34192.9 / 30.4ETH"
-											},
-											{
-												title: "Debt",
-												value: "$41340.3 / 1.87BTC"
-											},
-											{
-												title: "APY",
-												value: "20.4%"
-											},
-											{
-												title: "Health Factor",
-												value: "$20"
-											},
-											{
-												title: "Smart Value",
-												value: "$192294"
-											},
-											{
-												title: "Provider",
-												value: "AAVE"
-											},
-										]
-									}
-									button={[
-										{
-											label: "manage",
-											callbackFunction: (() => {
-												console.log(`on click manage`)
 											}),
 											color: "white"
 										},
