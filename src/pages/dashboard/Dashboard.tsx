@@ -99,7 +99,9 @@ function Dashboard() {
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container spacing={2}>
-							<Grid hidden={state.userDepositBalanceEth <= 0} item xs={4}>
+							<Grid 
+							// hidden={state.userDepositBalanceEth <= 0} 
+							item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
 									labelInUSD={`$19,294`}
