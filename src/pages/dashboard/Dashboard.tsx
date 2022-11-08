@@ -99,7 +99,7 @@ function Dashboard() {
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container spacing={2}>
-							<Grid hidden={state.userDepositBalanceEth <= 0} item xs={4}>
+							<Grid  hidden={state.userDepositBalanceEth <= 0} item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
 									labelInUSD={`$19,294`}
@@ -162,11 +162,16 @@ function Dashboard() {
 									}
 									button={[
 										{
-											label: "can go manage page",
+											label: "Manage",
 											callbackFunction: (() => {
 												console.log(`on click manage`)
 												//to manage page
-												navigate("/app/main/manage");
+												navigate("/app/main/manage",{
+													state:{
+														assest1Code:"eth",
+														assest2Code:"btc",
+													}
+												});
 											}),
 											color: "white"
 										},
@@ -180,7 +185,7 @@ function Dashboard() {
 						<div style={{ height: "53px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<span className={'card-title'}>My Smart Value Position</span>
+						<span className={'card-title'}>My Smart Vault Position</span>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "29px" }}></div>
@@ -189,17 +194,17 @@ function Dashboard() {
 						<Grid container spacing={2}>
 							<Grid item xs={4}>
 								<DashboardCard
-									label={`BTC`}
+									label={`ETH`}
 									labelInUSD={``}
 									numberOfAssest={1}
-									assest1Code={`btc`}
+									assest1Code={`eth`}
 									assest2Code={``}
 									pair={
 										[
 											{
-												amountInUsdt: 34192.9,
-												amountInCurrency: 30.4,
-												currency: "BTC",
+												amountInUsdt: (stateBackd.myEthLpAmount*(state.priceOfEth/100)).toFixed(6),
+												amountInCurrency: (parseFloat(stateBackd.myEthLpAmount).toFixed(6)),
+												currency: "ETH",
 											},
 										]
 									}
@@ -211,15 +216,15 @@ function Dashboard() {
 											},
 											{
 												title: "Health Factor",
-												value: "20"
+												value: "20 (hard)"
 											},
 											{
 												title: "Liquidation",
-												value: "1.1"
+												value: "1.1 (hard)"
 											},
 											{
 												title: "Single Top-up",
-												value: "0.4392BTC"
+												value: "0.4392BTC (hard)"
 											},
 										]
 									}
@@ -254,7 +259,6 @@ function Dashboard() {
 					</Grid>
 				</Grid>
 			</div>
-
 		</>
 	)
 }
