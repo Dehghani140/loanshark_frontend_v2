@@ -297,17 +297,7 @@ function Borrow() {
 														{["25%", "50%", "75%", "90%"].map((item) => {
 															return (
 																<Grid item key={item}>
-																	<button style={{
-																		borderRadius: "6px",
-																		border: "1px solid white",
-																		backgroundColor: "rgba(255,255,255, 1)",
-																		padding: "2px 5px",
-																		color: "black",
-																		fontFamily: "Poppins-Regular",
-																		fontSize: "14px",
-																		fontWeight: "400",
-																	}}
-																	>{item}</button>
+																	<BorrwoingPowerButton label={item}></BorrwoingPowerButton>
 																</Grid>
 															)
 														})}

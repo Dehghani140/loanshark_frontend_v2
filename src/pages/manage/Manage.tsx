@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 // import { NavLink } from "react-router-dom"
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Grid, TextField, Button } from '@mui/material';
 import Chart from 'react-apexcharts'
 import { faker } from '@faker-js/faker';
@@ -12,6 +13,10 @@ import { element } from "prop-types";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import '../../App.scss'
 import './Manage.scss'
+
+import { useAppSelector } from '../../hooks'
+
+
 
 const options = {
 	chart: {
@@ -40,6 +45,9 @@ const options = {
 			},
 		},
 	},
+	tooltip: {
+		enabled: false,
+	},
 	series: [{
 		data: [{
 			x: 'ETH',
@@ -53,9 +61,6 @@ const options = {
 
 		}]
 	}],
-	tooltip: {
-		enabled: false,
-	}
 }
 
 
@@ -156,12 +161,85 @@ function CardTitle(props: CardTitleProps) {
 
 
 function Manage() {
+	let navigate = useNavigate();
+	let location: any = useLocation();
+
+	const stateLoanshark = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
+
 	const [value, setValue] = useState("0.00")
 	const [valueTwo, setValueTwo] = useState("0.00")
+
+	const [assest1Code, setAssest1Code] = useState(null)
+	const [assest2Code, setAssest2Code] = useState(null)
+	// series: [{
+	// 	data: [{
+	// 		x: 'ETH',
+	// 		y: 1500,
+	// 		fillColor: '#72BFFC',
+	// 		//   strokeColor: '#C23829'
+	// 	}, {
+	// 		x: 'BTC',
+	// 		y: 400,
+	// 		fillColor: '#5EC7B6',
+
+	// 	}]
+	// }],
+	const [barData, setBarData] = useState(null)
 	useEffect(() => {
-		console.log(`Manage`)
+		if (((location?.state?.assest1Code ?? "") === "") || ((location?.state?.assest2Code ?? "") === "")) {
+			navigate("/");
+		}
+		setAssest1Code(location.state.assest1Code)
+		setAssest2Code(location.state.assest2Code)
+		setBarData(
+			[{
+				data: [
+					{
+						x: 'ETH',
+						y: (((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit)) * stateLoanshark.priceOfEth / 100).toFixed(2)),
+						fillColor: '#72BFFC',
+					},
+					{
+						x: 'BTC',
+						y: (((Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept)) * stateLoanshark.priceOfBtc / 100).toFixed(2)),
+						fillColor: '#5EC7B6',
+					}
+				]
+			}]
+		)
 	}, [])
 
+
+	const openBarchart = useMemo(() => {
+		if (barData === undefined || barData === null) return false
+		if (barData.length > 0) return true
+		return false
+	}, [barData])
+
+	console.log(barData)
+	console.log(options.series)
+
+
+	const maxBorrowPower = useMemo(() => {
+		return (
+			stateLoanshark.inputEthDeposit
+			* stateLoanshark.priceOfEth
+			* stateLoanshark.LTV[stateLoanshark.selectedPair]
+			* stateLoanshark.liquidationPrice[stateLoanshark.selectedPair]
+			/ stateLoanshark.priceOfBtc
+		).toFixed(2);
+	}, [stateLoanshark])
+
+	const liquidationPrice = useMemo(()=>{
+		return (
+			(Number(stateLoanshark.inputBtcDept) + Number(stateLoanshark.userDebtBalanceBtc))
+			* (stateLoanshark.priceOfBtc) / 100
+			/ (Number(stateLoanshark.inputEthDeposit) + Number(stateLoanshark.userDepositBalanceEth))
+			/ stateLoanshark.LTV[stateLoanshark.selectedPair]
+		).toFixed(2)
+	}, [stateLoanshark])
+	
 	return (
 		<>
 			<div className={'main-content-layout'}>
@@ -265,7 +343,8 @@ function Manage() {
 															<span>Collateral:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>$34192.9 / 30.4ETH</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)} / ${Number(stateLoanshark.userDepositBalanceEth).toFixed(2)}ETH`}</span>
+															{/* <span>{`$${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)}`}</span> */}
 														</Grid>
 													</Grid>
 												</div>
@@ -277,7 +356,7 @@ function Manage() {
 															<span>Health Factor:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>20</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>20 (hard)</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -289,7 +368,8 @@ function Manage() {
 															<span>Debt:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>$41340.1/1.87BTC</span>
+															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$41340.1/1.87BTC</span> */}
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`${(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)} / ${stateLoanshark.userDebtBalanceBtc} ${assest2Code}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -301,7 +381,8 @@ function Manage() {
 															<span>Smart Value:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span>
+															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span> */}
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100).toFixed(2)}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -313,7 +394,7 @@ function Manage() {
 															<span>APY:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>20.4%</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>20.4% (hard)</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -325,7 +406,7 @@ function Manage() {
 															<span>Provider:</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>AAVE</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>AAVE (hard)</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -366,7 +447,7 @@ function Manage() {
 																	fontWeight: "700",
 																	color: "#333333",
 																}}
-																value={"1231312"}
+																value={Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8)}
 																disabled={true}
 																onChange={(e) => {
 																	setValue(e.target.value)
@@ -402,15 +483,15 @@ function Manage() {
 									{[
 										{
 											title: "Trigger Health Factor:",
-											value: "1.2",
+											value: parseFloat(window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether')),
 										},
 										{
 											title: "Repay amount each time:",
-											value: "0.01",
+											value: Number(stateBackd.myProtection[5] / 0.9999 / 100000000),
 										},
 										{
 											title: "Remaining prepaid gas free:",
-											value: "0.1",
+											value: parseFloat(stateBackd.myGasBankBalance),
 										},
 									].map((item) => {
 										return (
@@ -781,7 +862,9 @@ function Manage() {
 
 											</Grid>
 											<Grid item xs={12}>
-												<Chart options={options} series={options.series} type="bar" height={180} />
+												{openBarchart === true &&
+													<Chart options={options} series={barData} type="bar" height={180} />
+												}
 											</Grid>
 										</Grid>
 									</NoBorderCard>
@@ -792,32 +875,32 @@ function Manage() {
 									<Grid container>
 										{[{
 											title: "Current Price of ETH:",
-											value: "$1031",
+											value: stateLoanshark.priceOfEth / 100,
 											textColor: "black",
 										},
 										{
 											title: "Current Price of BTC:",
-											value: "$19224",
+											value: stateLoanshark.priceOfBtc / 100,
 											textColor: "black",
 										},
 										{
 											title: "LTV:",
-											value: "14%",
+											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * stateLoanshark.liquidationPrice[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
 											title: "Max Borrow Power:",
-											value: "13.45",
+											value: `${maxBorrowPower} BTC`,
 											textColor: "black",
 										},
 										{
 											title: "Liquidity Threshold:",
-											value: "20.534%",
+											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
 											title: "Liquidation Price of ETH:",
-											value: "$350",
+											value: liquidationPrice,
 											textColor: "blue",
 										},
 										].map((item, index) => {

@@ -32,7 +32,8 @@ function getIcon(numberOfAssest, assest1Code, assest2Code, label) {
                 <Grid item>
                     {numberOfAssest === 1 &&
                         <div style={{ position: "relative", minWidth: "60px" }}>
-                            <img style={{ width: "30px", height: "30px" }} src={`/assets/icon/${assest1Code}-logo.svg`} alt=""></img>
+                            {/* <img style={{ width: "30px", height: "30px" }} src={`/assets/icon/crypto/color/${assest1Code}-logo.svg`} alt=""></img> */}
+                            <img style={{ width: "30px", height: "30px" }} src={`/assets/icon/crypto/color/${assest1Code}.svg`} alt=""></img>
                         </div>
                     }
                     {numberOfAssest === 2 &&
@@ -45,7 +46,7 @@ function getIcon(numberOfAssest, assest1Code, assest2Code, label) {
                                     left: "20px",
                                     top: "10px",
                                 }} src={`/assets/icon/${assest2Code}-logo.svg`} alt=""></img>
-                            <img style={{ width: "30px", height: "30px" }} src={`/assets/icon/${assest1Code}-logo.svg`} alt=""></img>
+                            <img style={{ width: "30px", height: "30px" }} src={`/assets/icon/crypto/color/${assest1Code}.svg`} alt=""></img>
                         </div>
                     }
                 </Grid>

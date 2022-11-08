@@ -187,15 +187,23 @@ function HeaderButtons() {
             <Grid container alignItems={"center"} spacing={1}>
                 <Grid item>
                     <Box sx={{ mr: 1 }}>
-                        {state.myAccount ? <div> {state.myAccount}  <RoundShapeButton
-                            label={"disconnect wallet"}
-                            onClick={() => {
-                                localStorage.setItem("isWalletConnected", "false")
-                                clearAccount()
-                            }}
-                            color={"white"}
-                        ></RoundShapeButton>
-                        </div> :
+                        {state.myAccount ?
+                            <Grid container alignItems={'center'} spacing={1}>
+                                <Grid item>
+                                    {state.myAccount}
+                                </Grid>
+                                <Grid item>
+                                    <RoundShapeButton
+                                        label={"disconnect wallet"}
+                                        onClick={() => {
+                                            localStorage.setItem("isWalletConnected", "false")
+                                            clearAccount()
+                                        }}
+                                        color={"white"}
+                                    ></RoundShapeButton>
+                                </Grid>
+                            </Grid>
+                            :
                             <RoundShapeButton
                                 label={"connect wallet"}
                                 onClick={() => {
