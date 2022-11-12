@@ -14,7 +14,16 @@ import { faL } from "@fortawesome/free-solid-svg-icons";
 import '../../App.scss'
 import './Manage.scss'
 
-import { useAppSelector } from '../../hooks'
+import { useAppSelector, useAppDispatch } from '../../hooks'
+import {
+	changeMyAccount,
+	changeInputEthDeposit,
+	changeInputBtcDebt,
+} from '../../slice/loansharkSlice';
+import {
+	roundDown
+} from '../../utils/utilFunction/utilFunction'
+import CustDialog from "src/components/Dialog/CustDialog";
 
 
 
@@ -82,58 +91,35 @@ interface SelectionButtonProps {
 	label: string;
 	isLeft: boolean;
 	onClick: any;
+	select: boolean;
 }
 function SelectionButton(props: SelectionButtonProps) {
 	if (props.isLeft === true) {
 		return (
 			<Button
-				className={`collateral-debt-title-button-white`}
-				// style={{
-				// 	borderRadius: "6px 0px 0px 6px",
-				// 	border: "1px solid rgba(51,51,51, 1)",
-				// 	backgroundColor: "rgba(255,255,255, 1)",
-				// 	width: "100%",
-				// }}
+				className={`collateral-debt-title-button-left ${props.select === true ? "select" : "not-select"}`}
 				onClick={props.onClick}
 			>
-				<span
-					// style={{
-					// 	color: "rgba(51, 51, 51, 1)",
-					// 	fontSize: "16px",
-					// 	fontWeight: "600",
-					// }}
-					className={`collateral-debt-title-button-white__label`}
-				>
+				<span className={`${props.select === true ? "select__label" : "not-select__label"}`}>
 					{props.label}
 				</span>
 			</Button>
 		)
-	} else {
+	}
+	else {
 		return (
 			<Button
-				className={`collateral-debt-title-button-black`}
-				// style={{
-				// 	borderRadius: "0px 6px 6px 0px",
-				// 	border: "1px solid rgba(51,51,51, 1)",
-				// 	backgroundColor: "rgba(51,51,51, 1)",
-				// 	width: "100%",
-				// }}
+				className={`collateral-debt-title-button-right ${props.select === true ? "select" : "not-select"}`}
 				onClick={props.onClick}
 			>
 				<span
-					// style={{
-					// 	color: "rgba(255,255,255,1)",
-					// 	fontSize: "16px",
-					// 	fontWeight: "600",
-					// }}
-					className={`collateral-debt-title-button-black__label`}
+					className={`${props.select === true ? "select__label" : "not-select__label"}`}
 				>
 					{props.label}
 				</span>
 			</Button>
 		)
 	}
-
 }
 
 // function collateralDebit
@@ -142,27 +128,31 @@ interface CardTitleProps {
 }
 function CardTitle(props: CardTitleProps) {
 	return (
-		<div
-		// style={{
-		// 	paddingTop: "12px",
-		// 	paddingBottom: "12px",
-		// }}
-		>
+		<div>
 			<span className={`card-title`}
-			// style={{
-			// 	color: "rgba(38,38,38,1)",
-			// 	fontSize: "21px",
-			// 	fontWeight: "600",
-			// }}
 			>{props.title}</span>
 		</div>
 	)
 }
 
+export enum ICollateral {
+	DEPOSIT = "deposit",
+	WITHDRAW = "withdraw",
+}
+
+export enum IDebt {
+	BORROW = "borrow",
+	PAYBACK = "payback",
+}
 
 function Manage() {
 	let navigate = useNavigate();
 	let location: any = useLocation();
+	const dispatch = useAppDispatch();
+
+	// let tempPari = this.props.location.state.pair.split("_")
+	let deposit = 'ETH'
+	let debt = "BTC"
 
 	const stateLoanshark = useAppSelector((state) => state.loanshark)
 	const stateBackd = useAppSelector((state) => state.backd)
@@ -172,20 +162,16 @@ function Manage() {
 
 	const [assest1Code, setAssest1Code] = useState(null)
 	const [assest2Code, setAssest2Code] = useState(null)
-	// series: [{
-	// 	data: [{
-	// 		x: 'ETH',
-	// 		y: 1500,
-	// 		fillColor: '#72BFFC',
-	// 		//   strokeColor: '#C23829'
-	// 	}, {
-	// 		x: 'BTC',
-	// 		y: 400,
-	// 		fillColor: '#5EC7B6',
-
-	// 	}]
-	// }],
 	const [barData, setBarData] = useState(null)
+
+	const [collateralSelection, setCollateralSelection] = useState<ICollateral | null>(ICollateral.DEPOSIT)
+	const [collateralAmount, setCollateralAmount] = useState<number>(0)
+	const [maxdepositAmount, setMaxdepositAmount] = useState<number>(0)
+
+	const [debtSelection, setDebtSelection] = useState<IDebt | null>(IDebt.BORROW)
+	const [debtAmount, setDebtAmount] = useState<number>(0)
+	const [maxdebtAmount, setMaxdebtAmount] = useState<number>(0)
+
 	useEffect(() => {
 		if (((location?.state?.assest1Code ?? "") === "") || ((location?.state?.assest2Code ?? "") === "")) {
 			navigate("/");
@@ -208,6 +194,10 @@ function Manage() {
 				]
 			}]
 		)
+
+		setMaxdepositAmount(Number(stateLoanshark.myETHAmount))
+		// depositAmount: 0,
+
 	}, [])
 
 
@@ -220,6 +210,10 @@ function Manage() {
 	console.log(barData)
 	console.log(options.series)
 
+	// const collateralSelectionActionButton = useMemo(()=>{
+	// 	if(collateralSelection===) return "Deposit"
+	// },[collateralSelection])
+
 
 	const maxBorrowPower = useMemo(() => {
 		return (
@@ -231,7 +225,7 @@ function Manage() {
 		).toFixed(2);
 	}, [stateLoanshark])
 
-	const liquidationPrice = useMemo(()=>{
+	const liquidationPrice = useMemo(() => {
 		return (
 			(Number(stateLoanshark.inputBtcDept) + Number(stateLoanshark.userDebtBalanceBtc))
 			* (stateLoanshark.priceOfBtc) / 100
@@ -239,9 +233,33 @@ function Manage() {
 			/ stateLoanshark.LTV[stateLoanshark.selectedPair]
 		).toFixed(2)
 	}, [stateLoanshark])
-	
+
+	function calculateHealthFactor(depositAmouont, priceOfdeposit, LTV, debtAmount, priceOfDebt): number {
+		// if (debtAmount === undefined || debtAmount === null || debtAmount === 0) return "-"
+		if (debtAmount === undefined || debtAmount === null || debtAmount === 0) return 0
+		return Number(((depositAmouont * priceOfdeposit / 100) * LTV / (debtAmount * priceOfDebt / 100)).toFixed(2))
+	}
+
+	// toggleNoAction(inputModalToken, inputModalAction, inputModalMessage, pair) {
+	//     this.setState({
+	//         modal: !this.state.modal,
+	//         modalTitle: inputModalAction,
+	//         modalMessage: inputModalMessage,
+	//         modalToken: inputModalToken,
+	//         modalAction: inputModalAction,
+	//         modalInputValue: this.state.debtAmount,
+	//         modalCall: null
+	//     });
+	// }
+
 	return (
 		<>
+		{/* <CustDialog
+		open={true}
+		title={`hello world`}
+		>	
+		<div>this is sentence</div>
+		</CustDialog> */}
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
 					<Grid item xs={7}>
@@ -542,7 +560,13 @@ function Manage() {
 															<SelectionButton
 																label={"Deposit"}
 																isLeft={true}
-																onClick={() => { }}
+																select={collateralSelection === ICollateral.DEPOSIT}
+																onClick={() => {
+																	if (collateralSelection === ICollateral.DEPOSIT) return
+																	setCollateralSelection(ICollateral.DEPOSIT)
+																	setCollateralAmount(0)
+																	setMaxdepositAmount(Number(stateLoanshark.myETHAmount))
+																}}
 															></SelectionButton>
 														</div>
 
@@ -552,7 +576,13 @@ function Manage() {
 															<SelectionButton
 																label={"Withdraw"}
 																isLeft={false}
-																onClick={() => { }}
+																select={collateralSelection === ICollateral.WITHDRAW}
+																onClick={() => {
+																	if (collateralSelection === ICollateral.WITHDRAW) return
+																	setCollateralSelection(ICollateral.WITHDRAW)
+																	setCollateralAmount(0)
+																	setMaxdepositAmount(Number(stateLoanshark.userDepositBalanceEth))
+																}}
 															></SelectionButton>
 														</div>
 													</Grid>
@@ -581,9 +611,10 @@ function Manage() {
 																			border: "0px",
 																			backgroundColor: "transparent",
 																		}}
-																		value={value}
-																		onChange={(e) => {
-																			setValue(e.target.value)
+																		value={collateralAmount.toFixed(2)}
+																		onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+																			setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																			dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
 																		}}
 																	></input>
 																</Grid>
@@ -595,15 +626,12 @@ function Manage() {
 																				textAlign: "end",
 																			}}>
 																				<span>Balance: </span>
-																				<span style={{ fontWeight: "800" }}>30.4ETH</span>
+																				<span style={{ fontWeight: "800" }}>{`${maxdepositAmount.toFixed(2)} ETH`}</span>
 																			</div>
 
 																		</Grid>
 																		<Grid item xs={12}>
-																			<Grid container justifyContent={'end'} alignItems={'center'}
-																			// spacing={2}
-																			>
-
+																			<Grid container justifyContent={'end'} alignItems={'center'}>
 																				<Grid item>
 																					<div style={{ paddingRight: "5px" }}>
 																						<Button style={{
@@ -613,6 +641,11 @@ function Manage() {
 																							border: "1px solid black",
 																							padding: "0px",
 																						}}
+																							onClick={(e: any) => {
+																								let finalAmount = roundDown(maxdepositAmount * 100 / 100, 18)
+																								setCollateralAmount(finalAmount)
+																								dispatch(changeInputEthDeposit(finalAmount * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)))
+																							}}
 																						>MAX</Button>
 																					</div>
 																				</Grid>
@@ -665,9 +698,92 @@ function Manage() {
 											</Grid>
 											<Grid item xs={12}>
 												<RoundShapeButton
-													label={"deposit"}
-													onClick={() => { }}
+													label={collateralSelection}
 													color={"white"}
+													onClick={() => {
+														let newHealthFactor = calculateHealthFactor(
+															Number(stateLoanshark.userDepositBalanceEth) - Number(collateralAmount),
+															stateLoanshark.priceOfEth,
+															stateLoanshark.LTV["ETHBTC"],
+															stateLoanshark.userDebtBalanceBtc,
+															stateLoanshark.priceOfBtc);
+														// if (collateralSelection === ICollateral.DEPOSIT) {
+														// 	if (collateralAmount <= 0 || isNaN(collateralAmount)) {
+														// 		//popup
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to deposit',
+														// 			'Please enter the amount that you want to deposit.',
+														// 			deposit + debt
+														// 		)
+														// 	} else if (Number(collateralAmount) > Number(stateLoanshark.myETHAmount)) {
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to deposit',
+														// 			'You do not have enough ETH to deposit.',
+														// 			deposit + debt
+														// 		)
+														// 	} else if (newHealthFactor < 1.06) {
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to deposit',
+														// 			'You are unable to deposit <span class="fw-bold">' +
+														// 			collateralAmount + ' ' + deposit +
+														// 			' (~$' +
+														// 			Number(collateralAmount * stateLoanshark.priceOfEth / 100).toFixed(2) +
+														// 			')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+														// 			deposit + debt
+														// 		)
+														// 	} else {
+														// 		this.toggleDeposit(
+														// 			deposit,
+														// 			'Confirm to deposit?',
+														// 			'You are depositing <span class="fw-bold">' +
+														// 			collateralAmount + ' ' + deposit +
+														// 			' (~$' +
+														// 			Number(collateralAmount * stateLoanshark.priceOfEth / 100).toFixed(2) +
+														// 			')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+														// 			deposit + debt)
+														// 	}
+														// } else if (collateralSelection === ICollateral.WITHDRAW) {
+														// 	if (collateralAmount <= 0 || isNaN(collateralAmount)) {
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to withdraw',
+														// 			'Please enter the amount that you want to withdraw.',
+														// 			deposit + debt
+														// 		)
+														// 	} else if (collateralAmount > maxdepositAmount) {
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to withdraw',
+														// 			'You do not have so much ETH to withdraw.',
+														// 			deposit + debt
+														// 		)
+														// 	} else if (newHealthFactor < 1.06) {
+														// 		this.toggleNoAction(
+														// 			deposit,
+														// 			'Unable to withdraw',
+														// 			'You are unable to withdraw <span class="fw-bold">' +
+														// 			collateralAmount + ' ' + deposit +
+														// 			' (~$' +
+														// 			Number(collateralAmount * stateLoanshark.priceOfEth / 100).toFixed(2) +
+														// 			')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+														// 			deposit + debt
+														// 		)
+														// 	} else {
+														// 		this.toggleWithdrawn(
+														// 			deposit,
+														// 			'Confirm to withdraw?',
+														// 			'You are withdrawing <span class="fw-bold">' +
+														// 			collateralAmount + ' ' + deposit +
+														// 			' (~$' +
+														// 			Number(collateralAmount * stateLoanshark.priceOfEth / 100).toFixed(2) +
+														// 			')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+														// 			deposit + debt)
+														// 	}
+														// }
+													}}
 												></RoundShapeButton>
 											</Grid>
 										</Grid>
@@ -688,7 +804,18 @@ function Manage() {
 															<SelectionButton
 																label={"Borrow"}
 																isLeft={true}
-																onClick={() => { }}
+																select={debtSelection === IDebt.BORROW}
+																onClick={() => {
+																	setDebtSelection(IDebt.BORROW)
+																	console.log(stateLoanshark.userDepositBalanceEth)
+																	let borrowPower = stateLoanshark.userDepositBalanceEth;
+																	borrowPower = borrowPower * stateLoanshark.priceOfEth;
+																	borrowPower = borrowPower * stateLoanshark.LTV[stateLoanshark.selectedPair];
+																	borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
+																	borrowPower = borrowPower / stateLoanshark.priceOfBtc;
+																	borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
+																	setMaxdebtAmount(Number(borrowPower.toFixed(8)));
+																}}
 															></SelectionButton>
 														</div>
 													</Grid>
@@ -697,7 +824,11 @@ function Manage() {
 															<SelectionButton
 																label={"Payback"}
 																isLeft={false}
-																onClick={() => { }}
+																select={debtSelection === IDebt.PAYBACK}
+																onClick={() => {
+																	setDebtSelection(IDebt.PAYBACK)
+																	setMaxdebtAmount(Number(stateLoanshark.userDebtBalanceBtc.toFixed(8)));
+																}}
 															></SelectionButton>
 														</div>
 													</Grid>
@@ -726,11 +857,10 @@ function Manage() {
 																			border: "0px",
 																			backgroundColor: "transparent",
 																		}}
-
-
-																		value={valueTwo}
+																		value={debtAmount.toFixed(2)}
 																		onChange={(e) => {
-																			setValueTwo(e.target.value)
+																			setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																			dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
 																		}}
 																	></input>
 																</Grid>
@@ -742,14 +872,13 @@ function Manage() {
 																				textAlign: "end",
 																			}}>
 																				<span>Balance: </span>
-																				<span style={{ fontWeight: "800" }}>1.87 BTC</span>
+																				<span style={{ fontWeight: "800" }}>{`${maxdebtAmount.toFixed(2)} BTC`}</span>
 																			</div>
 																		</Grid>
 																		<Grid item xs={12}>
 																			<Grid container justifyContent={'end'} alignItems={'center'}>
 																				<Grid item>
 																					<div style={{ paddingRight: "5px" }}>
-
 																						<Button style={{
 																							backgroundColor: "white",
 																							color: "black",
@@ -757,6 +886,7 @@ function Manage() {
 																							border: "1px solid black",
 																							padding: "0px",
 																						}}
+																							onClick={() => { setDebtAmount(maxdebtAmount) }}
 																						>MAX</Button>
 																					</div>
 																				</Grid>
@@ -801,13 +931,28 @@ function Manage() {
 											<Grid item xs={12}>
 												<Grid container justifyContent={'space-between'}>
 													<Grid item>
-														<span>Borrowing Power:</span>
+														<span>{debtSelection === IDebt.BORROW ? "Borrowing Power:" : "Payback Percentage"}</span>
 													</Grid>
 													<Grid item>
-														<Grid container spacing={1}>
-															{["25%", "50%", "75%", "90%"].map((item) => {
+														<Grid container >
+															{[{
+																value: 25,
+																name: "25%",
+															},
+															{
+																value: 50,
+																name: "50%",
+															},
+															{
+																value: 75,
+																name: "75%",
+															},
+															{
+																value: 90,
+																name: "90%",
+															},].map((item) => {
 																return (
-																	<Grid item key={item}>
+																	<Grid item key={item.value}>
 																		<button style={{
 																			borderRadius: "6px",
 																			border: "1px solid white",
@@ -818,7 +963,13 @@ function Manage() {
 																			fontSize: "14px",
 																			fontWeight: "400",
 																		}}
-																		>{item}</button>
+																			value={item.value}
+																			onClick={(e: any) => {
+																				let finalAmount = roundDown(maxdebtAmount * e.target.value / 100, 8)
+																				setDebtAmount(finalAmount)
+																				dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
+																			}}
+																		>{item.name}</button>
 																	</Grid>
 																)
 															})}
@@ -828,9 +979,96 @@ function Manage() {
 											</Grid>
 											<Grid item xs={12}>
 												<RoundShapeButton
-													label={"BORROW"}
-													onClick={() => { }}
+													label={debtSelection}
 													color={"white"}
+													onClick={() => { }}
+												// onClick={() => {
+
+												// 	if (debtSelection === IDebt.BORROW) {
+												// 		let newHealthFactor =
+												// 		this.calculateHealthFactor(
+												// 			parseFloat(this.props.userDepositBalanceEth),
+												// 			this.props.priceOfEth,
+												// 			this.props.LTV["ETHBTC"],
+												// 			parseFloat(this.props.userDebtBalanceBtc) + parseFloat(this.state.debtAmount),
+												// 			this.props.priceOfBtc);
+												// 	if (Number(this.state.debtAmount) <= 0 || isNaN(this.state.debtAmount)) {
+												// 		this.toggleNoAction(
+												// 			deposit,
+												// 			'Unable to borrow',
+												// 			'Please enter the amount that you want to borrow.',
+												// 			deposit + debt
+												// 		)
+												// 	} else if (Number(newHealthFactor) < 1.06) {
+												// 		this.toggleNoAction(
+												// 			deposit,
+												// 			'Unable to borrow',
+												// 			'You are unable to borrow <span class="fw-bold">' +
+												// 			this.state.debtAmount + ' ' + debt +
+												// 			' (~$' +
+												// 			Number(this.state.debtAmount * this.props.priceOfBtc / 100).toFixed(2) +
+												// 			')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+												// 			deposit + debt
+												// 		)
+												// 	} else {
+												// 		this.toggleBorrow(
+												// 			deposit,
+												// 			'Confirm to borrow?',
+												// 			'You are borrowing <span class="fw-bold">' +
+												// 			this.state.debtAmount + ' ' + debt +
+												// 			' (~$' +
+												// 			Number(this.state.debtAmount * this.props.priceOfBtc / 100).toFixed(2) +
+												// 			')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+												// 			deposit + debt
+												// 		)
+												// 	}
+												// 	}else if(debtSelection === IDebt.PAYBACK) {
+												// 		let newHealthFactor =
+												// 		this.calculateHealthFactor(
+												// 			parseFloat(this.props.userDepositBalanceEth),
+												// 			this.props.priceOfEth,
+												// 			this.props.LTV["ETHBTC"],
+												// 			parseFloat(this.props.userDebtBalanceBtc) - parseFloat(this.state.debtAmount),
+												// 			this.props.priceOfBtc);
+												// 	if (Number(this.state.debtAmount) <= 0 || isNaN(this.state.debtAmount)) {
+												// 		this.toggleNoAction(
+												// 			deposit,
+												// 			'Unable to payback',
+												// 			'Please enter the amount that you want to payback.',
+												// 			deposit + debt
+												// 		)
+												// 	} else if (Number(this.state.debtAmount) > (this.props.myBTCAmount)) {
+												// 		this.toggleNoAction(
+												// 			deposit,
+												// 			'Unable to payback',
+												// 			'You do not have enough BTC to payback.',
+												// 			deposit + debt
+												// 		)
+												// 	} else if (Number(newHealthFactor) < 1.06) {
+												// 		this.toggleNoAction(
+												// 			deposit,
+												// 			'Unable to payback',
+												// 			'You are unable to payback <span class="fw-bold">' +
+												// 			this.state.debtAmount + ' ' + debt +
+												// 			' (~$' +
+												// 			Number(this.state.debtAmount * this.props.priceOfBtc / 100).toFixed(2) +
+												// 			')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+												// 			deposit + debt
+												// 		)
+
+												// 	} else {
+												// 		this.togglePayback(
+												// 			deposit,
+												// 			'Confirm to payback?',
+												// 			'You are paying back <span class="fw-bold">' +
+												// 			this.state.debtAmount + ' ' + debt +
+												// 			' (~$' +
+												// 			Number(this.state.debtAmount * this.props.priceOfBtc / 100).toFixed(2) +
+												// 			')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+												// 			deposit + debt)
+												// 	}
+												// 	}
+												// }}
 												></RoundShapeButton>
 											</Grid>
 										</Grid>
