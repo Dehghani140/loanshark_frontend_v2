@@ -325,28 +325,32 @@
   height: 35px;
 }
 
-.collateral-debt-title-button-white {
+.collateral-debt-title-button-left {
   border-radius: 6px 0px 0px 6px !important;
   border: 1px solid rgba(51, 51, 51, 1) !important;
-  background-color: rgba(255, 255, 255, 1) !important;
   width: 100%;
   height: 100%;
+}
 
-  &__label {
+.collateral-debt-title-button-right {
+  border-radius: 0px 6px 6px 0px !important;
+  border: 1px solid rgba(51, 51, 51, 1) !important;
+  width: 100%;
+  height: 100%;
+}
+
+.select{
+  background-color: rgba(255, 255, 255, 1) !important;
+  &__label{
     color: rgba(51, 51, 51, 1);
     font-size: 16px;
     font-weight: 600;
   }
 }
 
-.collateral-debt-title-button-black {
-  border-radius: 0px 6px 6px 0px !important;
-  border: 1px solid rgba(51, 51, 51, 1) !important;
+.not-select{
   background-color: rgba(51, 51, 51, 1) !important;
-  width: 100%;
-  height: 100%;
-
-  &__label {
+  &__label{
     color: rgba(255, 255, 255, 1);
     font-size: 16px;
     font-weight: 600;
