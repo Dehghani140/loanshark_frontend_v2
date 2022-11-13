@@ -9,6 +9,11 @@ import '../../App.scss'
 import './Borrow.scss'
 import BorrwoingPowerButton from "src/components/Button/BorrowingPowerButton/BorrowingPowerButton";
 
+import { useAppSelector, useAppDispatch } from '../../hooks'
+import { toggleLoading } from '../../slice/layoutSlice';
+import CustDialog from "../../components/Dialog/CustDialog";
+import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
+import { refreshPrice } from '../../utils/API'
 
 const options = {
 	chart: {
@@ -70,14 +75,171 @@ const darkTheme = {
 
 
 function Borrow() {
-	const [firstBoxValue, setFirstBoxValue] = useState('0')
-	const [secondBoxValue, setSecondBoxValue] = useState('0')
+	const state = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
+	const dispatch = useAppDispatch();
+	
+	const [modal, setModal] = useState<boolean>(false);
+	const [modalAction, setModalAction] = useState<any>("");
+	const [modalTitle, setModalTitle] = useState<string>("");
+	const [modalMessage, setModalMessage] = useState<string>("");
+	const [modalToken, setModalToken] = useState<string>("");
+	const [modalInputValue, setModalInputValue] = useState<any>("");
+
+	const calculateHealthFactor = (depositAmouont, priceOfDeposite, LTV, debtAmount, priceOfDebt) => {
+		if (debtAmount === undefined || debtAmount === null || debtAmount === 0) {
+			return 0;
+		}
+		return ((depositAmouont * priceOfDeposite / 100) * LTV / (debtAmount * priceOfDebt / 100)).toFixed(2)
+	}
+
+	const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
+		setModal(!modal);
+		setModalToken(inputModalToken);
+		setModalAction("NOACTION");
+		setModalTitle(inputModalTitle);
+		setModalMessage(inputModalMessage);
+		setModalInputValue(0);
+	}
+
+	const toggleAction = (inputModalToken, inputModalAction, inputModalTitle, inputModalMessage, pair, inputValue) => {
+		setModal(!modal);
+		setModalToken(inputModalToken);
+		setModalAction(inputModalAction);
+		setModalTitle(inputModalTitle);
+		setModalMessage(inputModalMessage);
+		setModalInputValue(inputValue);
+	}
+
+	const modalConfirm = (modalAction : string) => {
+		let args = [];
+		let argsUnregister = [];
+		var finalModalInputValue;
+		switch(modalAction) {
+			case "DEPOSITANDBORROW":
+				let approveArgs = [
+					state.myFujiVaultETHBTC.options.address,
+					window.web3.utils.toBN(window.web3.utils.toWei(state.inputEthDeposit, 'ether')).toString()
+				]
+
+				let args = [
+					window.web3.utils.toBN(window.web3.utils.toWei(state.inputEthDeposit, 'ether')).toString(),
+					window.web3.utils.toBN(parseFloat((state.inputBtcDept * 100000000).toFixed(0))).toString()
+				]
+
+				setModal(!modal);
+				dispatch(toggleLoading());
+
+				state.myETHContract.methods
+					.approve(...approveArgs)
+					.send({ from: state.myAccount })
+					.on("error", (error, receipt) => {
+						dispatch(toggleLoading());
+					})
+					.then((receipt) => {
+						state.myFujiVaultETHBTC.methods
+							.depositAndBorrow(...args)
+							.send({ from: state.myAccount })
+							.on("error", (error, receipt) => {
+								dispatch(toggleLoading());
+							})
+							.then((receipt) => {
+								dispatch(toggleLoading());
+								dispatch(changeInputEthDeposit(0));
+								dispatch(changeInputBtcDebt(0));
+
+								refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+							});
+					});
+				break;
+			case "NOACTION": 
+				break;
+			default:
+				break;
+		}
+	}
+
+    const depositWETHAndBorrowWBTC = () => {
+        if (state.myETHContract) {
+            let newHealthFactor =
+                calculateHealthFactor(
+                    Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit),
+                    state.priceOfEth,
+                    state.LTV["ETHBTC"],
+                    Number(state.userDebtBalanceBtc) + Number(state.inputBtcDept),
+                    state.priceOfBtc);
+
+            var modalTitle = '';
+            var modalMessage = '';
+            var error = false;
+            if (state.inputEthDeposit <= 0 || isNaN(state.inputEthDeposit)) {
+                error = true;
+                modalTitle = 'Unable to borrow BTC using ETH as collateral';
+                modalMessage = 'Please enter the amount that you want to deposit.';
+            } else if (state.inputBtcDept <= 0 || isNaN(state.inputBtcDept)) {
+                error = true;
+                modalTitle = 'Unable to borrow BTC using ETH as collateral';
+                modalMessage = 'Please enter the amount that you want to borrow.';
+            } else if (Number(state.inputEthDeposit) > state.myETHAmount) {
+                error = true;
+                modalTitle = 'Unable to borrow BTC using ETH as collateral';
+                modalMessage = 'You do not have enough ETH to deposit.';
+            } else if (newHealthFactor < 1.06) {
+                error = true;
+                modalTitle = 'Unable to borrow BTC using ETH as collateral';
+                modalMessage = 'You are unable to deposit <span class="fw-bold">' +
+					state.inputEthDeposit + ' ETH ' +
+                    ' (~$' +
+                    Number(state.inputEthDeposit * state.priceOfEth / 100).toFixed(2) +
+                    ')</span>. ' +
+                    ' and borrow <span class="fw-bold">' +
+                    state.inputBtcDept + ' BTC ' +
+                    ' (~$' +
+                    Number(state.inputBtcDept * state.priceOfBtc / 100).toFixed(2) +
+                    ')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05';
+            } else {
+                modalTitle = 'Confirm to borrow BTC using ETH as collateral?';
+                modalMessage = 'You are depositing <span class="fw-bold">' +
+					state.inputEthDeposit + ' ETH ' +
+                    ' (~$' +
+                    Number(state.inputEthDeposit * state.priceOfEth / 100).toFixed(2) +
+                    ')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.';
+                modalMessage = 'You are depositing <span class="fw-bold">' +
+					state.inputEthDeposit + ' ETH ' +
+                    ' (~$' +
+                    Number(state.inputEthDeposit * state.priceOfEth / 100).toFixed(2) +
+                    ')</span> ' +
+                    ' and borrowing <span class="fw-bold">' +
+                    state.inputBtcDept + ' BTC ' +
+                    ' (~$' +
+                    Number(state.inputBtcDept * state.priceOfBtc / 100).toFixed(2) +
+                    ')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.';
+            }
+
+			setModal(!modal);
+			setModalToken("ETHBTC");
+			setModalAction(error? "NOACTION" : "DEPOSITANDBORROW");
+			setModalTitle(modalTitle);
+			setModalMessage(modalMessage);
+			setModalInputValue(0);
+        }
+    }
 
 	useEffect(() => {
 		console.log(`Borrow`)
 	}, [])
 	return (
 		<>
+		{<CustDialog
+			modal={modal} 
+			showConfirm={(modalAction !== "NOACTION")}
+			modalTitle={modalTitle} 
+			modalMessage={modalMessage} 
+			modalToken={modalToken} 
+			modalCancel={()=> {setModal(!modal)}} 
+			modalConfirm={() => {modalConfirm(modalAction)}}
+			modalInputValue={modalInputValue}>
+		</CustDialog>}
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
 					<Grid item xs={7}>
@@ -89,7 +251,7 @@ function Borrow() {
 											<span className={`borrow-card-trade-titile`}>Deposit ETH and Borrow BTC</span>
 										</Grid>
 										<Grid item xs={12}>
-											<span className={`borrow-card-trade-titile`}>0 ETH as collateral to borrow 1 BTC</span>
+											<span className={`borrow-card-trade-titile`}>{state.inputEthDeposit} ETH as collateral to borrow {state.inputBtcDept} BTC</span>
 										</Grid>
 										<Grid item xs={12}>
 											<Grid container style={{
@@ -114,9 +276,9 @@ function Borrow() {
 																		border: "0px",
 																		backgroundColor: "transparent",
 																	}}
-																	value={firstBoxValue}
+																	value={state.inputEthDeposit}
 																	onChange={(e) => {
-																		setFirstBoxValue(e.target.value)
+																		dispatch(changeInputEthDeposit( e.target.value))
 																	}}
 																></input>
 															</Grid>
@@ -129,7 +291,7 @@ function Borrow() {
 																			textAlign: "end",
 																		}}>
 																			<span>Balance: </span>
-																			<span style={{ fontWeight: "800" }}>30.4ETH</span>
+																			<span style={{ fontWeight: "800" }}>{state.myETHAmount} ETH</span>
 																		</div>
 
 																	</Grid>
@@ -142,6 +304,10 @@ function Borrow() {
 																					borderRadius: "4px",
 																					border: "1px solid black",
 																					padding: "0px",
+																				}}
+																				
+																				onClick={() => {
+																					dispatch(changeInputEthDeposit(state.myETHAmount))
 																				}}
 																				>MAX</Button>
 																			</Grid>
@@ -216,9 +382,9 @@ function Borrow() {
 																		border: "0px",
 																		backgroundColor: "transparent",
 																	}}
-																	value={secondBoxValue}
+																	value={state.inputBtcDept}
 																	onChange={(e) => {
-																		setSecondBoxValue(e.target.value)
+																		dispatch(changeInputBtcDebt(e.target.value))
 																	}}
 																></input>
 															</Grid>
@@ -230,8 +396,15 @@ function Borrow() {
 																			padding: "5px",
 																			textAlign: "end",
 																		}}>
-																			<span>Balance: </span>
-																			<span style={{ fontWeight: "800" }}>30.4ETH</span>
+																			<span>Borrow Power: </span>
+																			<span style={{ fontWeight: "800" }}>{
+																				((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
+																				* state.priceOfEth
+																				* state.LTV["ETHBTC"]
+																				* state.liquidationPrice["ETHBTC"]
+																				/ state.priceOfBtc)
+																				 - state.userDebtBalanceBtc
+																			} BTC</span>
 																		</div>
 
 																	</Grid>
@@ -244,6 +417,15 @@ function Borrow() {
 																					borderRadius: "4px",
 																					border: "1px solid black",
 																					padding: "0px",
+																				}}
+																				onClick={() => {
+																					let borrowPower = Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit);
+																					borrowPower = borrowPower * state.priceOfEth;
+																					borrowPower = borrowPower * state.LTV["ETHBTC"];
+																					borrowPower = borrowPower * state.liquidationPrice["ETHBTC"];
+																					borrowPower = borrowPower / state.priceOfBtc;
+																					borrowPower = borrowPower - state.userDebtBalanceBtc;
+																					dispatch(changeInputBtcDebt(borrowPower));
 																				}}
 																				>MAX</Button>
 																			</Grid>
@@ -297,7 +479,17 @@ function Borrow() {
 														{["25%", "50%", "75%", "90%"].map((item) => {
 															return (
 																<Grid item key={item}>
-																	<BorrwoingPowerButton label={item}></BorrwoingPowerButton>
+																	<BorrwoingPowerButton label={item}
+																	onClick={() => {
+																		let borrowPower =  Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit);
+																		borrowPower = borrowPower * state.priceOfEth;
+																		borrowPower = borrowPower * state.LTV["ETHBTC"];
+																		borrowPower = borrowPower * state.liquidationPrice["ETHBTC"];
+																		borrowPower = borrowPower / state.priceOfBtc;
+																		borrowPower = borrowPower - state.userDebtBalanceBtc;
+
+																		dispatch(changeInputBtcDebt(borrowPower * parseFloat(item) / 100));
+																	}}></BorrwoingPowerButton>
 																</Grid>
 															)
 														})}
@@ -308,7 +500,9 @@ function Borrow() {
 										<Grid item xs={12}>
 											<RoundShapeButton
 												label={"deposit and borrow"}
-												onClick={() => { }}
+												onClick={() => { 
+													depositWETHAndBorrowWBTC();
+												}}
 												color={"white"}
 											></RoundShapeButton>
 										</Grid>
@@ -329,12 +523,17 @@ function Borrow() {
 												fontSize: "18px",
 												fontWeight: "600",
 												fontStyle: "normal",
-											}}>Deposited Borrowed Health Factor</span>
+											}}>Deposited, Borrowed,Health Factor</span>
 										</Grid>
 										<Grid item xs={12}>
 											<div style={{ width: "100%", textAlign: 'center' }}>
 												<span className={`health-factor-label`}>Health Factor </span>
-												<span className={`health-factor-value`}>20.97</span>
+												<span className={`health-factor-value`}>{calculateHealthFactor(
+															Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit),
+															state.priceOfEth,
+															state.LTV["ETHBTC"],
+															Number(state.userDebtBalanceBtc) + Number(state.inputBtcDept),
+															state.priceOfBtc)}</span>
 											</div>
 
 										</Grid>
@@ -347,34 +546,42 @@ function Borrow() {
 							<Grid item xs={12}>
 							<NoBorderCard>
 									<Grid container>
-										{[{
+									{[{
 											title: "Current Price of ETH:",
-											value: "$1031",
+											value: state.priceOfEth / 100,
 											textColor: "black",
 										},
 										{
 											title: "Current Price of BTC:",
-											value: "$19224",
+											value: state.priceOfBtc / 100,
 											textColor: "black",
 										},
 										{
 											title: "LTV:",
-											value: "14%",
+											value: `${(state.LTV[state.selectedPair] * state.liquidationPrice[state.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
 											title: "Max Borrow Power:",
-											value: "13.45",
+											value: `${((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
+												* state.priceOfEth
+												* state.LTV["ETHBTC"]
+												* state.liquidationPrice["ETHBTC"]
+												/ state.priceOfBtc)
+												 - state.userDebtBalanceBtc} BTC`,
 											textColor: "black",
 										},
 										{
 											title: "Liquidity Threshold:",
-											value: "20.534%",
+											value: `${(state.LTV[state.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
 											title: "Liquidation Price of ETH:",
-											value: "$350",
+											value: `${((Number(state.userDebtBalanceBtc) + Number(state.inputBtcDept))
+												* (state.priceOfBtc) / 100
+												/ (Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
+												/ state.LTV["ETHBTC"]).toFixed(2)}`,
 											textColor: "blue",
 										},
 										].map((item, index) => {

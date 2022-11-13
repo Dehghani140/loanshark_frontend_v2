@@ -1,9 +1,13 @@
 import { FC, ReactNode, useEffect } from 'react';
+import { useState, CSSProperties, } from 'react';
 import { Box, alpha, lighten, useTheme, Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
+import ClipLoader from "react-spinners/ClipLoader";
+
+import { useAppSelector } from '../../hooks';
 
 interface SidebarLayoutProps {
   // children?: ReactNode;
@@ -15,6 +19,20 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
   useEffect(() => {
     console.log(`SidebarLayout`)
   }, [])
+
+	const stateLayout = useAppSelector((state) => state.layout)
+
+  let [color, setColor] = useState("#000000");
+
+  const override: CSSProperties = {
+    position: 'fixed',
+    alignSelf: 'center',
+    top: '40%',
+    left: '45%',
+    zIndex: '1000'
+  };
+
+
   return (
     <>
       <Box
@@ -67,6 +85,25 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           <Box display="block">
             <div style={{ width: '100vw' }}>
               <Outlet />
+              { stateLayout.loadingActive ? <div style={{
+                  position: 'fixed', 
+                  top: '0px', 
+                  left: '0px', 
+                  zIndex: '1000', 
+                  width: '100%', 
+                  minHeight: '100%', 
+                  opacity: 0.5,
+                  backgroundColor: '#222222',
+                }}></div> : null
+              }
+                <ClipLoader
+                  color={color}
+                  loading={stateLayout.loadingActive}
+                  cssOverride={override}
+                  size={150}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
             </div>
           </Box>
         </Box>

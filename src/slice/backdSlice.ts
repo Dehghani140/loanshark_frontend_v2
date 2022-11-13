@@ -9,14 +9,14 @@ const initialState = {
     vaultEth: null,
     topupAction: null,
     gasBank: null,
-    myBtcLpAmount: null,
-    myEthLpAmount: null,
-    totalBtcLpAmount: null,
-    totalEthLpAmount: null,
+    myBtcLpAmount: 0,
+    myEthLpAmount: 0,
+    totalBtcLpAmount: 0,
+    totalEthLpAmount: 0,
     btcLpExchangeRate: 0,
     ethLpExchangeRate: 0,
-    myProtection: [],
-    myProtectionEth: [],
+    myProtectionBtc: [0, 0, 0, 0, 0, 0],
+    myProtectionEth: [0, 0, 0, 0, 0, 0],
     myGasBankBalance: null,
 }
 
@@ -24,7 +24,7 @@ export const backdSlice = createSlice({
     name: 'backd',
     initialState,
     reducers: {
-        reset: (state) => {
+        resetBackd: (state) => {
             return initialState
         },
         changeLpPoolBtc: (state, action: PayloadAction<any>) => {
@@ -69,8 +69,8 @@ export const backdSlice = createSlice({
         changeEthLpExchangeRateAmount: (state, action: PayloadAction<any>) => {
             state.ethLpExchangeRate = action.payload
         },
-        changeMyProtection: (state, action: PayloadAction<any>) => {
-            state.myProtection = action.payload
+        changeMyProtectionBtc: (state, action: PayloadAction<any>) => {
+            state.myProtectionBtc = action.payload
         },
         changeMyProtectionEth: (state, action: PayloadAction<any>) => {
             state.myProtectionEth = action.payload
@@ -83,7 +83,7 @@ export const backdSlice = createSlice({
 })
 
 export const {
-    reset,
+    resetBackd,
     changeLpPoolBtc,
     changeLpPoolEth,
     changeLpTokenBtc,
@@ -98,7 +98,7 @@ export const {
     changeTotalEthLpAmount,
     changeBtcLpExchangeRateAmount,
     changeEthLpExchangeRateAmount,
-    changeMyProtection,
+    changeMyProtectionBtc,
     changeMyProtectionEth,
     changeMyGasBankBalance,
 } = backdSlice.actions

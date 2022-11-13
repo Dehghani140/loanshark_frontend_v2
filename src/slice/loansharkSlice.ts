@@ -144,10 +144,20 @@ export const loansharkSlice = createSlice({
             state.myUSDTAmount = action.payload
         },
         changeLTV: (state, action: PayloadAction<any>) => {
-            state.LTV = action.payload
+            if (action.payload.ETHBTC) {
+                state.LTV.ETHBTC = action.payload.ETHBTC;
+            }
+            if (action.payload.AVAXUSDT) {
+                state.LTV.AVAXUSDT = action.payload.AVAXUSDT;
+            }
         },
         changeLiqudationPrice: (state, action: PayloadAction<any>) => {
-            state.liquidationPrice = action.payload
+            if (action.payload.ETHBTC) {
+                state.liquidationPrice.ETHBTC = action.payload.ETHBTC;
+              }
+              if (action.payload.AVAXUSDT) {
+                state.liquidationPrice.AVAXUSDT = action.payload.AVAXUSDT;
+              }
         }
     },
 })
