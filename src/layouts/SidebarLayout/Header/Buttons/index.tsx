@@ -14,7 +14,9 @@ import {
     changeUserDepositBalanceEth,
     reset
 } from '../../../../slice/loansharkSlice';
-
+import {
+    resetBackd
+} from '../../../../slice/backdSlice';
 import { connectContract, refreshPrice } from '../../../../utils/API'
 
 const MY_FujiVaultETHBTC = process.env.REACT_APP_MY_FujiVaultETHBTC;
@@ -54,6 +56,7 @@ function HeaderButtons() {
 
     function clearAccount() {
         dispatch(reset())
+        dispatch(resetBackd())
     }
 
     function afterWalletConnected(accountAddress) {
@@ -219,18 +222,19 @@ function HeaderButtons() {
                 <Grid item>
                     <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
                         console.log(`on click refresh`)
+                        refreshPrice(state, stateBackd, dispatch, "GET_NEW");
                     }}
                         icon={faRotateRight} />
                 </Grid>
 
-                <Grid item>
+                <Grid hidden item>
                     <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
                         console.log(`on click resize`)
                     }}
                         icon={faBars} />
                 </Grid>
 
-                <Grid item>
+                <Grid hidden item>
                     <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
                         console.log(`on click dark light mod`)
                     }}

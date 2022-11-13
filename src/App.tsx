@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState, CSSProperties, } from 'react';
 import { Dispatch, bindActionCreators } from "redux"
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useRoutes, HashRouter, BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { redirect as Redirect, Router } from 'react-router';
+
+import ClipLoader from "react-spinners/ClipLoader";
 // import router from 'src/router';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -87,12 +89,13 @@ function App(props: any) {
     <>
       <div style={{
         position: 'absolute',
+        top: '0px',
+        left: '0px',
+        minHeight: '100%',
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundImage: "url(/assets/background/app_background_blur.svg)",
-        width: "100%",
-        height: "100%"
       }}>
         <ThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>

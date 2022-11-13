@@ -42,7 +42,7 @@ import {
     changeLpTokenEth,
     changeVaultEth,
     changeMyBtcLpAmount,
-    changeMyProtection,
+    changeMyProtectionBtc,
     changeLpPoolEth,
     changeMyProtectionEth,
     changeTotalBtcLpAmount,
@@ -139,7 +139,7 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                 dispatch(changeUserDebtBalanceBtc(parseFloat((window.web3.utils.fromWei(result, 'gwei') * 10).toFixed(8))));
             });
             state.myFujiVaultETHBTC?.methods.collatF().call({}, (error, result) => {
-                dispatch(changeLTV({ "ETHBTC": result.b / result.a }));
+                dispatch(changeLTV({ "ETHBTC": result.b / result.a }));             
             });
             state.myFujiVaultETHBTC?.methods.safetyF().call({}, (error, result) => {
                 dispatch(changeLiqudationPrice({ "ETHBTC": result.b / result.a }));
@@ -249,7 +249,7 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
             ];
 
             stateBackd.topupAction?.methods.getPosition(...argsGetPosition).call({}, (error, result) => {
-                dispatch(changeMyProtection(result));
+                dispatch(changeMyProtectionBtc(result));
             });
 
             stateBackd.gasBank?.methods.balanceOf(state.myAccount).call({}, (error, result) => {

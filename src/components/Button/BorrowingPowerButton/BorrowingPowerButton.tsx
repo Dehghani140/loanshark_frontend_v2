@@ -4,11 +4,12 @@ import './BorrowingPowerButton.scss'
 
 interface BorrwoingPowerButtonProps {
     label: string;
+    onClick: () => void;
 }
 
 function BorrwoingPowerButton(props: BorrwoingPowerButtonProps) {
     return (
-        <button className={`borrowing-power-button`}>{props.label}</button>
+        <button onClick={props.onClick} className={`borrowing-power-button`}>{props.label}</button>
     );
 }
 
