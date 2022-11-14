@@ -7,6 +7,10 @@ import { Grid } from '@mui/material';
 import Widget from '../../components/Widget/Widget'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 
+import { useAppSelector, useAppDispatch } from '../../hooks'
+
+import { changeMyProtectionType } from '../../slice/smartvaultSlice';
+
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
@@ -15,6 +19,12 @@ function SmartVault1() {
     useEffect(() => {
         console.log(`SmartVault1`)
     }, [])
+
+	const dispatch = useAppDispatch();
+	const stateLoanshark = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
+	const stateSmarvault = useAppSelector((state) => state.smartvault)
+
     return (
         <>
             <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
@@ -36,6 +46,7 @@ function SmartVault1() {
                                     label={"select"}
                                     onClick={() => {
                                         console.log(`click add borrow`)
+                                        dispatch(changeMyProtectionType("topup"))
                                         navigate("/app/main/smartVault2")
                                     }}
                                     color={"white"}
@@ -53,6 +64,7 @@ function SmartVault1() {
                                     label={"select"}
                                     onClick={() => {
                                         console.log(`click add borrow`)
+                                        dispatch(changeMyProtectionType("repay"))
                                         navigate("/app/main/smartVault2")
                                     }}
                                     color={"white"}
