@@ -11,6 +11,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks'
 
 import { changeMyProtectionType } from '../../slice/smartvaultSlice';
 
+import './SmartVault.scss'
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
@@ -27,15 +28,13 @@ function SmartVault1() {
 
     return (
         <>
-            <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+            <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <p>Protection Setup (1/4 steps)</p>
-
+                        <span className={'card-title'}>Protection Setup </span><span className={'card-subtitle'}>(1/4 steps)</span>
                     </Grid>
                     <Grid item xs={12}>
-                        <p>Please select the way to setup protection:</p>
-
+                        <span className={'card-subtitle'}>Please select the way to setup protection:</span>
                     </Grid>
                     <Grid item xs={5}>
                         <Widget whiteBackgroundColor={true} title={""}>

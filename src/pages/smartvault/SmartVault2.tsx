@@ -10,6 +10,7 @@ import { changeMyProtectingPair } from '../../slice/smartvaultSlice';
 
 import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 
+import './SmartVault.scss'
 function SmartVault1() {
 	let navigate = useNavigate();
 	useEffect(() => {
@@ -29,15 +30,10 @@ function SmartVault1() {
 
 	return (
 		<>
-			<div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+			<div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
 				<Grid container spacing={3}>
 					<Grid item xs={12}>
-						<p>Protection Setup (2/4 steps)</p>
-
-					</Grid>
-					<Grid item xs={12}>
-						<p>Select a loan to protect</p>
-
+                        <span className={'card-title'}>Select a loan to protect</span><span className={'card-subtitle'}> (2/4 steps)</span>
 					</Grid>
 					<Grid item xs={5}>
 						<DashboardCard
@@ -49,13 +45,13 @@ function SmartVault1() {
 							pair={
 								[
 									{
-										amountInUsdt: (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2),
-										amountInCurrency: state.userDepositBalanceEth,
+										amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
 										currency: "ETH",
 									},
 									{
-										amountInUsdt: (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2),
-										amountInCurrency: state.userDebtBalanceBtc,
+										amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
 										currency: "BTC",
 									},
 								]
@@ -64,35 +60,35 @@ function SmartVault1() {
 								[
 									{
 										title: "Collateral",
-										value: "$" + (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2) + "/" + state.userDepositBalanceEth + " ETH"
+										value: "$" + Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString() + " ETH"
 									},
 									{
 										title: "Debt",
-										value: "$" + (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2) + "/" + state.userDebtBalanceBtc + " BTC"
+										value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
 									},
 									{
 										title: "APY",
-										value: (
+										value: Number((
 											(
 												0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
 												- state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
 												+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
 											) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
-										).toString() + "%"
+										).toFixed(2)).toLocaleString() + "%"
 									},
 									{
 										title: "Health Factor",
-										value: calculateHealthFactor(
-											state.userDepositBalanceEth,
-											state.priceOfEth,
-											state.LTV["ETHBTC"],
-											state.userDebtBalanceBtc,
+										value: Number(Number(calculateHealthFactor(
+											state.userDepositBalanceEth, 
+											state.priceOfEth, 
+											state.LTV["ETHBTC"], 
+											state.userDebtBalanceBtc, 
 											state.priceOfBtc
-										)
+										)).toFixed(2)).toLocaleString()
 									},
 									{
 										title: "Smart Vault",
-										value: "$" + (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)
+										value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString()
 									},
 									{
 										title: "Provider",

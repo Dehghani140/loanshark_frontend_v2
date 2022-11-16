@@ -11,6 +11,7 @@ import { changeMyProtectingSmartVault } from '../../slice/smartvaultSlice';
 import Widget from '../../components/Widget/Widget'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 
+import './SmartVault.scss'
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
@@ -29,16 +30,11 @@ function SmartVault1() {
 
   return (
     <>
-      <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+      <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <p>Protection Setup (3/4 steps)</p>
-
-          </Grid>
-          <Grid item xs={12}>
-            <p>Select a smart vault to stake</p>
-
-          </Grid>
+					<Grid item xs={12}>
+              <span className={'card-title'}>Select a smart vault to stake</span><span className={'card-subtitle'}> (3/4 steps)</span>
+					</Grid>
           <Grid hidden={!(stateSmarvault.myProtectingPair === "ETHBTC" && stateSmarvault.myProtectionType === "repay")} item xs={5}>
             <DashboardCard
               label={`BTC`}
@@ -49,8 +45,8 @@ function SmartVault1() {
               pair={
                 [
                   {
-                    amountInUsdt: (stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2),
-                    amountInCurrency: (stateBackd.totalBtcLpAmount),
+                    amountInUsdt: Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+                    amountInCurrency: Number(Number(stateBackd.totalBtcLpAmount).toFixed(2)).toLocaleString(),
                     currency: "BTC",
                   },
                 ]
@@ -63,7 +59,7 @@ function SmartVault1() {
                   },
                   {
                     title: "TVL",
-                    value: "$" + (stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)
+                    value: "$" + Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString()
                   },
                 ]
               }
@@ -93,8 +89,8 @@ function SmartVault1() {
               pair={
                 [
                   {
-                    amountInUsdt: (stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2),
-                    amountInCurrency: (stateBackd.totalEthLpAmount),
+                    amountInUsdt: Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+                    amountInCurrency: Number(Number((stateBackd.totalEthLpAmount)).toFixed(2)).toLocaleString(),
                     currency: "ETH",
                   },
                 ]
@@ -107,7 +103,7 @@ function SmartVault1() {
                   },
                   {
                     title: "TVL",
-                    value: "$" + (stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)
+                    value: "$" + Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()
                   },
                 ]
               }

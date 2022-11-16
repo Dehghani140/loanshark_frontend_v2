@@ -1,6 +1,25 @@
+@font-face {
+    font-family: 'ClashDisplay';
+    src: local('ClashDisplay'), url(./fonts/ClashDisplay/ClashDisplay-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'ClashDisplay-Semibold';
+    font-weight: 600;
+    src: local('ClashDisplay'), url(./fonts/ClashDisplay/ClashDisplay-Semibold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'ClashDisplay-Bold';
+    font-weight: 700;
+    src: local('ClashDisplay'), url(./fonts/ClashDisplay/ClashDisplay-Bold.otf) format('opentype');
+}
+
+@import url("https://use.typekit.net/phv7ejb.css");
+
 .body{
-    font-family: 'Poppins', sans-serif;
-    font-family: 'Clash Display', sans-serif;
+    font-family: 'ClashDisplay-Semibold', sans-serif;
+    font-family: 'poppins', sans-serif;
 }  
 
 .main-content-layout{

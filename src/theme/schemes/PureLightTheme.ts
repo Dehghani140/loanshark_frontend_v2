@@ -1148,7 +1148,7 @@ export const PureLightTheme = createTheme({
   },
   typography: {
     fontFamily:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+      'ClashDisplay',
     h1: {
       fontWeight: 700,
       fontSize: 35
@@ -1175,10 +1175,10 @@ export const PureLightTheme = createTheme({
       fontSize: 15
     },
     body1: {
-      fontSize: 14
+      fontSize: 16
     },
     body2: {
-      fontSize: 14
+      fontSize: 16
     },
     button: {
       fontWeight: 600

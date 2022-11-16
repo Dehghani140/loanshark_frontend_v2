@@ -189,7 +189,7 @@ function Dashboard() {
 								<RoundShapeButton
 									label={"add borrow"}
 									onClick={() => {
-										console.log(`click add borrow`)
+										navigate("/app/main/borrow")
 									}}
 									color={"white"}
 								></RoundShapeButton>
@@ -198,7 +198,7 @@ function Dashboard() {
 								<RoundShapeButton
 									label={"add smart vault"}
 									onClick={() => {
-										console.log(`click add smart vault`)
+										navigate("/app/main/smartVault1")
 									}}
 									color={"white"}
 								></RoundShapeButton>
@@ -211,14 +211,14 @@ function Dashboard() {
 								<Widget
 									title={"Your Collateral"}
 								>
-									<div className={'display-title'}>${((state.userDepositBalanceEth * state.priceOfEth / 100) + (state.userDepositBalanceAvax * state.priceOfAvax / 100)).toFixed(2)}</div>
+									<div className={'display-title'}>${Number(((state.userDepositBalanceEth * state.priceOfEth / 100) + (state.userDepositBalanceAvax * state.priceOfAvax / 100)).toFixed(2)).toLocaleString()}</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
 								<Widget
 									title={"Your Debt"}
 								>
-									<div className={'display-title'}>${((state.userDebtBalanceBtc * state.priceOfBtc / 100) + (state.userDebtBalanceUsdt * state.priceOfUsdt / 100)).toFixed(2)}</div>
+									<div className={'display-title'}>${Number(((state.userDebtBalanceBtc * state.priceOfBtc / 100) + (state.userDebtBalanceUsdt * state.priceOfUsdt / 100)).toFixed(2)).toLocaleString()}</div>
 								</Widget>
 							</Grid>
 							<Grid item xl={4} lg={4} xs={12}>
@@ -226,8 +226,8 @@ function Dashboard() {
 									title={"Your Smart Vault Balance"}
 								>
 									<div className={'display-title'}>${ 
-										(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100 + 
-										 stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)  }</div>
+										Number((stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100 + 
+										 stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()  }</div>
 								</Widget>
 							</Grid>
 						</Grid>
@@ -246,20 +246,23 @@ function Dashboard() {
 							<Grid  hidden={state.userDepositBalanceEth <= 0} item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
-									labelInUSD={"$" + (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)}
+									labelInUSD={"$" + Number((
+										stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)
+										).toFixed(2)).toLocaleString()
+									}
 									numberOfAssest={2}
 									assest1Code={`eth`}
 									assest2Code={`btc`}
 									pair={
 										[
 											{
-												amountInUsdt: (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2),
-												amountInCurrency: state.userDepositBalanceEth,
+												amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+												amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
 												currency: "ETH",
 											},
 											{
-												amountInUsdt: (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2),
-												amountInCurrency: state.userDebtBalanceBtc,
+												amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+												amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
 												currency: "BTC",
 											},
 										]
@@ -268,35 +271,35 @@ function Dashboard() {
 										[
 											{
 												title: "Collateral",
-												value: "$" + (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2) + "/" + state.userDepositBalanceEth + " ETH"
+												value: "$" + Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString() + " ETH"
 											},
 											{
 												title: "Debt",
-												value: "$" + (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2) + "/" + state.userDebtBalanceBtc + " BTC"
+												value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
 											},
 											{
 												title: "APY",
-												value: (
+												value: Number((
 													(
 														0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
 														- state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
 														+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
 													) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
-												).toString() + "%"
+												).toFixed(2)).toLocaleString() + "%"
 											},
 											{
 												title: "Health Factor",
-												value: calculateHealthFactor(
+												value: Number(Number(calculateHealthFactor(
 													state.userDepositBalanceEth, 
 													state.priceOfEth, 
 													state.LTV["ETHBTC"], 
 													state.userDebtBalanceBtc, 
 													state.priceOfBtc
-												)
+												)).toFixed(2)).toLocaleString()
 											},
 											{
 												title: "Smart Vault",
-												value: "$" + (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)
+												value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString()
 											},
 											{
 												title: "Provider",
@@ -347,7 +350,7 @@ function Dashboard() {
 										[
 											{
 												amountInUsdt: (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)).toFixed(2),
-												amountInCurrency: (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate),
+												amountInCurrency: (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(2),
 												currency: "ETH",
 											},
 										]
@@ -409,8 +412,8 @@ function Dashboard() {
 									pair={
 										[
 											{
-												amountInUsdt: (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2),
-												amountInCurrency: (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8).toString(),
+												amountInUsdt: Number((stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString(),
+												amountInCurrency: Number(Number((stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate)).toFixed(2)).toLocaleString(),
 												currency: "BTC",
 											},
 										]
@@ -431,7 +434,7 @@ function Dashboard() {
 											},
 											{
 												title: "TVL",
-												value: "$" + ( stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)
+												value: "$" + Number(( stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString()
 											},
 										]
 									}
