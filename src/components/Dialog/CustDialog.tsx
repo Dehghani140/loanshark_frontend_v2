@@ -24,26 +24,43 @@ export interface CustDialogProps {
 const CustDialog = (custDialogProps: CustDialogProps) => {
     const { modal, showConfirm, modalTitle, modalMessage, modalToken, modalCancel, modalConfirm, modalInputValue } = custDialogProps;
 
-	useEffect(() => {
+    useEffect(() => {
         console.log("modal");
-	}, [modal]);
+    }, [modal]);
 
     return (
         <>
-           <Dialog
-				open={modal}
-				onClose={modalCancel}>
-				<DialogTitle>{modalTitle}</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						<div dangerouslySetInnerHTML={{ __html: modalMessage }}></div>
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					{showConfirm? <Button onClick={modalConfirm}>Confirm</Button> : null}
-					<Button onClick={modalCancel}>Cancel</Button>
-				</DialogActions>
-			</Dialog>
+            <Dialog
+                open={modal}
+                onClose={modalCancel}>
+                <DialogTitle
+                    style={{
+                        fontSize: "20px",
+                        marginTop: "20px",
+                        fontWeight: "700",
+                        fontFamily: "poppins"
+                    }}>{modalTitle}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description"
+                        style={{
+                            fontSize: "20px",
+                            fontFamily: "poppins"
+                        }}
+                    >
+                        <div dangerouslySetInnerHTML={{ __html: modalMessage }}></div>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    {showConfirm ? <Button style={{
+                        fontSize: "20px",
+                        fontFamily: "poppins"
+                    }} onClick={modalConfirm}>Confirm</Button> : null}
+                    <Button style={{
+                        fontSize: "20px",
+                        fontFamily: "poppins"
+                    }} onClick={modalCancel}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }

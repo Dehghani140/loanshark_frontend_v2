@@ -13,6 +13,7 @@ import CustDialog from "../../components/Dialog/CustDialog";
 
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 
+import './SmartVault.scss'
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
@@ -37,39 +38,39 @@ function SmartVault1() {
     const stateBackd = useAppSelector((state) => state.backd)
     const stateSmartvault = useAppSelector((state) => state.smartvault)
 
-	const [modal, setModal] = useState<boolean>(false);
-	const [modalAction, setModalAction] = useState<any>("");
-	const [modalTitle, setModalTitle] = useState<string>("");
-	const [modalMessage, setModalMessage] = useState<string>("");
-	const [modalToken, setModalToken] = useState<string>("");
-	const [modalInputValue, setModalInputValue] = useState<any>("");
+    const [modal, setModal] = useState<boolean>(false);
+    const [modalAction, setModalAction] = useState<any>("");
+    const [modalTitle, setModalTitle] = useState<string>("");
+    const [modalMessage, setModalMessage] = useState<string>("");
+    const [modalToken, setModalToken] = useState<string>("");
+    const [modalInputValue, setModalInputValue] = useState<any>("");
 
 
-	const [triggerHealthFactor, setTriggerHealthFactor] = useState<number>(0);
-	const [singleTopupAmount, setSingleTopupAmount] = useState<number>(0);
-	const [stakeAmount, setStakeAmount] = useState<number>(0);
+    const [triggerHealthFactor, setTriggerHealthFactor] = useState<number>(0);
+    const [singleTopupAmount, setSingleTopupAmount] = useState<number>(0);
+    const [stakeAmount, setStakeAmount] = useState<number>(0);
 
-	const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
-		setModal(!modal);
-		setModalToken(inputModalToken);
-		setModalAction("NOACTION");
-		setModalTitle(inputModalTitle);
-		setModalMessage(inputModalMessage);
-		setModalInputValue(0);
-	}
+    const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
+        setModal(!modal);
+        setModalToken(inputModalToken);
+        setModalAction("NOACTION");
+        setModalTitle(inputModalTitle);
+        setModalMessage(inputModalMessage);
+        setModalInputValue(0);
+    }
 
-	const toggleAction = (inputModalToken, inputModalAction, inputModalTitle, inputModalMessage, pair, inputValue) => {
-		setModal(!modal);
-		setModalToken(inputModalToken);
-		setModalAction(inputModalAction);
-		setModalTitle(inputModalTitle);
-		setModalMessage(inputModalMessage);
-		setModalInputValue(inputValue);
-	}
+    const toggleAction = (inputModalToken, inputModalAction, inputModalTitle, inputModalMessage, pair, inputValue) => {
+        setModal(!modal);
+        setModalToken(inputModalToken);
+        setModalAction(inputModalAction);
+        setModalTitle(inputModalTitle);
+        setModalMessage(inputModalMessage);
+        setModalInputValue(inputValue);
+    }
 
-	const modalConfirm = (modalAction : string) => {
-		switch(modalAction) {
-			case "STAKESMARTVAULT":
+    const modalConfirm = (modalAction: string) => {
+        switch (modalAction) {
+            case "STAKESMARTVAULT":
                 let approveArgs = [
                     stateBackd.lpPoolBtc.options.address,
                     window.web3.utils.toBN((stakeAmount * 100000000).toFixed(0)).toString()
@@ -101,8 +102,8 @@ function SmartVault1() {
                     ]
                 ];
 
-				setModal(!modal);
-				dispatch(toggleLoading());
+                setModal(!modal);
+                dispatch(toggleLoading());
 
                 state.myBTCContract.methods
                     .approve(...approveArgs)
@@ -138,43 +139,42 @@ function SmartVault1() {
                                     })
                             })
                     })
-				break;
-			case "NOACTION": 
-				break;
-			default:
-				break;
-		}
-	}
+                break;
+            case "NOACTION":
+                break;
+            default:
+                break;
+        }
+    }
 
     return (
         <>
-        	{<CustDialog
-				modal={modal} 
-				showConfirm={(modalAction !== "NOACTION")}
-				modalTitle={modalTitle} 
-				modalMessage={modalMessage} 
-				modalToken={modalToken} 
-				modalCancel={()=> {setModal(!modal)}} 
-				modalConfirm={() => {modalConfirm(modalAction)}}
-				modalInputValue={modalInputValue}>
-			</CustDialog>}
-            <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+            {<CustDialog
+                modal={modal}
+                showConfirm={(modalAction !== "NOACTION")}
+                modalTitle={modalTitle}
+                modalMessage={modalMessage}
+                modalToken={modalToken}
+                modalCancel={() => { setModal(!modal) }}
+                modalConfirm={() => { modalConfirm(modalAction) }}
+                modalInputValue={modalInputValue}>
+            </CustDialog>}
+            <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <p>Protection Setup (4/4 steps)</p>
-
+                        <span className={'card-title'}>Protection Setup</span><span className={'card-subtitle'}> (4/4 steps)</span>
                     </Grid>
                     <Grid item xs={7}>
                         <div style={{ backgroundColor: '#ffffff', padding: '20px' }}>
                             <p>How much would you like to stake to smart vault?</p>
-                            <input
+                            <input type="number"
                                 value={stakeAmount}
                                 onChange={(e) => {
                                     setStakeAmount(Number(e.target.value))
                                 }}
                                 style={{
                                     color: "rgba(51,51,51,1)",
-                                    fontFamily: "Poppins-Bold",
+                                    fontFamily: "poppins",
                                     fontSize: "48px",
                                     fontWeight: "700",
                                     fontStyle: "normal",
@@ -183,14 +183,14 @@ function SmartVault1() {
                                 }}
                             ></input>
                             <p>At which health factor would you like to use smart vault?</p>
-                            <input
+                            <input type="number"
                                 value={triggerHealthFactor}
                                 onChange={(e) => {
                                     setTriggerHealthFactor(Number(e.target.value))
                                 }}
                                 style={{
                                     color: "rgba(51,51,51,1)",
-                                    fontFamily: "Poppins-Bold",
+                                    fontFamily: "poppins",
                                     fontSize: "48px",
                                     fontWeight: "700",
                                     fontStyle: "normal",
@@ -199,14 +199,14 @@ function SmartVault1() {
                                 }}
                             ></input>
                             <p>How much would you like to top-up / repay each time?</p>
-                            <input
+                            <input type="number"
                                 value={singleTopupAmount}
                                 onChange={(e) => {
                                     setSingleTopupAmount(Number(e.target.value))
                                 }}
                                 style={{
                                     color: "rgba(51,51,51,1)",
-                                    fontFamily: "Poppins-Bold",
+                                    fontFamily: "poppins",
                                     fontSize: "48px",
                                     fontWeight: "700",
                                     fontStyle: "normal",
@@ -225,21 +225,21 @@ function SmartVault1() {
                                         (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "NOACTION" : "STAKESMARTVAULT"),
                                         (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
-                                        "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
+                                            "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
                                         (triggerHealthFactor < 1.05 ?
-                                        "Please set the target health factor higher than 1.05"
-                                        :
-                                        singleTopupAmount > stakeAmount ?
-                                            "Please deposit more than the amount to repay for you each time the target heath factor is hit."
+                                            "Please set the target health factor higher than 1.05"
                                             :
-                                            stakeAmount >state.myBTCAmount ?
-                                                "You do not have " + stakeAmount + " BTC to stake. You have " + state.myBTCAmount + " BTC only."
+                                            singleTopupAmount > stakeAmount ?
+                                                "Please deposit more than the amount to repay for you each time the target heath factor is hit."
                                                 :
-                                                "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " BTC (~" + Number((singleTopupAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span>. " +
-                                                "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                "until a total of <span class='fw-bold'>" + stakeAmount + " BTC (~$" + Number((stakeAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span> is topped up."
-                                        ), 
+                                                stakeAmount > state.myBTCAmount ?
+                                                    "You do not have " + stakeAmount + " BTC to stake. You have " + state.myBTCAmount + " BTC only."
+                                                    :
+                                                    "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                    "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " BTC (~" + Number((singleTopupAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span>. " +
+                                                    "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                    "until a total of <span class='fw-bold'>" + stakeAmount + " BTC (~$" + Number((stakeAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span> is topped up."
+                                        ),
                                         stateSmartvault.myProtectingPair,
                                         0
                                     )
@@ -259,8 +259,8 @@ function SmartVault1() {
                                 pair={
                                     [
                                         {
-                                            amountInUsdt: (stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2),
-                                            amountInCurrency: (stateBackd.totalBtcLpAmount),
+                                            amountInUsdt: Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+                                            amountInCurrency: Number(Number(stateBackd.totalBtcLpAmount).toFixed(2)).toLocaleString(),
                                             currency: "BTC",
                                         },
                                     ]
@@ -273,7 +273,7 @@ function SmartVault1() {
                                         },
                                         {
                                             title: "TVL",
-                                            value: "$" + (stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)
+                                            value: "$" + Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString()
                                         },
                                     ]
                                 }
@@ -294,8 +294,8 @@ function SmartVault1() {
                                 pair={
                                     [
                                         {
-                                            amountInUsdt: (stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2),
-                                            amountInCurrency: (stateBackd.totalEthLpAmount),
+                                            amountInUsdt: Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+                                            amountInCurrency: Number(Number((stateBackd.totalEthLpAmount)).toFixed(2)).toLocaleString(),
                                             currency: "ETH",
                                         },
                                     ]
@@ -308,7 +308,7 @@ function SmartVault1() {
                                         },
                                         {
                                             title: "TVL",
-                                            value: "$" + (stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)
+                                            value: "$" + Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()
                                         },
                                     ]
                                 }
@@ -329,50 +329,50 @@ function SmartVault1() {
                             pair={
                                 [
                                     {
-                                        amountInUsdt: (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2),
-                                        amountInCurrency: state.userDepositBalanceEth,
-                                        currency: "ETH",
-                                    },
-                                    {
-                                        amountInUsdt: (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2),
-                                        amountInCurrency: state.userDebtBalanceBtc,
-                                        currency: "BTC",
-                                    },
+										amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
+										currency: "ETH",
+									},
+									{
+										amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
+										currency: "BTC",
+									},
                                 ]
                             }
                             detail={
                                 [
                                     {
                                         title: "Collateral",
-                                        value: "$" + (state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2) + "/" + state.userDepositBalanceEth + " ETH"
+                                        value: "$" + Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString() + " ETH"
                                     },
                                     {
                                         title: "Debt",
-                                        value: "$" + (state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2) + "/" + state.userDebtBalanceBtc + " BTC"
+                                        value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
                                     },
                                     {
                                         title: "APY",
-                                        value: (
+                                        value: Number((
                                             (
                                                 0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
                                                 - state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
                                                 + 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
                                             ) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
-                                        ).toString() + "%"
+                                        ).toFixed(2)).toLocaleString() + "%"
                                     },
                                     {
                                         title: "Health Factor",
-                                        value: calculateHealthFactor(
+                                        value: Number(Number(calculateHealthFactor(
                                             state.userDepositBalanceEth,
                                             state.priceOfEth,
                                             state.LTV["ETHBTC"],
                                             state.userDebtBalanceBtc,
                                             state.priceOfBtc
-                                        )
+                                        )).toFixed(2)).toLocaleString()
                                     },
                                     {
                                         title: "Smart Vault",
-                                        value: "$" + (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)
+                                        value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)).toLocaleString()
                                     },
                                     {
                                         title: "Provider",

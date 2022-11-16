@@ -97,11 +97,11 @@ function DashboardCard(props: any) {
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container>
-                            {pair.map((item) => {
+                            {pair.map((item, i) => {
                                 return (
                                     <>
-                                        <Grid item xs={12}>
-                                            <span style={{ fontWeight: "800", fontSize: "24px" }}>${item.amountInUsdt} / </span><span>{item.amountInCurrency} {item.currency}</span>
+                                        <Grid  key={i} item xs={12}>
+                                            <span style={{ fontWeight: "800", fontSize: "24px" }}>${item.amountInUsdt}</span> <span style={{ fontWeight: "400", fontSize: "24px" }}> / </span> <span>{item.amountInCurrency} {item.currency}</span>
                                         </Grid>
                                     </>
                                 )
@@ -120,7 +120,7 @@ function DashboardCard(props: any) {
                         {detail.map((item, index) => {
                             return (
                                 <>
-                                    <Grid container justifyContent={'space-between'} className={`card-detail-spacing`}>
+                                    <Grid key={index} container justifyContent={'space-between'} className={`card-detail-spacing`}>
                                         <Grid item>
                                             <span className={`card-detail-title`}>{item.title}</span>
                                         </Grid>
@@ -135,11 +135,11 @@ function DashboardCard(props: any) {
                     {openButtonSection === true &&
                         <Grid item xs={12}>
                             <Grid container>
-                                {button.map((item) => {
+                                {button.map((item, i) => {
                                     return (
                                         <>
-                                            <Grid item xs={12} style={{ paddingTop: "5px", paddingBottom: "5px" }}>
-                                                <div style={{ width: "100%" }}>
+                                            <Grid item key={i} xs={12} style={{ paddingTop: "5px", paddingBottom: "5px" }}>
+                                                <div style={{ width: "100%"}}>
                                                     <RoundShapeButton
                                                         label={item.label}
                                                         onClick={item.callbackFunction}

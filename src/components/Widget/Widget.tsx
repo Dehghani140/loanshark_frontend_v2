@@ -42,8 +42,8 @@ function Widget(props: WidgetProps) {
         borderRadius: '6px',
         boxShadow: '0px 0px 10px rgba(138,171,170, 0.3)',
         opacity: '0.902725',
-        background: 'transparent',
-        padding: "18px 0px 29px 40px",
+        background: "linear-gradient(180deg, rgba(253, 251, 251, 0.4) 100%, rgba(235, 237, 238, 0.6) 100%)",
+        padding: "18px 40px 29px 40px",
       }}>
         <Grid container>
           <Grid item xs={12}>
@@ -52,7 +52,7 @@ function Widget(props: WidgetProps) {
             <span
               style={{ 
                 color: 'rgba(38,38,38,1)',
-                fontFamily: 'Poppins-Bold',
+                fontFamily: 'poppins',
                 fontSize: '48px',
                 fontWeight: '700',
               }}
@@ -62,7 +62,7 @@ function Widget(props: WidgetProps) {
         }
           </Grid>
           <Grid item xs={12}>
-          <div className={`${s.widgetTitle}`}>  
+          <div className={`${s.widgetTitle}`} style={{fontFamily: 'ClashDisplay-SemiBold' }}>  
           {props.title}
         </div>
           </Grid>
