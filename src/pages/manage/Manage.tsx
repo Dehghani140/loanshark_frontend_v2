@@ -248,12 +248,12 @@ function Manage() {
 		setModalInputValue(inputValue);
 	}
 
-	const modalConfirm = (modalAction : string) => {
+	const modalConfirm = (modalAction: string) => {
 		let args = [];
 		let approveArgs = [];
 		var finalModalInputValue;
-		switch(modalAction) {
-			case "DEPOSIT": 
+		switch (modalAction) {
+			case "DEPOSIT":
 				approveArgs = [
 					(modalToken === "ETH" ? stateLoanshark.myFujiVaultETHBTC.options.address : modalToken === "AVAX" ? stateLoanshark.myFujiVaultAVAXUSDT.options.address : ""),
 					window.web3.utils.toBN(window.web3.utils.toWei((modalInputValue + ""), 'ether')).toString()
@@ -301,14 +301,14 @@ function Manage() {
 						})
 				}
 				break;
-			case "WITHDRAW": 
+			case "WITHDRAW":
 				args = [
 					window.web3.utils.toBN(window.web3.utils.toWei((modalInputValue) + "", 'ether')).toString(),
 				];
 
 				setModal(!modal);
 				dispatch(toggleLoading());
-				
+
 				if (modalToken === "ETH") {
 					stateLoanshark.myFujiVaultETHBTC.methods
 						.withdraw(...args)
@@ -336,159 +336,159 @@ function Manage() {
 				}
 				break;
 			case "BORROW":
-                if (modalToken === "ETH") {
-                    finalModalInputValue = Number(modalInputValue * 100000000).toFixed(0);
-                }
-                if (modalToken === "AVAX") {
-                    finalModalInputValue = Number(modalInputValue * 1000000).toFixed(0);
-                }
+				if (modalToken === "ETH") {
+					finalModalInputValue = Number(modalInputValue * 100000000).toFixed(0);
+				}
+				if (modalToken === "AVAX") {
+					finalModalInputValue = Number(modalInputValue * 1000000).toFixed(0);
+				}
 
-                args = [
-                    finalModalInputValue
-                ];
+				args = [
+					finalModalInputValue
+				];
 
 				setModal(!modal);
 				dispatch(toggleLoading());
-				
-                if (modalToken === "ETH") {
-                    stateLoanshark.myFujiVaultETHBTC.methods
-                        .borrow(...args)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
-							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
-							dispatch(toggleLoading());
-							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                        });
-                }
 
-                if (modalToken === "AVAX") {
-                    stateLoanshark.myFujiVaultAVAXUSDT.methods
-                        .borrow(...args)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
+				if (modalToken === "ETH") {
+					stateLoanshark.myFujiVaultETHBTC.methods
+						.borrow(...args)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
+						})
+						.then((receipt) => {
 							dispatch(toggleLoading());
 							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                        });
-                }
+						});
+				}
+
+				if (modalToken === "AVAX") {
+					stateLoanshark.myFujiVaultAVAXUSDT.methods
+						.borrow(...args)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
+							dispatch(toggleLoading());
+						})
+						.then((receipt) => {
+							dispatch(toggleLoading());
+							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+						});
+				}
 				break;
 			case "PAYBACK":
-                if (modalToken === "ETH") {
-                    finalModalInputValue = modalInputValue < 0 ? Number(1000000000000).toFixed(0) : (modalInputValue * 100000000).toFixed(0);
-                }
-                if (modalToken === "AVAX") {
-                    finalModalInputValue = modalInputValue < 0 ? Number(1000000000000).toFixed(0) : window.web3.utils.toBN(window.web3.utils.toWei(modalInputValue, 'picoether')).toString();
-                }
-				
-                approveArgs = [
-                    (modalToken === "ETH" ? stateLoanshark.myFujiVaultETHBTC.options.address : modalToken === "AVAX" ? stateLoanshark.myFujiVaultAVAXUSDT.options.address : ""),
-                    window.web3.utils.toBN(finalModalInputValue).toString()
-                ]
+				if (modalToken === "ETH") {
+					finalModalInputValue = modalInputValue < 0 ? Number(1000000000000).toFixed(0) : (modalInputValue * 100000000).toFixed(0);
+				}
+				if (modalToken === "AVAX") {
+					finalModalInputValue = modalInputValue < 0 ? Number(1000000000000).toFixed(0) : window.web3.utils.toBN(window.web3.utils.toWei(modalInputValue, 'picoether')).toString();
+				}
 
-                args = [
-                    modalInputValue < 0 ? "-1" : window.web3.utils.toBN(finalModalInputValue).toString(),
-                ];
+				approveArgs = [
+					(modalToken === "ETH" ? stateLoanshark.myFujiVaultETHBTC.options.address : modalToken === "AVAX" ? stateLoanshark.myFujiVaultAVAXUSDT.options.address : ""),
+					window.web3.utils.toBN(finalModalInputValue).toString()
+				]
+
+				args = [
+					modalInputValue < 0 ? "-1" : window.web3.utils.toBN(finalModalInputValue).toString(),
+				];
 
 				setModal(!modal);
 				dispatch(toggleLoading());
 
-                if (modalToken === "ETH") {
-                    stateLoanshark.myBTCContract.methods
-                        .approve(...approveArgs)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
+				if (modalToken === "ETH") {
+					stateLoanshark.myBTCContract.methods
+						.approve(...approveArgs)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
-                            stateLoanshark.myFujiVaultETHBTC.methods
-                                .payback(...args)
-                                .send({ from: stateLoanshark.myAccount })
-                                .on("error", (error, receipt) => {
+						})
+						.then((receipt) => {
+							stateLoanshark.myFujiVaultETHBTC.methods
+								.payback(...args)
+								.send({ from: stateLoanshark.myAccount })
+								.on("error", (error, receipt) => {
 									dispatch(toggleLoading());
-                                })
-                                .then((receipt) => {
+								})
+								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                                })
-                        });
-                }
+								})
+						});
+				}
 
-                if (modalToken === "AVAX") {
+				if (modalToken === "AVAX") {
 					setModal(!modal);
 					dispatch(toggleLoading());
 
-                    stateLoanshark.myUSDTContract.methods
-                        .approve(...approveArgs)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
+					stateLoanshark.myUSDTContract.methods
+						.approve(...approveArgs)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
-                            stateLoanshark.myFujiVaultAVAXUSDT.methods
-                                .payback(...args)
-                                .send({ from: stateLoanshark.myAccount })
-                                .on("error", (error, receipt) => {
+						})
+						.then((receipt) => {
+							stateLoanshark.myFujiVaultAVAXUSDT.methods
+								.payback(...args)
+								.send({ from: stateLoanshark.myAccount })
+								.on("error", (error, receipt) => {
 									dispatch(toggleLoading());
-                                })
-                                .then((receipt) => {
+								})
+								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                                })
-                        });
-                }
+								})
+						});
+				}
 				break;
 			case "LEAVESMARTVAULTBTC":
 				args = [
-                    window.web3.utils.toBN((modalInputValue * 100000000).toFixed(0)).toString(),
-                ];
+					window.web3.utils.toBN((modalInputValue * 100000000).toFixed(0)).toString(),
+				];
 
 				setModal(!modal);
 				dispatch(toggleLoading());
 
-                let argsUnregister = [
-                    stateLoanshark.myAccount + "000000000000000000000000",
-                    "0x66756a6964616f00000000000000000000000000000000000000000000000000",
-                    1
-                ];
+				let argsUnregister = [
+					stateLoanshark.myAccount + "000000000000000000000000",
+					"0x66756a6964616f00000000000000000000000000000000000000000000000000",
+					1
+				];
 
-                if (stateBackd.myProtectionBtc && stateBackd.myProtectionBtc[0] > 0) {
+				if (stateBackd.myProtectionBtc && stateBackd.myProtectionBtc[0] > 0) {
 
-                    stateBackd.topupAction.methods
-                        .resetPosition(...argsUnregister)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
+					stateBackd.topupAction.methods
+						.resetPosition(...argsUnregister)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
-                            stateBackd.lpPoolBtc.methods
-                                .redeem(...args)
-                                .send({ from: stateLoanshark.myAccount })
-                                .on("error", (error, receipt) => {
+						})
+						.then((receipt) => {
+							stateBackd.lpPoolBtc.methods
+								.redeem(...args)
+								.send({ from: stateLoanshark.myAccount })
+								.on("error", (error, receipt) => {
 									dispatch(toggleLoading());
-                                })
-                                .then((receipt) => {
+								})
+								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                                })
-                        })
-                } else {
-                    stateBackd.lpPoolBtc.methods
-                        .redeem(...args)
-                        .send({ from: stateLoanshark.myAccount })
-                        .on("error", (error, receipt) => {
+								})
+						})
+				} else {
+					stateBackd.lpPoolBtc.methods
+						.redeem(...args)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
+						})
+						.then((receipt) => {
 							dispatch(toggleLoading());
 							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-                        })
-                }
+						})
+				}
 				break;
-			case "NOACTION": 
+			case "NOACTION":
 				break;
 			default:
 				break;
@@ -498,13 +498,13 @@ function Manage() {
 	return (
 		<>
 			{<CustDialog
-				modal={modal} 
+				modal={modal}
 				showConfirm={(modalAction !== "NOACTION")}
-				modalTitle={modalTitle} 
-				modalMessage={modalMessage} 
-				modalToken={modalToken} 
-				modalCancel={()=> {setModal(!modal)}} 
-				modalConfirm={() => {modalConfirm(modalAction)}}
+				modalTitle={modalTitle}
+				modalMessage={modalMessage}
+				modalToken={modalToken}
+				modalCancel={() => { setModal(!modal) }}
+				modalConfirm={() => { modalConfirm(modalAction) }}
 				modalInputValue={modalInputValue}>
 			</CustDialog>}
 			<div className={'main-content-layout'}>
@@ -808,7 +808,7 @@ function Manage() {
 															' BTC (~$' +
 															Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100).toFixed(2) +
 															')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
-															, 
+															,
 															deposit + debt,
 															stateBackd.myBtcLpAmount
 														)
@@ -1252,6 +1252,7 @@ function Manage() {
 																			fontFamily: "Poppins-Regular",
 																			fontSize: "14px",
 																			fontWeight: "400",
+																			cursor: "pointer",
 																		}}
 																			value={item.value}
 																			onClick={(e: any) => {
@@ -1260,6 +1261,25 @@ function Manage() {
 																				dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
 																			}}
 																		>{item.name}</button>
+
+																		{/* <Button style={{
+																			borderRadius: "6px",
+																			border: "1px solid white",
+																			backgroundColor: "rgba(255,255,255, 1)",
+																			padding: "2px 5px",
+																			color: "black",
+																			fontFamily: "Poppins-Regular",
+																			fontSize: "14px",
+																			fontWeight: "400",
+																		}}
+																			value={item.value}
+																			onClick={(e: any) => {
+																				let finalAmount = roundDown(maxdebtAmount * e.target.value / 100, 8)
+																				setDebtAmount(finalAmount)
+																				dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
+																			}}
+																		>{item.name}</Button> */}
+
 																	</Grid>
 																)
 															})}
@@ -1271,96 +1291,96 @@ function Manage() {
 												<RoundShapeButton
 													label={debtSelection}
 													color={"white"}
-												onClick={() => {
-													if (debtSelection === IDebt.BORROW) {
-														let newHealthFactor =
-														calculateHealthFactor(
-															Number(stateLoanshark.userDepositBalanceEth),
-															stateLoanshark.priceOfEth,
-															stateLoanshark.LTV["ETHBTC"],
-															Number(stateLoanshark.userDebtBalanceBtc) + Number(debtAmount),
-															stateLoanshark.priceOfBtc);
-													if (Number(debtAmount) <= 0 || isNaN(debtAmount)) {
-														toggleNoAction(
-															deposit,
-															'Unable to borrow',
-															'Please enter the amount that you want to borrow.',
-															deposit + debt
-														)
-													} else if (Number(newHealthFactor) < 1.06) {
-														toggleNoAction(
-															deposit,
-															'Unable to borrow',
-															'You are unable to borrow <span class="fw-bold">' +
-															debtAmount + ' ' + debt +
-															' (~$' +
-															Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
-															')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
-															deposit + debt
-														)
-													} else {
-														toggleAction(
-															deposit,
-															"BORROW",
-															'Confirm to borrow?',
-															'You are borrowing <span class="fw-bold">' +
-															debtAmount + ' ' + debt +
-															' (~$' +
-															Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
-															')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
-															deposit + debt,
-															debtAmount
-														)
-													}
-													}else if(debtSelection === IDebt.PAYBACK) {
-														let newHealthFactor =
-														calculateHealthFactor(
-															Number(stateLoanshark.userDepositBalanceEth),
-															stateLoanshark.priceOfEth,
-															stateLoanshark.LTV["ETHBTC"],
-															Number(stateLoanshark.userDebtBalanceBtc) - Number(debtAmount),
-															stateLoanshark.priceOfBtc);
-													if (Number(debtAmount) <= 0 || isNaN(debtAmount)) {
-														toggleNoAction(
-															deposit,
-															'Unable to payback',
-															'Please enter the amount that you want to payback.',
-															deposit + debt
-														)
-													} else if (Number(debtAmount) > (stateLoanshark.myBTCAmount)) {
-														toggleNoAction(
-															deposit,
-															'Unable to payback',
-															'You do not have enough BTC to payback.',
-															deposit + debt
-														)
-													} else if (Number(newHealthFactor) < 1.06 && Number(newHealthFactor) > 0) {
-														toggleNoAction(
-															deposit,
-															'Unable to payback',
-															'You are unable to payback <span class="fw-bold">' +
-															debtAmount + ' ' + debt +
-															' (~$' +
-															Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
-															')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
-															deposit + debt
-														)
+													onClick={() => {
+														if (debtSelection === IDebt.BORROW) {
+															let newHealthFactor =
+																calculateHealthFactor(
+																	Number(stateLoanshark.userDepositBalanceEth),
+																	stateLoanshark.priceOfEth,
+																	stateLoanshark.LTV["ETHBTC"],
+																	Number(stateLoanshark.userDebtBalanceBtc) + Number(debtAmount),
+																	stateLoanshark.priceOfBtc);
+															if (Number(debtAmount) <= 0 || isNaN(debtAmount)) {
+																toggleNoAction(
+																	deposit,
+																	'Unable to borrow',
+																	'Please enter the amount that you want to borrow.',
+																	deposit + debt
+																)
+															} else if (Number(newHealthFactor) < 1.06) {
+																toggleNoAction(
+																	deposit,
+																	'Unable to borrow',
+																	'You are unable to borrow <span class="fw-bold">' +
+																	debtAmount + ' ' + debt +
+																	' (~$' +
+																	Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
+																	')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+																	deposit + debt
+																)
+															} else {
+																toggleAction(
+																	deposit,
+																	"BORROW",
+																	'Confirm to borrow?',
+																	'You are borrowing <span class="fw-bold">' +
+																	debtAmount + ' ' + debt +
+																	' (~$' +
+																	Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
+																	')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+																	deposit + debt,
+																	debtAmount
+																)
+															}
+														} else if (debtSelection === IDebt.PAYBACK) {
+															let newHealthFactor =
+																calculateHealthFactor(
+																	Number(stateLoanshark.userDepositBalanceEth),
+																	stateLoanshark.priceOfEth,
+																	stateLoanshark.LTV["ETHBTC"],
+																	Number(stateLoanshark.userDebtBalanceBtc) - Number(debtAmount),
+																	stateLoanshark.priceOfBtc);
+															if (Number(debtAmount) <= 0 || isNaN(debtAmount)) {
+																toggleNoAction(
+																	deposit,
+																	'Unable to payback',
+																	'Please enter the amount that you want to payback.',
+																	deposit + debt
+																)
+															} else if (Number(debtAmount) > (stateLoanshark.myBTCAmount)) {
+																toggleNoAction(
+																	deposit,
+																	'Unable to payback',
+																	'You do not have enough BTC to payback.',
+																	deposit + debt
+																)
+															} else if (Number(newHealthFactor) < 1.06 && Number(newHealthFactor) > 0) {
+																toggleNoAction(
+																	deposit,
+																	'Unable to payback',
+																	'You are unable to payback <span class="fw-bold">' +
+																	debtAmount + ' ' + debt +
+																	' (~$' +
+																	Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
+																	')</span>. <br/>The new health factor will be <span class="fw-bold" style="color: #ff7d47">' + newHealthFactor + '</span> which is below 1.05.',
+																	deposit + debt
+																)
 
-													} else {
-														toggleAction(
-															deposit,
-															"PAYBACK",
-															'Confirm to payback?',
-															'You are paying back <span class="fw-bold">' +
-															debtAmount + ' ' + debt +
-															' (~$' +
-															Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
-															')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
-															deposit + debt,
-															debtAmount)
-													}
-													}
-												}}
+															} else {
+																toggleAction(
+																	deposit,
+																	"PAYBACK",
+																	'Confirm to payback?',
+																	'You are paying back <span class="fw-bold">' +
+																	debtAmount + ' ' + debt +
+																	' (~$' +
+																	Number(debtAmount * stateLoanshark.priceOfBtc / 100).toFixed(2) +
+																	')</span>. <br/>Your new health factor will be <span class="fw-bold" style="color: #68ca66">' + newHealthFactor + '</span>.',
+																	deposit + debt,
+																	debtAmount)
+															}
+														}
+													}}
 												></RoundShapeButton>
 											</Grid>
 										</Grid>
