@@ -510,7 +510,7 @@ function Manage() {
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
 					<Grid item xs={7}>
-						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px` }}>
+						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px`,  fontFamily: "poppins" }}>
 							<NoBorderCard>
 								<Grid container>
 									<Grid item xs={12}>
@@ -519,10 +519,17 @@ function Manage() {
 									<Grid item xs={12}>
 										<div style={{ padding: "10px" }}>
 											<Grid container justifyContent={"space-between"}>
-												<Grid item>
-													<Grid container>
-														<Grid item>
-															<div style={{ position: "relative", minWidth: "60px" }}>
+												<div>
+													<Grid item>
+
+														<span style={{
+															color: "rgba(38,38,38,1)",
+															fontSize: "21px",
+															fontFamily: "poppins",
+															fontWeight: "400",
+														}}
+														>
+															<span style={{ position: "relative", minWidth: "60px", paddingRight: "40px" }}>
 																<img
 																	style={{
 																		width: "30px", height: "30px",
@@ -532,66 +539,76 @@ function Manage() {
 																		top: "10px",
 																	}} src={`/assets/icon/btc-logo.svg`} alt=""></img>
 																<img style={{ width: "30px", height: "30px" }} src={`/assets/icon/eth-logo.svg`} alt=""></img>
-															</div>
-														</Grid>
-														<Grid item>
-															<span style={{
-																color: "rgba(38,38,38,1)",
-																fontSize: "21px",
-																fontWeight: "500",
-															}}
-															>ETH/BTC</span>
-														</Grid>
+															</span>
+															ETH/BTC
+														</span>
 													</Grid>
-												</Grid>
-												<Grid item>
-													<Grid container>
-														<Grid item xs={12}>
-															<Grid container justifyContent={'end'} justifyItems={'end'}>
-																<Grid item>
-																	<span style={{
-																		color: "rgba(38,38,38,1)",
-																		fontSize: "21px",
-																		fontWeight: "700",
-																		textAlign: 'end',
-																	}}
-																	>
-																		${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)} /
-																		<span style={{
-																			color: "#223354",
-																			fontSize: "12px",
-																			fontWeight: "100",
-																			textAlign: 'end',
-																		}}
-																		>{stateLoanshark.userDepositBalanceEth} ETH</span>
-																	</span>
-																</Grid>
-															</Grid>
-														</Grid>
-														<Grid item xs={12}>
-															<Grid container justifyContent={'end'} justifyItems={'end'}>
-																<Grid item>
-																	<span style={{
-																		color: "rgba(38,38,38,1)",
-																		fontSize: "21px",
-																		fontWeight: "700",
-																		textAlign: 'end',
-																	}}
-																	>
-																		${(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)} /
-																		<span style={{
-																			color: "#223354",
-																			fontSize: "12px",
-																			fontWeight: "100",
-																			textAlign: 'end',
-																		}}
-																		>{stateLoanshark.userDebtBalanceBtc} BTC</span>
-																	</span>
-																</Grid>
+												</div>
+												<div>
+													<Grid item xs={12}>
+														<Grid container justifyContent={'end'} justifyItems={'end'}>
+															<Grid item>
+																<span style={{
+																	color: "rgba(38,38,38,1)",
+																	fontSize: "21px",
+																	fontFamily: "poppins",
+																	fontWeight: "700",
+																	textAlign: 'end',
+																}}
+																>
+																	${Number((stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)).toLocaleString()}
+																</span>
+																<span style={{
+																	color: "rgba(38,38,38,1)",
+																	fontSize: "21px",
+																	fontFamily: "poppins",
+																	fontWeight: "400",
+																	textAlign: 'end',
+																}}> / </span>
+																<span style={{
+																	color: "#223354",
+																	fontSize: "14px",
+																	fontFamily: "poppins",
+																	fontWeight: "100",
+																	textAlign: 'end',
+																}}
+																>{Number(Number(stateLoanshark.userDepositBalanceEth).toFixed(2)).toLocaleString()} ETH</span>
 															</Grid>
 														</Grid>
 													</Grid>
-												</Grid>
+													<Grid item xs={12}>
+														<Grid container justifyContent={'end'} justifyItems={'end'}>
+															<Grid item>
+																<span style={{
+																	color: "rgba(38,38,38,1)",
+																	fontSize: "21px",
+																	fontFamily: "poppins",
+																	fontWeight: "700",
+																	textAlign: 'end',
+																}}
+																>
+																	${(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)}
+																</span>
+																<span style={{
+																	color: "rgba(38,38,38,1)",
+																	fontSize: "21px",
+																	fontFamily: "poppins",
+																	fontWeight: "400",
+																	textAlign: 'end',
+																}}> / </span>
+																<span style={{
+																	color: "#223354",
+																	fontSize: "14px",
+																	fontFamily: "poppins",
+																	fontWeight: "100",
+																	textAlign: 'end',
+																}}
+																>{Number(Number(stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString()} BTC
+																</span>
+															</Grid>
+														</Grid>
+													</Grid>
+												</div>
 											</Grid>
 										</div>
 									</Grid>
@@ -602,13 +619,17 @@ function Manage() {
 									<Grid item xs={12}>
 										<Grid container spacing={2}>
 											<Grid item xs={6}>
-												<div style={{ padding: "10px 0px" }}>
+												<div style={{ padding: "10px 0px"}}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Collateral:</span>
+															<span>Collateral</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)} / ${Number(stateLoanshark.userDepositBalanceEth)} ${assest1Code}`}</span>
+															<span style={{ 
+																	fontFamily: "poppins",
+																	fontWeight: "800", 
+																	fontSize: "16px" 
+																}}>{`$${ Number((stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)).toLocaleString()} / ${ Number(Number(stateLoanshark.userDepositBalanceEth).toFixed(2)).toLocaleString() } ${assest1Code}`}</span>
 															{/* <span>{`$${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)}`}</span> */}
 														</Grid>
 													</Grid>
@@ -618,15 +639,17 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Health Factor:</span>
+															<span>Health Factor</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{calculateHealthFactor(
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
+																Number(Number(calculateHealthFactor(
 																stateLoanshark.userDepositBalanceEth,
 																stateLoanshark.priceOfEth,
 																stateLoanshark.LTV["ETHBTC"],
 																stateLoanshark.userDebtBalanceBtc,
-																stateLoanshark.priceOfBtc)}
+																stateLoanshark.priceOfBtc)).toFixed(2)).toLocaleString()
+															}
 															</span>
 														</Grid>
 													</Grid>
@@ -636,11 +659,14 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Debt:</span>
+															<span>Debt</span>
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$41340.1/1.87BTC</span> */}
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)} / ${stateLoanshark.userDebtBalanceBtc} ${assest2Code}`}</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${
+																Number(Number(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)).toLocaleString()
+															} / ${ Number(Number(stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString() 
+															} ${assest2Code}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -649,11 +675,13 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Smart Vault:</span>
+															<span>Smart Vault</span>
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span> */}
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (stateLoanshark.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (stateLoanshark.priceOfBtc / 100)).toFixed(2)}`}</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${
+																Number(Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (stateLoanshark.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (stateLoanshark.priceOfBtc / 100)).toFixed(2)).toLocaleString()
+															}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -662,14 +690,16 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>APY:</span>
+															<span>APY</span>
 														</Grid>
 														<Grid item>
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{(
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
+															Number(Number(
+																(
 																0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
 																- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
 																+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
-															) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100}%</span>
+															) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(2)).toLocaleString()}%</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -678,7 +708,7 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Provider:</span>
+															<span>Provider</span>
 														</Grid>
 														<Grid item>
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>AAVE</span>
@@ -716,7 +746,7 @@ function Manage() {
 																	height: "100%",
 																	border: "0px",
 																	backgroundColor: "transparent",
-																	fontFamily: "Poppins-Bold",
+																	fontFamily: "poppins",
 																	overflow: "hidden",
 																	fontSize: "48px",
 																	fontWeight: "700",
@@ -757,16 +787,16 @@ function Manage() {
 
 									{[
 										{
-											title: "Trigger Health Factor:",
+											title: "Trigger Health Factor",
 											value: (stateBackd.myProtectionBtc[0] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[0], 'ether') : 0),
 										},
 										{
-											title: "Repay amount each time:",
+											title: "Repay amount each time",
 											value: (stateBackd.myProtectionBtc[5] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[5], 'gwei') * 10 : 0) + " BTC",
 										},
 										{
-											title: "Remaining prepaid gas free:",
-											value: parseFloat(stateBackd.myGasBankBalance),
+											title: "Remaining prepaid gas free",
+											value: Number(stateBackd.myGasBankBalance).toFixed(2),
 										},
 									].map((item) => {
 										return (
@@ -903,8 +933,8 @@ function Manage() {
 																				padding: "5px",
 																				textAlign: "end",
 																			}}>
-																				<span>Balance: </span>
-																				<span style={{ fontWeight: "800" }}>{`${maxdepositAmount.toFixed(2)} ETH`}</span>
+																				<span>Balance </span>
+																				<span style={{ fontWeight: "800" }}>{`${ Number(Number(maxdepositAmount.toFixed(2))).toLocaleString() }`}</span>
 																			</div>
 
 																		</Grid>
@@ -1162,7 +1192,7 @@ function Manage() {
 																				textAlign: "end",
 																			}}>
 																				<span>Balance: </span>
-																				<span style={{ fontWeight: "800" }}>{`${maxdebtAmount.toFixed(8)} BTC`}</span>
+																				<span style={{ fontWeight: "800" }}>{`${ Number(Number(maxdebtAmount.toFixed(2))).toLocaleString()}`}</span>
 																			</div>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -1249,7 +1279,7 @@ function Manage() {
 																			backgroundColor: "rgba(255,255,255, 1)",
 																			padding: "2px 5px",
 																			color: "black",
-																			fontFamily: "Poppins-Regular",
+																			fontFamily: "poppins",
 																			fontSize: "14px",
 																			fontWeight: "400",
 																			cursor: "pointer",
@@ -1430,32 +1460,32 @@ function Manage() {
 								<NoBorderCard>
 									<Grid container>
 										{[{
-											title: "Current Price of ETH:",
+											title: "Current Price of ETH",
 											value: stateLoanshark.priceOfEth / 100,
 											textColor: "black",
 										},
 										{
-											title: "Current Price of BTC:",
+											title: "Current Price of BTC",
 											value: stateLoanshark.priceOfBtc / 100,
 											textColor: "black",
 										},
 										{
-											title: "LTV:",
+											title: "LTV",
 											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * stateLoanshark.liquidationPrice[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
-											title: "Max Borrow Power:",
+											title: "Max Borrow Power",
 											value: `${maxBorrowPower} BTC`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidity Threshold:",
+											title: "Liquidity Threshold",
 											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidation Price of ETH:",
+											title: "Liquidation Price of ETH",
 											value: `${((Number(stateLoanshark.userDebtBalanceBtc))
 												* (stateLoanshark.priceOfBtc) / 100
 												/ (Number(stateLoanshark.userDepositBalanceEth))
@@ -1471,7 +1501,7 @@ function Manage() {
 																<span className={`current-price-box-title`}>{item.title}</span>
 															</Grid>
 															<Grid item>
-																<span className={`current-price-box-value${item.textColor === "blue" ? "__liquidation" : ""}`}>{item.value}</span>
+																<span className={`current-price-box-value`}>{item.value}</span>
 															</Grid>
 														</Grid>
 													</div>

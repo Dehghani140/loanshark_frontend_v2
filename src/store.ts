@@ -8,7 +8,7 @@ const store = configureStore({
     reducer: {
         loanshark: loansharkReducer,
         backd: backdReducer,
-        smartvaultSlice: smartvaultReducer,
+        smartvault: smartvaultReducer,
         layout: layoutReducer
     },
     middleware: getDefaultMiddleware =>

@@ -7,6 +7,11 @@ import { Grid } from '@mui/material';
 import Widget from '../../components/Widget/Widget'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 
+import { useAppSelector, useAppDispatch } from '../../hooks'
+
+import { changeMyProtectionType } from '../../slice/smartvaultSlice';
+
+import './SmartVault.scss'
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
@@ -15,17 +20,21 @@ function SmartVault1() {
     useEffect(() => {
         console.log(`SmartVault1`)
     }, [])
+
+	const dispatch = useAppDispatch();
+	const stateLoanshark = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
+	const stateSmarvault = useAppSelector((state) => state.smartvault)
+
     return (
         <>
-            <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
+            <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <p>Protection Setup (1/4 steps)</p>
-
+                        <span className={'card-title'}>Protection Setup </span><span className={'card-subtitle'}>(1/4 steps)</span>
                     </Grid>
                     <Grid item xs={12}>
-                        <p>Please select the way to setup protection:</p>
-
+                        <span className={'card-subtitle'}>Please select the way to setup protection:</span>
                     </Grid>
                     <Grid item xs={5}>
                         <Widget whiteBackgroundColor={true} title={""}>
@@ -36,6 +45,7 @@ function SmartVault1() {
                                     label={"select"}
                                     onClick={() => {
                                         console.log(`click add borrow`)
+                                        dispatch(changeMyProtectionType("topup"))
                                         navigate("/app/main/smartVault2")
                                     }}
                                     color={"white"}
@@ -53,6 +63,7 @@ function SmartVault1() {
                                     label={"select"}
                                     onClick={() => {
                                         console.log(`click add borrow`)
+                                        dispatch(changeMyProtectionType("repay"))
                                         navigate("/app/main/smartVault2")
                                     }}
                                     color={"white"}

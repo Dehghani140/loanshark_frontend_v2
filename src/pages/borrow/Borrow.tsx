@@ -251,7 +251,7 @@ function Borrow() {
 											<span className={`borrow-card-trade-titile`}>Deposit ETH and Borrow BTC</span>
 										</Grid>
 										<Grid item xs={12}>
-											<span className={`borrow-card-trade-titile`}>{state.inputEthDeposit} ETH as collateral to borrow {state.inputBtcDept} BTC</span>
+											<span className={`borrow-card-trade-subtitile`}>{Number(Number(state.inputEthDeposit).toFixed(2)).toLocaleString()} ETH as collateral to borrow {Number(Number(state.inputBtcDept).toFixed(2)).toLocaleString()} BTC</span>
 										</Grid>
 										<Grid item xs={12}>
 											<Grid container style={{
@@ -262,11 +262,11 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid item xs={8}>
+															<Grid item xs={7}>
 																<input
 																	style={{
 																		color: "rgba(51,51,51,1)",
-																		fontFamily: "Poppins-Bold",
+																		fontFamily: "poppins",
 																		fontSize: "48px",
 																		fontWeight: "700",
 																		fontStyle: "normal",
@@ -282,7 +282,7 @@ function Borrow() {
 																	}}
 																></input>
 															</Grid>
-															<Grid item xs={4}>
+															<Grid item xs={5}>
 
 																<Grid container>
 																	<Grid item xs={12}>
@@ -291,7 +291,7 @@ function Borrow() {
 																			textAlign: "end",
 																		}}>
 																			<span>Balance: </span>
-																			<span style={{ fontWeight: "800" }}>{state.myETHAmount} ETH</span>
+																			<span style={{ fontWeight: "800" }}>{Number(Number(state.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
 																		</div>
 
 																	</Grid>
@@ -324,7 +324,9 @@ function Borrow() {
 																						textAlign: "center",
 																					}}>
 																						<div style={{
-																							padding: "3px 10px",
+																							paddingLeft: "10px",
+																							paddingRight: "10px",
+																							paddingTop: "5px",
 																						}}>
 																							<Grid container alignContent={'center'}>
 																								<Grid item>
@@ -368,11 +370,11 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid item xs={8}>
+															<Grid item xs={7}>
 																<input
 																	style={{
 																		color: "rgba(51,51,51,1)",
-																		fontFamily: "Poppins-Bold",
+																		fontFamily: "poppins",
 																		fontSize: "48px",
 																		fontWeight: "700",
 																		fontStyle: "normal",
@@ -388,7 +390,7 @@ function Borrow() {
 																	}}
 																></input>
 															</Grid>
-															<Grid item xs={4}>
+															<Grid item xs={5}>
 
 																<Grid container>
 																	<Grid item xs={12}>
@@ -398,12 +400,12 @@ function Borrow() {
 																		}}>
 																			<span>Borrow Power: </span>
 																			<span style={{ fontWeight: "800" }}>{
-																				((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
+																				Number(Number(((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
 																				* state.priceOfEth
 																				* state.LTV["ETHBTC"]
 																				* state.liquidationPrice["ETHBTC"]
 																				/ state.priceOfBtc)
-																				 - state.userDebtBalanceBtc
+																				 - state.userDebtBalanceBtc).toFixed(2)).toLocaleString()
 																			} BTC</span>
 																		</div>
 
@@ -442,7 +444,9 @@ function Borrow() {
 																						textAlign: "center",
 																					}}>
 																						<div style={{
-																							padding: "3px 10px",
+																							paddingLeft: "10px",
+																							paddingRight: "10px",
+																							paddingTop: "5px",
 																						}}>
 																							<Grid container alignContent={'center'}>
 																								<Grid item>
@@ -450,10 +454,10 @@ function Borrow() {
 																										width: "20px",
 																										height: "20px"
 																									}}
-																										src={`/assets/icon/eth-logo.svg`} alt="" />
+																										src={`/assets/icon/btc-logo.svg`} alt="" />
 																								</Grid>
 																								<Grid item>
-																									<span>ETH</span>
+																									<span> BTC</span>
 																								</Grid>
 																							</Grid>
 																						</div>
@@ -523,7 +527,7 @@ function Borrow() {
 												fontSize: "18px",
 												fontWeight: "600",
 												fontStyle: "normal",
-											}}>Deposited, Borrowed,Health Factor</span>
+											}}>Deposited, Borrowed, Health Factor</span>
 										</Grid>
 										<Grid item xs={12}>
 											<div style={{ width: "100%", textAlign: 'center' }}>
@@ -547,41 +551,41 @@ function Borrow() {
 							<NoBorderCard>
 									<Grid container>
 									{[{
-											title: "Current Price of ETH:",
-											value: state.priceOfEth / 100,
+											title: "Current Price of ETH",
+											value: "$" + Number(state.priceOfEth/ 100).toLocaleString() ,
 											textColor: "black",
 										},
 										{
-											title: "Current Price of BTC:",
-											value: state.priceOfBtc / 100,
+											title: "Current Price of BTC",
+											value: "$" +  Number(state.priceOfBtc / 100).toLocaleString() ,
 											textColor: "black",
 										},
 										{
 											title: "LTV:",
-											value: `${(state.LTV[state.selectedPair] * state.liquidationPrice[state.selectedPair] * 100).toFixed(2)} %`,
+											value: `${Number((state.LTV[state.selectedPair] * state.liquidationPrice[state.selectedPair] * 100).toFixed(2))} %`,
 											textColor: "black",
 										},
 										{
-											title: "Max Borrow Power:",
-											value: `${((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
+											title: "Max Borrow Power",
+											value: "$" + `${Number(((Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
 												* state.priceOfEth
 												* state.LTV["ETHBTC"]
 												* state.liquidationPrice["ETHBTC"]
 												/ state.priceOfBtc)
-												 - state.userDebtBalanceBtc} BTC`,
+												 - state.userDebtBalanceBtc).toFixed(2).toLocaleString()} BTC`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidity Threshold:",
+											title: "Liquidity Threshold",
 											value: `${(state.LTV[state.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidation Price of ETH:",
-											value: `${((Number(state.userDebtBalanceBtc) + Number(state.inputBtcDept))
+											title: "Liquidation Price of ETH",
+											value: "$" + `${Number(((Number(state.userDebtBalanceBtc) + Number(state.inputBtcDept))
 												* (state.priceOfBtc) / 100
 												/ (Number(state.userDepositBalanceEth) + Number(state.inputEthDeposit))
-												/ state.LTV["ETHBTC"]).toFixed(2)}`,
+												/ state.LTV["ETHBTC"]).toFixed(2)).toLocaleString()}`,
 											textColor: "blue",
 										},
 										].map((item, index) => {
@@ -593,7 +597,7 @@ function Borrow() {
 																<span className={`current-price-box-title`}>{item.title}</span>
 															</Grid>
 															<Grid item>
-																<span className={`current-price-box-value${item.textColor === "blue" ? "__liquidation" : ""}`}>{item.value}</span>
+																<span className={`current-price-box-value`}>{item.value}</span>
 															</Grid>
 														</Grid>
 													</div>

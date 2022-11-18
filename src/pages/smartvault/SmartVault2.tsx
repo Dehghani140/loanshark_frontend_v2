@@ -4,159 +4,117 @@ import { connect } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom"
 import { Grid } from '@mui/material';
 
-import Widget from '../../components/Widget/Widget'
-import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
+import { useAppSelector, useAppDispatch } from '../../hooks'
 
-import Repay from './Repay.svg';
-import Topup from './Topup.svg';
+import { changeMyProtectingPair } from '../../slice/smartvaultSlice';
 
 import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 
+import './SmartVault.scss'
 function SmartVault1() {
-  let navigate = useNavigate();
-  useEffect(() => {
-    console.log(`SmartVault1`)
-  }, [])
-  return (
-    <>
-      <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <p>Protection Setup (2/4 steps)</p>
+	let navigate = useNavigate();
+	useEffect(() => {
+		console.log(`SmartVault1`)
+	}, [])
 
-          </Grid>
-          <Grid item xs={12}>
-            <p>Select a loan to protect</p>
+	const dispatch = useAppDispatch();
+	const state = useAppSelector((state) => state.loanshark)
+	const stateBackd = useAppSelector((state) => state.backd)
 
-          </Grid>
-          <Grid item xs={5}>
-            <DashboardCard
-              label={`ETH/BTC`}
-              labelInUSD={`$19,294`}
-              numberOfAssest={2}
-              assest1Code={`eth`}
-              assest2Code={`btc`}
-              pair={
-                [
-                  {
-                    amountInUsdt: 34192.9,
-                    amountInCurrency: 30.4,
-                    currency: "ETH",
-                  },
-                  {
-                    amountInUsdt: 413401.1,
-                    amountInCurrency: 1.87,
-                    currency: "BTC",
-                  },
-                ]
-              }
-              detail={
-                [
-                  {
-                    title: "Collateral",
-                    value: "$34192.9 / 30.4ETH"
-                  },
-                  {
-                    title: "Debt",
-                    value: "$41340.3 / 1.87BTC"
-                  },
-                  {
-                    title: "APY",
-                    value: "20.4%"
-                  },
-                  {
-                    title: "Health Factor",
-                    value: "$20"
-                  },
-                  {
-                    title: "Smart Value",
-                    value: "$192294"
-                  },
-                  {
-                    title: "Provider",
-                    value: "AAVE"
-                  },
-                ]
-              }
-              button={[
-                {
-                  label: "SELECT",
-                  callbackFunction: (() => {
-                    console.log(`on click select`)
-                    navigate("/app/main/smartVault3");
-                  }),
-                  color: "white"
-                },
-              ]}
-            >
-            </DashboardCard>
-          </Grid>
+	function calculateHealthFactor(depositAmouont, priceOfDeposite, LTV, debtAmount, priceOfDebt) {
+		if (debtAmount === undefined || debtAmount === null || debtAmount === 0) {
+			return "-";
+		}
+		return ((depositAmouont * priceOfDeposite / 100) * LTV / (debtAmount * priceOfDebt / 100)).toFixed(2)
+	}
 
-          <Grid item xs={5}>
-            <DashboardCard
-              label={`ETH/BTC`}
-              labelInUSD={`$19,294`}
-              numberOfAssest={2}
-              assest1Code={`one`}
-              assest2Code={`usdt`}
-              pair={
-                [
-                  {
-                    amountInUsdt: 34192.9,
-                    amountInCurrency: 30.4,
-                    currency: "ETH",
-                  },
-                  {
-                    amountInUsdt: 413401.1,
-                    amountInCurrency: 1.87,
-                    currency: "BTC",
-                  },
-                ]
-              }
-              detail={
-                [
-                  {
-                    title: "Collateral",
-                    value: "$34192.9 / 30.4ETH"
-                  },
-                  {
-                    title: "Debt",
-                    value: "$41340.3 / 1.87BTC"
-                  },
-                  {
-                    title: "APY",
-                    value: "20.4%"
-                  },
-                  {
-                    title: "Health Factor",
-                    value: "$20"
-                  },
-                  {
-                    title: "Smart Value",
-                    value: "$192294"
-                  },
-                  {
-                    title: "Provider",
-                    value: "AAVE"
-                  },
-                ]
-              }
-              button={[
-                {
-                  label: "SELECT",
-                  callbackFunction: (() => {
-                    console.log(`on click select`)
-                    navigate("/app/main/smartVault3");
-                  }),
-                  color: "white"
-                },
-              ]}
-            >
-            </DashboardCard>
-          </Grid></Grid>
-      </div>
-    </>
-  )
+	return (
+		<>
+			<div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
+				<Grid container spacing={3}>
+					<Grid item xs={12}>
+                        <span className={'card-title'}>Select a loan to protect</span><span className={'card-subtitle'}> (2/4 steps)</span>
+					</Grid>
+					<Grid item xs={5}>
+						<DashboardCard
+							label={`ETH/BTC`}
+							labelInUSD={"$" + (stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)}
+							numberOfAssest={2}
+							assest1Code={`eth`}
+							assest2Code={`btc`}
+							pair={
+								[
+									{
+										amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
+										currency: "ETH",
+									},
+									{
+										amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+										amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
+										currency: "BTC",
+									},
+								]
+							}
+							detail={
+								[
+									{
+										title: "Collateral",
+										value: "$" + Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString() + " ETH"
+									},
+									{
+										title: "Debt",
+										value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
+									},
+									{
+										title: "APY",
+										value: Number((
+											(
+												0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
+												- state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
+												+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
+											) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
+										).toFixed(2)).toLocaleString() + "%"
+									},
+									{
+										title: "Health Factor",
+										value: Number(Number(calculateHealthFactor(
+											state.userDepositBalanceEth, 
+											state.priceOfEth, 
+											state.LTV["ETHBTC"], 
+											state.userDebtBalanceBtc, 
+											state.priceOfBtc
+										)).toFixed(2)).toLocaleString()
+									},
+									{
+										title: "Smart Vault",
+										value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString()
+									},
+									{
+										title: "Provider",
+										value: "AAVE"
+									},
+								]
+							}
+							button={[
+								{
+									label: "SELECT",
+									callbackFunction: (() => {
+										console.log(`on click select`)
+										dispatch(changeMyProtectingPair("ETHBTC"));
+										navigate("/app/main/smartVault3");
+									}),
+									color: "white"
+								},
+							]}
+						>
+						</DashboardCard>
+					</Grid>
+
+				</Grid>
+			</div>
+		</>
+	)
 }
 
 
