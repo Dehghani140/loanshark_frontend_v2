@@ -149,6 +149,19 @@ function HeaderMenu() {
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={NavLink}
+            to="/app/main/history"
+          >
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary="History"
+              className={`nav-item${menubar[2] === true ? "__clicked" : ""}`}
+              onClick={() => { clickMenu(2) }}
+            />
+          </ListItem>
+          <ListItem
+            classes={{ root: 'MuiListItem-indicators' }}
+            button
+            component={NavLink}
             to="/app/main/more"
           >
             <ListItemText
