@@ -196,10 +196,10 @@ function HeaderButtons() {
                     <Box sx={{ mr: 1 }}>
                         {state.myAccount ?
                             <Grid container alignItems={'center'} spacing={1}>
-                                <Grid item>
-                                    {state.myAccount}
+                                <Grid xs={6}  item>
+                                    <p style={{fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden"}}>{state.myAccount}</p>
                                 </Grid>
-                                <Grid item>
+                                <Grid xs={6}  item>
                                     <RoundShapeButton
                                         label={"disconnect wallet"}
                                         onClick={() => {

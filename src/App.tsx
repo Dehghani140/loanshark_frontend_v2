@@ -21,6 +21,7 @@ import SmartVault1 from './pages/smartvault/SmartVault1';
 import SmartVault2 from './pages/smartvault/SmartVault2';
 import SmartVault3 from './pages/smartvault/SmartVault3';
 import SmartVault4 from './pages/smartvault/SmartVault4';
+import History from './pages/history/History';
 import SidebarLayout from './layouts/SidebarLayout';
 import LayoutComponent from './components/Layout/Layout';
 import Tables from './pages/tables/Tables';
@@ -115,6 +116,7 @@ function App(props: any) {
                   <Route path="main/borrow" element={<Borrow></Borrow>}></Route>
                   <Route path="main/manage" element={<Manage></Manage>}></Route>
                   <Route path="main/more" element={<Dashboard></Dashboard>}></Route>
+                  <Route path="main/history" element={<History></History>}></Route>
                   <Route path="main/smartVault1" element={<SmartVault1></SmartVault1>}></Route>
                   <Route path="main/smartVault2" element={<SmartVault2></SmartVault2>}></Route>
                   <Route path="main/smartVault3" element={<SmartVault3></SmartVault3>}></Route>
