@@ -18,6 +18,7 @@ import {
     resetBackd
 } from '../../../../slice/backdSlice';
 import { connectContract, refreshPrice } from '../../../../utils/API'
+import './button.scss'
 
 const MY_FujiVaultETHBTC = process.env.REACT_APP_MY_FujiVaultETHBTC;
 const METAMASK_INSTALL_URL = process.env.REACT_APP_METAMASK_INSTALL_URL;
@@ -128,19 +129,22 @@ function HeaderButtons() {
 
                 <a>
                     <div
-                        style={{ padding: "10px", border: "1px solid #000000" }}
+                        className={'wallet-box'}
+
+
+
                         onClick={() => {
                             console.log("meta mask")
                             ethEnabled();
                             setModal(!modal);
                         }}>
-                        <div style={{ padding: "10px" }}>
+                        <div className={'wallet-box-label'}>
                             <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
                                 <Grid item>
                                     {"MetaMask"}
                                 </Grid>
                                 <Grid item>
-                                    <img style={{ width: "15px", height: "15px" }} src="/assets/icon/metamask.png" alt=""></img>
+                                    <img className={'wallet-box-image'} src="/assets/icon/metamask.png" alt=""></img>
                                 </Grid>
                             </Grid>
                         </div>
@@ -149,17 +153,17 @@ function HeaderButtons() {
                 <br></br>
                 <a>
                     <div
-                        style={{ padding: "10px", border: "1px solid #000000" }}
+                        className={'wallet-box'}
                         onClick={() => {
 
                         }}>
-                        <div style={{ padding: "10px" }}>
+                        <div className={'wallet-box-label'}>
                             <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
                                 <Grid item>
                                     WalletConnect
                                 </Grid>
                                 <Grid item>
-                                    <img style={{ width: "15px", height: "15px" }} src="/assets/icon/walletConnectIcon.svg" alt=""></img>
+                                    <img className={'wallet-box-image'} src="/assets/icon/walletConnectIcon.svg" alt=""></img>
                                 </Grid>
                             </Grid>
                         </div>
@@ -168,17 +172,17 @@ function HeaderButtons() {
                 <br></br>
                 <a>
                     <div
-                        style={{ padding: "10px", border: "1px solid #000000" }}
+                        className={'wallet-box'}
                         onClick={() => {
 
                         }}>
-                        <div style={{ padding: "10px" }}>
+                        <div className={'wallet-box-label'}>
                             <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
                                 <Grid item>
                                     Trust Wallet
                                 </Grid>
                                 <Grid item>
-                                    <img style={{ width: "15px", height: "15px" }} src="/assets/icon/trustWalletIcon.svg" alt=""></img>
+                                    <img className={'wallet-box-image'} src="/assets/icon/trustWalletIcon.svg" alt=""></img>
                                 </Grid>
                             </Grid>
                         </div>

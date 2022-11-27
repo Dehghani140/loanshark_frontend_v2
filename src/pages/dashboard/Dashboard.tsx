@@ -182,7 +182,7 @@ function Dashboard() {
 				modalConfirm={() => {modalConfirm(modalAction)}}
 				modalInputValue={modalInputValue}>
 			</CustDialog>
-			<SelectToken></SelectToken>
+			{/* <SelectToken></SelectToken> */}
 			<div className={'main-content-layout'}>
 				<Grid container>
 					<Grid item xs={12} >
