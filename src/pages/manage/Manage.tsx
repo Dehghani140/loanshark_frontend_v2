@@ -7,11 +7,19 @@ import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShap
 import '../../App.scss'
 import './Manage.scss'
 import { useAppSelector, useAppDispatch } from '../../hooks'
-import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
+import loansharkSlice, { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
+import { changeDialogState, changeTokenListState } from '../../slice/selectTokenSlice';
 import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
+import TokenButton from '../../components/Button/TokenButton/TokenButton'
 import { roundDown } from '../../utils/utilFunction/utilFunction'
 import { refreshPrice } from '../../utils/API'
+import {
+	depositTokenList,
+	borrowTokenList,
+	TOKEN_DISPLAY_DECIMAL,
+} from '../../utils/utilList'
+
 
 const options = {
 	chart: {
@@ -132,6 +140,8 @@ export enum IDebt {
 	PAYBACK = "payback",
 }
 
+ 
+
 function Manage() {
 	let navigate = useNavigate();
 	let location: any = useLocation();
@@ -142,6 +152,7 @@ function Manage() {
 
 	const stateLoanshark = useAppSelector((state) => state.loanshark)
 	const stateBackd = useAppSelector((state) => state.backd)
+	const stateSelectToken = useAppSelector((state) => state.selectToken)
 
 	const [value, setValue] = useState("0.00")
 	const [valueTwo, setValueTwo] = useState("0.00")
@@ -200,8 +211,13 @@ function Manage() {
 		return false
 	}, [barData])
 
-	console.log(barData)
-	console.log(options.series)
+	function calculateNetInterestRate():number{
+		return Number(((
+			0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
+			- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
+			+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
+		) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(TOKEN_DISPLAY_DECIMAL))
+	}
 
 	const maxBorrowPower = useMemo(() => {
 		let borrowPower = stateLoanshark.userDepositBalanceEth;
@@ -510,7 +526,7 @@ function Manage() {
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
 					<Grid item xs={7}>
-						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px`,  fontFamily: "poppins" }}>
+						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px`, fontFamily: "poppins" }}>
 							<NoBorderCard>
 								<Grid container>
 									<Grid item xs={12}>
@@ -619,17 +635,17 @@ function Manage() {
 									<Grid item xs={12}>
 										<Grid container spacing={2}>
 											<Grid item xs={6}>
-												<div style={{ padding: "10px 0px"}}>
+												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
 															<span>Collateral</span>
 														</Grid>
 														<Grid item>
-															<span style={{ 
-																	fontFamily: "poppins",
-																	fontWeight: "800", 
-																	fontSize: "16px" 
-																}}>{`$${ Number((stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)).toLocaleString()} / ${ Number(Number(stateLoanshark.userDepositBalanceEth).toFixed(2)).toLocaleString() } ${assest1Code}`}</span>
+															<span style={{
+																fontFamily: "poppins",
+																fontWeight: "800",
+																fontSize: "16px"
+															}}>{`$${Number((stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)).toLocaleString()} / ${Number(Number(stateLoanshark.userDepositBalanceEth).toFixed(2)).toLocaleString()} ${assest1Code}`}</span>
 															{/* <span>{`$${(stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100).toFixed(2)}`}</span> */}
 														</Grid>
 													</Grid>
@@ -644,11 +660,11 @@ function Manage() {
 														<Grid item>
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
 																Number(Number(calculateHealthFactor(
-																stateLoanshark.userDepositBalanceEth,
-																stateLoanshark.priceOfEth,
-																stateLoanshark.LTV["ETHBTC"],
-																stateLoanshark.userDebtBalanceBtc,
-																stateLoanshark.priceOfBtc)).toFixed(2)).toLocaleString()
+																	stateLoanshark.userDepositBalanceEth,
+																	stateLoanshark.priceOfEth,
+																	stateLoanshark.LTV["ETHBTC"],
+																	stateLoanshark.userDebtBalanceBtc,
+																	stateLoanshark.priceOfBtc)).toFixed(2)).toLocaleString()
 															}
 															</span>
 														</Grid>
@@ -663,10 +679,9 @@ function Manage() {
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$41340.1/1.87BTC</span> */}
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${
-																Number(Number(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)).toLocaleString()
-															} / ${ Number(Number(stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString() 
-															} ${assest2Code}`}</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${Number(Number(stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100).toFixed(2)).toLocaleString()
+																} / ${Number(Number(stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString()
+																} ${assest2Code}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -679,9 +694,8 @@ function Manage() {
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span> */}
-															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${
-																Number(Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (stateLoanshark.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (stateLoanshark.priceOfBtc / 100)).toFixed(2)).toLocaleString()
-															}`}</span>
+															<span style={{ fontWeight: "800", fontSize: "16px" }}>{`$${Number(Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (stateLoanshark.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (stateLoanshark.priceOfBtc / 100)).toFixed(2)).toLocaleString()
+																}`}</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -694,12 +708,12 @@ function Manage() {
 														</Grid>
 														<Grid item>
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
-															Number(Number(
-																(
-																0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
-																- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
-																+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
-															) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(2)).toLocaleString()}%</span>
+																Number(Number(
+																	(
+																		0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
+																		- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
+																		+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
+																	) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(2)).toLocaleString()}%</span>
 														</Grid>
 													</Grid>
 												</div>
@@ -934,14 +948,16 @@ function Manage() {
 																				textAlign: "end",
 																			}}>
 																				<span>Balance </span>
-																				<span style={{ fontWeight: "800" }}>{`${ Number(Number(maxdepositAmount.toFixed(2))).toLocaleString() }`}</span>
+																				<span style={{ fontWeight: "800" }}>{`${Number(Number(maxdepositAmount.toFixed(2))).toLocaleString()}`}</span>
 																			</div>
 
 																		</Grid>
 																		<Grid item xs={12}>
 																			<Grid container justifyContent={'end'} alignItems={'center'}>
 																				<Grid item>
-																					<div style={{ paddingRight: "5px" }}>
+																					<div
+																						style={{ paddingRight: "1px" }}
+																					>
 																						<Button style={{
 																							backgroundColor: "white",
 																							color: "black",
@@ -959,33 +975,21 @@ function Manage() {
 																				</Grid>
 
 																				<Grid item>
-																					<Button style={{
-																						backgroundColor: "white",
-																						color: "black",
-																						padding: "0px",
-																					}}
-																					>
-																						<div style={{
-																							border: "1px solid black",
-																							borderRadius: "20px",
-																							padding: "3px 10px",
-																						}}>
-																							<Grid container alignContent={'center'}>
-																								<div style={{ height: "15px", width: "15px" }}>
-																									<Grid item>
-																										<img style={{
-																											width: "100%",
-																											height: "100%"
-																										}}
-																											src={`/assets/icon/eth-logo.svg`} alt="" />
-																									</Grid>
-																								</div>
-																								<Grid item>
-																									<span>ETH</span>
-																								</Grid>
-																							</Grid>
-																						</div>
-																					</Button>
+																					<TokenButton
+																						collateralCurrency={`eth`}
+																						onClick={() => {
+																							let tempList = [...depositTokenList]
+																							tempList.forEach((eachToken,index)=>{
+																								tempList[index] = {
+																									...eachToken,
+																									apy:calculateNetInterestRate(),
+																									balance:Number(maxdepositAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
+																								}
+																							})
+																							dispatch(changeTokenListState(tempList))
+																							dispatch(changeDialogState(!stateSelectToken.dialogState))
+																						}}
+																					></TokenButton>
 																				</Grid>
 																			</Grid>
 																		</Grid>
@@ -1192,13 +1196,15 @@ function Manage() {
 																				textAlign: "end",
 																			}}>
 																				<span>Balance: </span>
-																				<span style={{ fontWeight: "800" }}>{`${ Number(Number(maxdebtAmount.toFixed(2))).toLocaleString()}`}</span>
+																				<span style={{ fontWeight: "800" }}>{`${Number(Number(maxdebtAmount.toFixed(2))).toLocaleString()}`}</span>
 																			</div>
 																		</Grid>
 																		<Grid item xs={12}>
 																			<Grid container justifyContent={'end'} alignItems={'center'}>
 																				<Grid item>
-																					<div style={{ paddingRight: "5px" }}>
+																					<div 
+																					style={{ paddingRight: "1px" }}
+																					>
 																						<Button style={{
 																							backgroundColor: "white",
 																							color: "black",
@@ -1211,33 +1217,26 @@ function Manage() {
 																					</div>
 																				</Grid>
 																				<Grid item>
-																					<Button style={{
-																						backgroundColor: "white",
-																						color: "black",
-																						padding: "0px",
-																					}}
-																					>
-																						<div style={{
-																							border: "1px solid black",
-																							borderRadius: "20px",
-																							padding: "3px 10px",
-																						}}>
-																							<Grid container alignContent={'center'}>
-																								<div style={{ height: "15px", width: "15px" }}>
-																									<Grid item>
-																										<img style={{
-																											width: "100%",
-																											height: "100%"
-																										}}
-																											src={`/assets/icon/btc-logo.svg`} alt="" />
-																									</Grid>
-																								</div>
-																								<Grid item>
-																									<span>BTC</span>
-																								</Grid>
-																							</Grid>
-																						</div>
-																					</Button>
+																					<TokenButton
+																						collateralCurrency={`btc`}
+																						onClick={() => {
+
+																							let tempList = [...borrowTokenList]
+																							console.log(stateLoanshark.aaveBtcBorrowRate)
+																							console.log(typeof(stateLoanshark.aaveBtcBorrowRate))
+																							
+																							tempList.forEach((eachToken,index)=>{
+																								tempList[index] = {
+																									...eachToken,
+																									apy:Number(Number(stateLoanshark.aaveBtcBorrowRate).toFixed(TOKEN_DISPLAY_DECIMAL)),
+																									balance:Number(maxdebtAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
+																								}
+																							})
+																							dispatch(changeTokenListState(tempList))
+																							dispatch(changeDialogState(!stateSelectToken.dialogState))
+
+																						}}
+																					></TokenButton>
 																				</Grid>
 																			</Grid>
 																		</Grid>
@@ -1251,7 +1250,7 @@ function Manage() {
 											<Grid item xs={12}>
 												<Grid container justifyContent={'space-between'}>
 													<Grid item>
-														<span>{debtSelection === IDebt.BORROW ? "Borrowing Power:" : "Payback Percentage"}</span>
+														<span style={{fontSize:"10px"}}>{debtSelection === IDebt.BORROW ? "Borrowing Power:" : "Payback Percentage"}</span>
 													</Grid>
 													<Grid item>
 														<Grid container >
@@ -1282,6 +1281,7 @@ function Manage() {
 																			fontFamily: "poppins",
 																			fontSize: "14px",
 																			fontWeight: "400",
+																			cursor: "pointer",
 																		}}
 																			value={item.value}
 																			onClick={(e: any) => {
