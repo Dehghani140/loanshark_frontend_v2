@@ -19,7 +19,11 @@ import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
 import TokenButton from '../../components/Button/TokenButton/TokenButton'
 import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
-import { changeDialogState, changeTokenListState } from '../../slice/selectTokenSlice';
+import { 
+	changeDialogState, 
+	changeTokenListState,
+	changeSelectTokenTitleState,
+ } from '../../slice/selectTokenSlice';
 
 import { refreshPrice } from '../../utils/API'
 import {
@@ -283,15 +287,15 @@ function Borrow() {
 		console.log(`Borrow`)
 	}, [])
 
-	useEffect(() => {
-		console.log(stateSelectToken)
-		if (stateSelectToken.tokenAction === "COLLATERAL_TOKEN") {
-			setCollateralCurrency(stateSelectToken.selectedToken)
-		}
-		if (stateSelectToken.tokenAction === "BORROW_TOKEN") {
-			setBorrowCurrency(stateSelectToken.selectedToken)
-		}
-	}, [stateSelectToken])
+	// useEffect(() => {
+	// 	console.log(stateSelectToken)
+	// 	if (stateSelectToken.tokenAction === "COLLATERAL_TOKEN") {
+	// 		setCollateralCurrency(stateSelectToken.selectedToken)
+	// 	}
+	// 	if (stateSelectToken.tokenAction === "BORROW_TOKEN") {
+	// 		setBorrowCurrency(stateSelectToken.selectedToken)
+	// 	}
+	// }, [stateSelectToken])
 
 
 	function calculateNetInterestRate(): number {
@@ -402,6 +406,7 @@ function Borrow() {
 																								balance: Number(Number(stateLoanshark.myETHAmount).toFixed(TOKEN_DISPLAY_DECIMAL)),
 																							}
 																						})
+																						dispatch(changeSelectTokenTitleState(`Select a token as collateral`))
 																						dispatch(changeTokenListState(tempList))
 																						dispatch(changeDialogState(!stateSelectToken.dialogState))
 																					}}
@@ -498,13 +503,6 @@ function Borrow() {
 																				<TokenButton
 																					collateralCurrency={borrowCurrency}
 																					onClick={() => {
-																						// console.log(borrowTokenList)
-																						// dispatch(changeTokenListState(borrowTokenList))
-																						// dispatch(changeDialogState(!stateSelectToken.dialogState))
-
-																						
-																						
-																						// console.log(stateLoanshark.userDepositBalanceEth)
 																						let borrowPower = stateLoanshark.userDepositBalanceEth;
 																						borrowPower = borrowPower * stateLoanshark.priceOfEth;
 																						borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
@@ -520,10 +518,9 @@ function Borrow() {
 																								balance:Number(borrowPower.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																							}
 																						})
+																						dispatch(changeSelectTokenTitleState(`Select a token as borrow`))
 																						dispatch(changeTokenListState(tempList))
-																						dispatch(changeDialogState(!stateSelectToken.dialogState))
-
-																			
+																						dispatch(changeDialogState(!stateSelectToken.dialogState))																			
 																					}}
 																				></TokenButton>
 																			</Grid>

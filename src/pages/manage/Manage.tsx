@@ -8,7 +8,10 @@ import '../../App.scss'
 import './Manage.scss'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 import loansharkSlice, { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
-import { changeDialogState, changeTokenListState } from '../../slice/selectTokenSlice';
+import { changeDialogState, 
+	changeTokenListState,
+	changeSelectTokenTitleState,
+} from '../../slice/selectTokenSlice';
 import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
 import TokenButton from '../../components/Button/TokenButton/TokenButton'
@@ -986,6 +989,7 @@ function Manage() {
 																									balance:Number(maxdepositAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																								}
 																							})
+																							dispatch(changeSelectTokenTitleState(`Select a token to ${collateralSelection.toLowerCase()}`))
 																							dispatch(changeTokenListState(tempList))
 																							dispatch(changeDialogState(!stateSelectToken.dialogState))
 																						}}
@@ -1232,6 +1236,7 @@ function Manage() {
 																									balance:Number(maxdebtAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																								}
 																							})
+																							dispatch(changeSelectTokenTitleState(`Select a token to ${debtSelection.toLowerCase()}`))
 																							dispatch(changeTokenListState(tempList))
 																							dispatch(changeDialogState(!stateSelectToken.dialogState))
 
