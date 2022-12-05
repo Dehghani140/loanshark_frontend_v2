@@ -10,6 +10,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks'
 import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
 import { refreshPrice } from '../../utils/API'
+import SelectToken from "src/components/SelectToken/SelectToken";
 
 const lightTheme = {
 	primary: '#fff',
@@ -171,7 +172,7 @@ function Dashboard() {
 
 	return (
 		<>
-			{<CustDialog
+			<CustDialog
 				modal={modal} 
 				showConfirm={(modalAction !== "NOACTION")}
 				modalTitle={modalTitle} 
@@ -180,7 +181,8 @@ function Dashboard() {
 				modalCancel={()=> {setModal(!modal)}} 
 				modalConfirm={() => {modalConfirm(modalAction)}}
 				modalInputValue={modalInputValue}>
-			</CustDialog>}
+			</CustDialog>
+			{/* <SelectToken></SelectToken> */}
 			<div className={'main-content-layout'}>
 				<Grid container>
 					<Grid item xs={12} >

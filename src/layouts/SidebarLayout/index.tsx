@@ -8,6 +8,7 @@ import Header from './Header';
 import ClipLoader from "react-spinners/ClipLoader";
 
 import { useAppSelector } from '../../hooks';
+import SelectToken from 'src/components/SelectToken/SelectToken';
 
 interface SidebarLayoutProps {
   // children?: ReactNode;
@@ -16,11 +17,12 @@ interface SidebarLayoutProps {
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();
   console.log(theme)
+  const stateSelectToken = useAppSelector((state) => state.selectToken)
   useEffect(() => {
     console.log(`SidebarLayout`)
   }, [])
 
-	const stateLayout = useAppSelector((state) => state.layout)
+  const stateLayout = useAppSelector((state) => state.layout)
 
   let [color, setColor] = useState("#000000");
 
@@ -35,6 +37,12 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
 
   return (
     <>
+
+      <SelectToken></SelectToken>
+      {/* <SelectToken
+          openDialog={stateSelectToken.dialogState}
+      ></SelectToken> */}
+
       <Box
         sx={{
           flex: 1,
@@ -85,25 +93,25 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           <Box display="block">
             <div style={{ width: '100vw' }}>
               <Outlet />
-              { stateLayout.loadingActive ? <div style={{
-                  position: 'fixed', 
-                  top: '0px', 
-                  left: '0px', 
-                  zIndex: '1000', 
-                  width: '100%', 
-                  minHeight: '100%', 
-                  opacity: 0.5,
-                  backgroundColor: '#222222',
-                }}></div> : null
+              {stateLayout.loadingActive ? <div style={{
+                position: 'fixed',
+                top: '0px',
+                left: '0px',
+                zIndex: '1000',
+                width: '100%',
+                minHeight: '100%',
+                opacity: 0.5,
+                backgroundColor: '#222222',
+              }}></div> : null
               }
-                <ClipLoader
-                  color={color}
-                  loading={stateLayout.loadingActive}
-                  cssOverride={override}
-                  size={150}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                />
+              <ClipLoader
+                color={color}
+                loading={stateLayout.loadingActive}
+                cssOverride={override}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
             </div>
           </Box>
         </Box>
