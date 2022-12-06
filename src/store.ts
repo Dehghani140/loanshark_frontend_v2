@@ -1,15 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import loansharkReducer from './slice/loansharkSlice'
-import backdReducer from './slice/backdSlice'
-import smartvaultReducer from './slice/smartvaultSlice'
-import layoutReducer from './slice/layoutSlice'
+import loansharkReducer from './slice/loansharkSlice';
+import backdReducer from './slice/backdSlice';
+import smartvaultReducer from './slice/smartvaultSlice';
+import layoutReducer from './slice/layoutSlice';
+import selectTokenReducer from './slice/selectTokenSlice';
+
 
 const store = configureStore({
     reducer: {
         loanshark: loansharkReducer,
         backd: backdReducer,
         smartvault: smartvaultReducer,
-        layout: layoutReducer
+        layout: layoutReducer,
+        selectToken:selectTokenReducer
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
