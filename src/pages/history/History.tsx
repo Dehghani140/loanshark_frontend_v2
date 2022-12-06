@@ -38,7 +38,7 @@ function History() {
 
 		const client = new ApolloClient({
 			link: new HttpLink({
-				uri: 'http://35.164.244.55:3000/api/graphql/',
+				uri: 'https://backend.loanshark.tech/api/graphql/',
 				fetchOptions: {
 				   mode: 'cors', // no-cors, *cors, same-origin
 				},
