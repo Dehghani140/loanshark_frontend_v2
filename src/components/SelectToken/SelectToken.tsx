@@ -36,10 +36,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import { applyMiddleware } from "redux";
-import { 
-    changeDialogState, 
+import {
+    changeDialogState,
     changeSelectedTokenState,
     changeTokenListState,
+    changeSelectTokenTitleState
 } from '../../slice/selectTokenSlice';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { selectTokenPopupList } from '../../utils/utilList'
@@ -58,7 +59,7 @@ import './SelectToken.scss'
 //     children?: ReactNode;
 // }
 
-const defaultTokenList = ['eth', 'btc', 'usdt', 'one']
+
 
 interface Column {
     id: 'name' | 'code' | 'population' | 'size' | 'density';
@@ -124,7 +125,7 @@ const tableColumn: any = [
 //   ];
 
 function DefaultSelectToken(props) {
-    const { code } = props
+    const { code, onClick } = props
     return (
         <>
             {/* 82 29 */}
@@ -136,7 +137,7 @@ function DefaultSelectToken(props) {
                 width: "80px",
                 height: "30px",
             }}
-                onClick={() => { }}
+                onClick={() => { onClick(code) }}
             >
                 <Grid container alignItems={'center'} justifyContent={'center'} spacing={1}>
                     <Grid item>
@@ -159,16 +160,19 @@ function DefaultSelectToken(props) {
     )
 }
 
+
+const defaultTokenList = ['eth', 'btc', 'usdt', 'one']
+const DEFAULT_SELECT_TOKEN_LIST = ['eth', 'btc', 'usdt', 'one']
+
 const SelectToken = (selectTokenProps: any) => {
     // const { dialogState, showConfirm, modalTitle, modalMessage, modalToken, modalCancel, modalConfirm, modalInputValue } = selectTokenProps;
     // const { onClickToken } = selectTokenProps;
     const stateSelectToken = useAppSelector((state) => state.selectToken)
-    console.log(stateSelectToken.tokenList)
-    // stateSelectToken.tokenList
     const dispatch = useAppDispatch();
     const [openModal, setOpenModal] = useState(true)
     const [searchKey, setSearchKey] = useState("")
     const [tableTokenList, setTableTokenList] = useState([])
+    const [defaultTokenList, setDefaultTokenList] = useState([])
     console.log(tableTokenList)
     useEffect(() => {
         console.log(searchKey)
@@ -176,17 +180,35 @@ const SelectToken = (selectTokenProps: any) => {
         console.log(tableTokenList)
         if (searchKey === "") {
             setTableTokenList(stateSelectToken.tokenList)
-            return 
+            return
         }
-        let result = tableTokenList.filter((token)=>token.code.includes(searchKey))
+        let result = tableTokenList.filter((token) => token.code.includes(searchKey))
         console.log(result)
         setTableTokenList(result)
-    }, [searchKey,stateSelectToken.tokenList])
+    }, [searchKey, stateSelectToken.tokenList])
 
-    function onClose(){
+    useEffect(() => {
+        let tempList = []
+        stateSelectToken.tokenList.map((e) => {
+            if(DEFAULT_SELECT_TOKEN_LIST.includes(e.code)) tempList.push(e.code)
+        })
+        setDefaultTokenList(tempList)
+    }, [stateSelectToken.tokenList])
+
+    function onClose() {
         setSearchKey("")
         dispatch(changeTokenListState([]))
+        dispatch(changeSelectTokenTitleState(""))
         dispatch(changeDialogState(false))
+    }
+
+    function selectTokenAction(tokenCode) {
+        console.log(`on click row`, tokenCode)
+        dispatch(changeSelectedTokenState({
+            token: tokenCode,
+            action: "COLLATERAL_TOKEN",
+        }))
+        onClose()
     }
     return (
         <>
@@ -206,7 +228,7 @@ const SelectToken = (selectTokenProps: any) => {
                                 fontSize: "21px",
                                 fontWeight: "600",
                             }}
-                            >Select a token to deposit</span>
+                            >{stateSelectToken.title}</span>
                         </Grid>
                         <Grid item xs={12}>
                             <input
@@ -239,6 +261,10 @@ const SelectToken = (selectTokenProps: any) => {
                                             <Grid item >
                                                 <DefaultSelectToken
                                                     code={eachToken}
+                                                    onClick={(tokenCode) => {
+                                                        console.log(tokenCode)
+                                                        selectTokenAction(tokenCode)
+                                                    }}
                                                 ></DefaultSelectToken>
                                             </Grid>
                                         </React.Fragment>
@@ -275,16 +301,10 @@ const SelectToken = (selectTokenProps: any) => {
                                             <>
                                                 <React.Fragment key={eachToken.code}>
                                                     <TableBody className={'table-row'}
-                                                    onClick={()=>{
-                                                        console.log(`on click row`,eachToken.code)
-                                                        // onClickToken(eachToken.code)
-                                                        let abc={
-                                                            token:eachToken.code,
-                                                            action:"COLLATERAL_TOKEN",
-                                                        }
-                                                        dispatch(changeSelectedTokenState(abc))
-                                                        onClose()
-                                                    }}
+                                                        onClick={() => {
+                                                            console.log(`on click row`, eachToken.code)
+                                                            selectTokenAction(eachToken.code)
+                                                        }}
                                                     >
                                                         <TableRow hover>
                                                             <TableCell style={{ borderBottom: "0px" }}>

@@ -5,6 +5,7 @@ const initialState = {
     selectedToken:'',
     tokenAction:'',
     tokenList:[],
+    title:"",
 }
 
 export const selectTokenSlice = createSlice({
@@ -14,8 +15,12 @@ export const selectTokenSlice = createSlice({
         reset: (state) => {
             return initialState
         },
+        
         changeDialogState: (state, action: PayloadAction<any>) => {
             state.dialogState = action.payload
+        },
+        changeSelectTokenTitleState: (state, action: PayloadAction<any>) => {
+            state.title = action.payload
         },
         changeSelectedTokenState: (state, action: PayloadAction<any>) => {
             console.log(action)
@@ -31,6 +36,7 @@ export const selectTokenSlice = createSlice({
 
 export const {
     changeDialogState,
+    changeSelectTokenTitleState,
     changeSelectedTokenState,
     changeTokenListState,
 } = selectTokenSlice.actions
