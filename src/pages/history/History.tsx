@@ -16,16 +16,16 @@ function History() {
 	const [rows, setRows] = useState<any>([]);
 
 	const columns = [
-		{ field: 'date', headerName: 'Date', width: 180 },
+		{ field: 'date', headerName: 'Date', width: 150 },
 		{ field: 'content', headerName: 'Transaction', width: 180, renderCell: (params) => {
 				return <a target="_blank" rel="noreferrer" href={"https://testnet.snowtrace.io/tx/" + params.row.content}>{params.row.content}</a>
 			}
 		},
 		{ field: 'borrowingPosition', headerName: 'Borrowing Position', width: 180 },
-		{ field: 'initialHealthFactor', headerName: 'Initial Health Factor', type: 'number', width: 180 },
-		{ field: 'actionType', headerName: 'Action Type', width: 250 },
+		{ field: 'actionType', headerName: 'Action Type', width: 150 },
 		{ field: 'amount', headerName: 'Amount', },
 		{ field: 'value', headerName: 'Value', description: 'This column has a value getter and is not sortable.' },
+		{ field: 'initialHealthFactor', headerName: 'Initial Health Factor', type: 'number', width: 180 },
 		{ field: 'newHealthFactor', headerName: 'New Health Factor', type: 'number', width: 180 },
 	];
 
@@ -69,11 +69,11 @@ function History() {
 				const content = post.content;
 				const publishDate = post.publishDate;
 				const borrowingPosition = post.borrowingPosition;
-				const healthFactor = post.healthFactor;
 				const actionType = post.actionType;
 				const amount = post.amount;
 				const value = post.value;
-				const newHealthFactor = post.newHealthFactor;
+				const healthFactor = Number(post.healthFactor).toFixed(2);
+				const newHealthFactor = Number(post.newHealthFactor).toFixed(2);
 
 				//set rows
 				const newRow = {
@@ -81,11 +81,11 @@ function History() {
 					content: content,
 					date: moment(publishDate).fromNow(),
 					borrowingPosition: borrowingPosition,
-					initialHealthFactor: healthFactor,
 					actionType: actionType,
 					amount: amount,
 					value: value,
-					newHealthFactor: newHealthFactor
+					initialHealthFactor: Number(post.healthFactor).toFixed(2),
+					newHealthFactor: Number(post.newHealthFactor).toFixed(2)
 				};
 			
 				pendingRows.push(newRow);

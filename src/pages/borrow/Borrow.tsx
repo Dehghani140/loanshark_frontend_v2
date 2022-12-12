@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import {
 	Button,
@@ -143,7 +143,9 @@ function Borrow() {
 	const [modalInputValue, setModalInputValue] = useState<any>("");
 	const [collateralCurrency, setCollateralCurrency] = useState<string>("eth");
 	const [borrowCurrency, setBorrowCurrency] = useState<string>("btc");
-
+	const [barData, setBarData] = useState(null)
+	const [divStyle, setDivStyle] = useState(null)
+	
 	const calculateHealthFactor = (depositAmouont, priceOfDeposite, LTV, debtAmount, priceOfDebt) => {
 		if (debtAmount === undefined || debtAmount === null || debtAmount === 0) {
 			return 0;
@@ -283,9 +285,54 @@ function Borrow() {
 		}
 	}
 
+	function pickHex(color1, color2, weight) {
+		var w1 = weight;
+		var w2 = 1 - w1;
+		var rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+			Math.round(color1[1] * w1 + color2[1] * w2),
+			Math.round(color1[2] * w1 + color2[2] * w2)];
+		return rgb;
+	}
+	
 	useEffect(() => {
 		console.log(`Borrow`)
-	}, [])
+		let newHealthFactor =
+		calculateHealthFactor(
+			Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+			stateLoanshark.priceOfEth,
+			stateLoanshark.LTV["ETHBTC"],
+			Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+			stateLoanshark.priceOfBtc);
+			
+		setDivStyle({
+			color: "rgb(" + pickHex([25,255,25], [255,0,0], (Number(newHealthFactor)-1.05)) + ")",
+		});
+
+		setBarData(
+			[{
+				data: [
+					{
+						x: 'ETH',
+						y: (( (Number(stateLoanshark.userDepositBalanceEth) + (Number(stateLoanshark.inputEthDeposit))) * stateLoanshark.priceOfEth / 100).toFixed(2)),
+						fillColor: '#72BFFC',
+					},
+					{
+						x: 'BTC',
+						y: (( (Number(stateLoanshark.userDebtBalanceBtc) + (Number(stateLoanshark.inputBtcDept))) * stateLoanshark.priceOfBtc / 100).toFixed(2)),
+						fillColor: '#5EC7B6',
+					}
+				]
+			}]
+		)
+
+	}, [stateLoanshark.inputEthDeposit, stateLoanshark.inputBtcDept])
+
+	const openBarchart = useMemo(() => {
+
+		if (barData === undefined || barData === null) return false
+		if (barData.length > 0) return true
+		return false
+	}, [barData])
 
 	// useEffect(() => {
 	// 	console.log(stateSelectToken)
@@ -305,7 +352,6 @@ function Borrow() {
 			+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
 		) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(TOKEN_DISPLAY_DECIMAL))
 	}
-
 
 	return (
 		<>
@@ -327,10 +373,7 @@ function Borrow() {
 								<NoBorderCard>
 									<Grid container spacing={1}>
 										<Grid item xs={12}>
-											<span className={`borrow-card-trade-titile`}>Deposit ETH and Borrow BTC</span>
-										</Grid>
-										<Grid item xs={12}>
-											<span className={`borrow-card-trade-subtitile`}>{Number(Number(stateLoanshark.inputEthDeposit).toFixed(2)).toLocaleString()} ETH as collateral to borrow {Number(Number(stateLoanshark.inputBtcDept).toFixed(2)).toLocaleString()} BTC</span>
+											<span className={`borrow-card-trade-titile`}>Borrow</span>
 										</Grid>
 										<Grid item xs={12}>
 											<Grid container style={{
@@ -341,6 +384,9 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
+															<Grid item xs={12}>
+																<span>Collateral</span>
+															</Grid>
 															<Grid item xs={7}>
 																<input
 																	style={{
@@ -438,6 +484,9 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
+															<Grid item xs={12}>
+																<span>Borrow</span>
+															</Grid>
 															<Grid item xs={7}>
 																<input
 																	style={{
@@ -466,7 +515,7 @@ function Borrow() {
 																			padding: "5px",
 																			textAlign: "end",
 																		}}>
-																			<span>Borrow Power: </span>
+																			<span>Max Borrow: </span>
 																			<span style={{ fontWeight: "800" }}>{
 																				Number(Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
 																					* stateLoanshark.priceOfEth
@@ -563,7 +612,7 @@ function Borrow() {
 										</Grid>
 										<Grid item xs={12}>
 											<RoundShapeButton
-												label={"deposit and borrow"}
+												label={"borrow BTC using ETH as collateral"}
 												onClick={() => {
 													depositWETHAndBorrowWBTC();
 												}}
@@ -581,18 +630,20 @@ function Borrow() {
 								<NoBorderCard>
 									<Grid container>
 										<Grid item xs={12}>
+											<div style={{ width: "100%", textAlign: 'center' }}>
 											<span style={{
 												color: "rgba(38,38,38,1)",
 												fontFamily: "ClashDisplay-Semibold",
 												fontSize: "18px",
 												fontWeight: "600",
+												textAlign: 'center',
 												fontStyle: "normal",
-											}}>Deposited, Borrowed, Health Factor</span>
+											}}>Health Factor</span>
+											</div>
 										</Grid>
 										<Grid item xs={12}>
 											<div style={{ width: "100%", textAlign: 'center' }}>
-												<span className={`health-factor-label`}>Health Factor </span>
-												<span className={`health-factor-value`}>{calculateHealthFactor(
+												<span style={divStyle} className={`health-factor-value`}>{calculateHealthFactor(
 													Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
 													stateLoanshark.priceOfEth,
 													stateLoanshark.LTV["ETHBTC"],
@@ -600,9 +651,6 @@ function Borrow() {
 													stateLoanshark.priceOfBtc)}</span>
 											</div>
 
-										</Grid>
-										<Grid item xs={12}>
-											<Chart options={options} series={options.series} type="bar" height={180} />
 										</Grid>
 									</Grid>
 								</NoBorderCard>
