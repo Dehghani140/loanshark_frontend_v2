@@ -205,7 +205,7 @@ function Manage() {
 		setMaxdepositAmount(Number(stateLoanshark.myETHAmount))
 		// depositAmount: 0,
 
-	}, [])
+	}, [stateLoanshark.userDepositBalanceEth, stateLoanshark.userDebtBalanceBtc])
 
 
 	const openBarchart = useMemo(() => {
@@ -1407,21 +1407,24 @@ function Manage() {
 					<Grid item xs={5}>
 						<Grid container spacing={3}>
 							<Grid item xs={12}>
-								<div style={{ height: `${SECOND_ROW_CARD_HEIGHT}px` }}>
+								<div>
 									<NoBorderCard>
 										<Grid container>
 											<Grid item xs={12}>
-												<span style={{
-													color: "rgba(38,38,38,1)",
-													fontFamily: "ClashDisplay-Semibold",
-													fontSize: "18px",
-													fontWeight: "600",
-													fontStyle: "normal",
-												}}>Deposited, Borrowed, Health Factor</span>
+
+												<div style={{ width: "100%", textAlign: 'center' }}>
+													<span style={{
+														color: "rgba(38,38,38,1)",
+														fontFamily: "ClashDisplay-Semibold",
+														fontSize: "18px",
+														fontWeight: "600",
+														fontStyle: "normal",
+													}}>Health Factor</span>
+
+												</div>
 											</Grid>
 											<Grid item xs={12}>
 												<div style={{ width: "100%", textAlign: 'center' }}>
-													<span className={`health-factor-label`}>Health Factor </span>
 													<span className={`health-factor-value`}>{calculateHealthFactor(
 														stateLoanshark.userDepositBalanceEth,
 														stateLoanshark.priceOfEth,
@@ -1430,12 +1433,6 @@ function Manage() {
 														stateLoanshark.priceOfBtc
 													)}</span>
 												</div>
-
-											</Grid>
-											<Grid item xs={12}>
-												{openBarchart === true &&
-													<Chart options={options} series={barData} type="bar" height={180} />
-												}
 											</Grid>
 										</Grid>
 									</NoBorderCard>

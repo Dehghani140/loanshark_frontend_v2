@@ -12,8 +12,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks'
 import { changeMyProtectionType } from '../../slice/smartvaultSlice';
 
 import './SmartVault.scss'
-import Repay from './Repay.svg';
-import Topup from './Topup.svg';
+import Repay from './Repay.png';
+import Topup from './Topup.png';
 
 function SmartVault1() {
     let navigate = useNavigate();
@@ -39,8 +39,9 @@ function SmartVault1() {
                     <Grid item xs={5}>
                         <Widget whiteBackgroundColor={true} title={""}>
                             <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
-                                <div style={{textAlign: 'center'}}>Top-up</div>
-                                <img src={Topup} height={"220"} alt="logo" />
+                                <div style={{textAlign: 'center'}}>Top-up
+                                    <img style={{textAlign: 'center'}} src={Topup} height={"220"} width={"170"} alt="logo" />
+                                </div>
                                 <RoundShapeButton
                                     label={"select"}
                                     onClick={() => {
@@ -57,8 +58,9 @@ function SmartVault1() {
                     <Grid item xs={5}>
                         <Widget whiteBackgroundColor={true} title={""}>
                             <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
-                                <div style={{textAlign: 'center'}}>Repay</div>
-                                <img src={Repay} height={"220"}  alt="logo" />
+                                <div style={{textAlign: 'center'}}>Repay
+                                    <img style={{textAlign: 'center'}} src={Repay} height={"220"} width={'170'} alt="logo" />
+                                </div>
                                 <RoundShapeButton
                                     label={"select"}
                                     onClick={() => {

@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { NavLink, useNavigate } from "react-router-dom"
-import { Grid } from '@mui/material';
+import {
+    Button, Grid
+} from '@mui/material';
 
 import Widget from '../../components/Widget/Widget'
+import NoBorderCard from '../../pages/manage/Card/NoBorderCard'
 
 import { useAppSelector, useAppDispatch } from '../../hooks'
 
 import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
 
+import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
 
 import './SmartVault.scss'
@@ -46,9 +50,9 @@ function SmartVault1() {
     const [modalInputValue, setModalInputValue] = useState<any>("");
 
 
-    const [triggerHealthFactor, setTriggerHealthFactor] = useState<number>(0);
-    const [singleTopupAmount, setSingleTopupAmount] = useState<number>(0);
-    const [stakeAmount, setStakeAmount] = useState<number>(0);
+    const [triggerHealthFactor, setTriggerHealthFactor] = useState<any>(0);
+    const [singleTopupAmount, setSingleTopupAmount] = useState<any>(0);
+    const [stakeAmount, setStakeAmount] = useState<any>(0);
 
     const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
         setModal(!modal);
@@ -165,55 +169,145 @@ function SmartVault1() {
                         <span className={'card-title'}>Protection Setup</span><span className={'card-subtitle'}> (4/4 steps)</span>
                     </Grid>
                     <Grid item xs={7}>
-                        <div style={{ backgroundColor: '#ffffff', padding: '20px' }}>
+                        <div style={{ padding: '20px' }} className={`dashboard-card-layout`}>
                             <p>How much would you like to stake to smart vault?</p>
-                            <input type="number"
-                                value={stakeAmount}
-                                onChange={(e) => {
-                                    setStakeAmount(Number(e.target.value))
+                            <Grid item xs={12}>
+                                <Grid container style={{
+                                    borderRadius: "3px",
+                                    border: "1px solid rgba(0,0,0, 0.15)",
                                 }}
-                                style={{
-                                    color: "rgba(51,51,51,1)",
-                                    fontFamily: "poppins",
-                                    fontSize: "48px",
-                                    fontWeight: "700",
-                                    fontStyle: "normal",
-                                    overflow: "hidden",
-                                    width: "100%",
-                                }}
-                            ></input>
+                                >
+                                    <Grid item xs={12}>
+                                        <div style={{ padding: "10px" }}>
+                                            <Grid container>
+                                                <Grid item xs={7}>
+                                                    <input
+                                                        style={{
+                                                            color: "rgba(51,51,51,1)",
+                                                            fontFamily: "poppins",
+                                                            fontSize: "48px",
+                                                            fontWeight: "700",
+                                                            fontStyle: "normal",
+                                                            overflow: "hidden",
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            border: "0px",
+                                                            backgroundColor: "transparent",
+                                                        }}
+                                                        value={stakeAmount}
+                                                        onChange={(e) => {
+                                                            setStakeAmount(e.target.value)
+                                                        }}
+                                                    ></input>
+                                                </Grid>
+                                                <Grid item xs={5}>
+
+                                                    <Grid container>
+                                                        <Grid item xs={12}>
+                                                            <div style={{
+                                                                padding: "5px",
+                                                                textAlign: "end",
+                                                            }}>
+                                                                <span>Balance: </span>
+                                                                <span style={{ fontWeight: "800" }}>{Number(Number(state.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
+                                                            </div>
+
+                                                        </Grid>
+                                                        <Grid item xs={12}>
+                                                            <Grid container justifyContent={'end'} alignItems={'center'} spacing={2}>
+                                                                <Grid item>
+                                                                    <Button style={{
+                                                                        backgroundColor: "white",
+                                                                        color: "black",
+                                                                        borderRadius: "4px",
+                                                                        border: "1px solid black",
+                                                                        padding: "0px",
+                                                                    }}
+
+                                                                        onClick={() => {
+                                                                            setStakeAmount(state.myETHAmount)
+                                                                        }}
+                                                                    >MAX</Button>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                             <p>At which health factor would you like to use smart vault?</p>
-                            <input type="number"
-                                value={triggerHealthFactor}
-                                onChange={(e) => {
-                                    setTriggerHealthFactor(Number(e.target.value))
+                            <Grid item xs={12}>
+                                <Grid container style={{
+                                    borderRadius: "3px",
+                                    border: "1px solid rgba(0,0,0, 0.15)",
                                 }}
-                                style={{
-                                    color: "rgba(51,51,51,1)",
-                                    fontFamily: "poppins",
-                                    fontSize: "48px",
-                                    fontWeight: "700",
-                                    fontStyle: "normal",
-                                    overflow: "hidden",
-                                    width: "100%",
-                                }}
-                            ></input>
+                                >
+                                    <Grid item xs={12}>
+                                        <div style={{ padding: "10px" }}>
+                                            <Grid container>
+                                                <Grid item xs={12}>
+                                                    <input
+                                                        style={{
+                                                            color: "rgba(51,51,51,1)",
+                                                            fontFamily: "poppins",
+                                                            fontSize: "48px",
+                                                            fontWeight: "700",
+                                                            fontStyle: "normal",
+                                                            overflow: "hidden",
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            border: "0px",
+                                                            backgroundColor: "transparent",
+                                                        }}
+                                                        value={triggerHealthFactor}
+                                                        onChange={(e) => {
+                                                            setTriggerHealthFactor(Number(e.target.value))
+                                                        }}
+                                                    ></input>
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                             <p>How much would you like to top-up / repay each time?</p>
-                            <input type="number"
-                                value={singleTopupAmount}
-                                onChange={(e) => {
-                                    setSingleTopupAmount(Number(e.target.value))
+                            <Grid item xs={12}>
+                                <Grid container style={{
+                                    borderRadius: "3px",
+                                    border: "1px solid rgba(0,0,0, 0.15)",
                                 }}
-                                style={{
-                                    color: "rgba(51,51,51,1)",
-                                    fontFamily: "poppins",
-                                    fontSize: "48px",
-                                    fontWeight: "700",
-                                    fontStyle: "normal",
-                                    overflow: "hidden",
-                                    width: "100%",
-                                }}
-                            ></input>
+                                >
+                                    <Grid item xs={12}>
+                                        <div style={{ padding: "10px" }}>
+                                            <Grid container>
+                                                <Grid item xs={12}>
+                                                    <input
+                                                        style={{
+                                                            color: "rgba(51,51,51,1)",
+                                                            fontFamily: "poppins",
+                                                            fontSize: "48px",
+                                                            fontWeight: "700",
+                                                            fontStyle: "normal",
+                                                            overflow: "hidden",
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            border: "0px",
+                                                            backgroundColor: "transparent",
+                                                        }}
+                                                        value={singleTopupAmount}
+                                                        onChange={(e) => {
+                                                            setSingleTopupAmount(e.target.value)
+                                                        }}
+                                                    ></input>
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                             <br></br>
                             <br></br>
                             <RoundShapeButton
@@ -329,15 +423,15 @@ function SmartVault1() {
                             pair={
                                 [
                                     {
-										amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
-										amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
-										currency: "ETH",
-									},
-									{
-										amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
-										amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
-										currency: "BTC",
-									},
+                                        amountInUsdt: Number((state.userDepositBalanceEth * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+                                        amountInCurrency: Number(Number(state.userDepositBalanceEth).toFixed(2)).toLocaleString(),
+                                        currency: "ETH",
+                                    },
+                                    {
+                                        amountInUsdt: Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+                                        amountInCurrency: Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString(),
+                                        currency: "BTC",
+                                    },
                                 ]
                             }
                             detail={
