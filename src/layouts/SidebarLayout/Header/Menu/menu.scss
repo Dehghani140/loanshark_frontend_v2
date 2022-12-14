@@ -1,13 +1,28 @@
-.nav-item{
-    &:hover{
+.nav-item {
+    &:hover {
         border-bottom: 1px solid #347bd3;
     }
-    &__clicked{
-        color:#347bd3;
-        font-weight: 600;            
-    }
-    &:active{
 
-        
+    &__clicked {
+        color: #347bd3;
+        font-weight: 600;
     }
+
+    &:active {}
+}
+
+.nav-item-menu-item {
+    background-color: transparent !important;
+    margin:0px !important;
+    border-radius: 0px !important;
+    
+    &:hover {
+        background-color: transparent !important;
+        margin:0px !important;
+        border-radius: 0px !important;
+        border-bottom: 1px solid #347bd3;
+    }
+    // &:active{
+    //     background-color: transparent !important;;
+    // }
 }
