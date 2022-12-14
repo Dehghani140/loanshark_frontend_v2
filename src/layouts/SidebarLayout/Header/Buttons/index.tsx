@@ -150,44 +150,6 @@ function HeaderButtons() {
                         </div>
                     </div>
                 </a>
-                <br></br>
-                <a>
-                    <div
-                        className={'wallet-box'}
-                        onClick={() => {
-
-                        }}>
-                        <div className={'wallet-box-label'}>
-                            <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
-                                <Grid item>
-                                    WalletConnect
-                                </Grid>
-                                <Grid item>
-                                    <img className={'wallet-box-image'} src="/assets/icon/walletConnectIcon.svg" alt=""></img>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </div>
-                </a>
-                <br></br>
-                <a>
-                    <div
-                        className={'wallet-box'}
-                        onClick={() => {
-
-                        }}>
-                        <div className={'wallet-box-label'}>
-                            <Grid container spacing={1} alignContent={"center"} textAlign={"center"} justifyContent={"space-between"}>
-                                <Grid item>
-                                    Trust Wallet
-                                </Grid>
-                                <Grid item>
-                                    <img className={'wallet-box-image'} src="/assets/icon/trustWalletIcon.svg" alt=""></img>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </div>
-                </a>
             </Popup>
 
 

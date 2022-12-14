@@ -74,75 +74,149 @@ function SmartVault1() {
 
     const modalConfirm = (modalAction: string) => {
         switch (modalAction) {
-            case "STAKESMARTVAULT":
-                let approveArgs = [
-                    stateBackd.lpPoolBtc.options.address,
-                    window.web3.utils.toBN((stakeAmount * 100000000).toFixed(0)).toString()
-                ]
+            case "STAKESMARTVAULT": 
 
-                let args = [
-                    window.web3.utils.toBN((stakeAmount * 100000000).toFixed(0)).toString(),
-                ];
-
-                let approveArgsForTopupAction = [
-                    stateBackd.topupAction.options.address,
-                    window.web3.utils.toBN((stakeAmount / stateBackd.btcLpExchangeRate * 100000000).toFixed(0)).toString()
-                ]
-
-                let argsRegister = [
-                    state.myAccount + "000000000000000000000000",
-                    "0x66756a6964616f00000000000000000000000000000000000000000000000000",
-                    window.web3.utils.toBN((stakeAmount / stateBackd.btcLpExchangeRate * 100000000).toFixed(0)).toString(),
-                    [
-                        window.web3.utils.toBN(window.web3.utils.toWei((triggerHealthFactor).toString(), 'ether')).toString(),
-                        "0",
-                        "1",
-                        "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
-                        "0x9f2b4eeb926d8de19289e93cbf524b6522397b05",
-                        window.web3.utils.toBN((singleTopupAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-                        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-                        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-                        "0x0000000000000000000000000000000000000000000000000000000000000001"
+                if (stateSmartvault.myProtectingSmartVault == "BTC") {
+                    let approveArgs = [
+                        stateBackd.lpPoolBtc.options.address,
+                        window.web3.utils.toBN((stakeAmount * 100000000).toFixed(0)).toString()
                     ]
-                ];
 
-                setModal(!modal);
-                dispatch(toggleLoading());
+                    let args = [
+                        window.web3.utils.toBN((stakeAmount * 100000000).toFixed(0)).toString(),
+                    ];
 
-                state.myBTCContract.methods
-                    .approve(...approveArgs)
-                    .send({ from: state.myAccount })
-                    .on("error", (error, receipt) => {
-                        dispatch(toggleLoading());
-                    })
-                    .then((receipt) => {
-                        stateBackd.lpPoolBtc.methods
-                            .deposit(...args)
-                            .send({ from: state.myAccount })
-                            .on("error", (error, receipt) => {
-                                dispatch(toggleLoading());
-                            })
-                            .then((receipt) => {
-                                stateBackd.lpTokenBtc.methods
-                                    .approve(...approveArgsForTopupAction)
-                                    .send({ from: state.myAccount })
-                                    .on("error", (error, receipt) => {
-                                        dispatch(toggleLoading());
-                                    })
-                                    .then((receipt) => {
-                                        stateBackd.topupAction.methods
-                                            .register(...argsRegister)
-                                            .send({ from: state.myAccount, value: 1000000000000 })
-                                            .on("error", (error, receipt) => {
-                                                dispatch(toggleLoading());
-                                            })
-                                            .then((receipt) => {
-                                                dispatch(toggleLoading());
-                                                refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-                                            })
-                                    })
-                            })
-                    })
+                    let approveArgsForTopupAction = [
+                        stateBackd.topupAction.options.address,
+                        window.web3.utils.toBN((stakeAmount / stateBackd.btcLpExchangeRate * 100000000).toFixed(0)).toString()
+                    ]
+
+                    let argsRegister = [
+                        state.myAccount + "000000000000000000000000",
+                        "0x66756a6964616f00000000000000000000000000000000000000000000000000",
+                        window.web3.utils.toBN((stakeAmount / stateBackd.btcLpExchangeRate * 100000000).toFixed(0)).toString(),
+                        [
+                            window.web3.utils.toBN(window.web3.utils.toWei((triggerHealthFactor).toString(), 'ether')).toString(),
+                            "0",
+                            "1",
+                            "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
+                            "0x9f2b4eeb926d8de19289e93cbf524b6522397b05",
+                            window.web3.utils.toBN((singleTopupAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+                            window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+                            window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+                            "0x0000000000000000000000000000000000000000000000000000000000000001"
+                        ]
+                    ];
+
+                    setModal(!modal);
+                    dispatch(toggleLoading());
+
+                    state.myBTCContract.methods
+                        .approve(...approveArgs)
+                        .send({ from: state.myAccount })
+                        .on("error", (error, receipt) => {
+                            dispatch(toggleLoading());
+                        })
+                        .then((receipt) => {
+                            stateBackd.lpPoolBtc.methods
+                                .deposit(...args)
+                                .send({ from: state.myAccount })
+                                .on("error", (error, receipt) => {
+                                    dispatch(toggleLoading());
+                                })
+                                .then((receipt) => {
+                                    stateBackd.lpTokenBtc.methods
+                                        .approve(...approveArgsForTopupAction)
+                                        .send({ from: state.myAccount })
+                                        .on("error", (error, receipt) => {
+                                            dispatch(toggleLoading());
+                                        })
+                                        .then((receipt) => {
+                                            stateBackd.topupAction.methods
+                                                .register(...argsRegister)
+                                                .send({ from: state.myAccount, value: 1000000000000 })
+                                                .on("error", (error, receipt) => {
+                                                    dispatch(toggleLoading());
+                                                })
+                                                .then((receipt) => {
+                                                    dispatch(toggleLoading());
+                                                    refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+                                                })
+                                        })
+                                })
+                        })
+                }
+
+                if (stateSmartvault.myProtectingSmartVault == "ETH") {
+                    let approveArgs = [
+                        stateBackd.lpPoolEth.options.address,
+                        window.web3.utils.toBN((stakeAmount * 1000000000000000000).toFixed(0)).toString()
+                    ]
+
+                    let args = [
+                        window.web3.utils.toBN((stakeAmount * 1000000000000000000).toFixed(0)).toString(),
+                    ];
+
+                    let approveArgsForTopupAction = [
+                        stateBackd.topupAction.options.address,
+                        window.web3.utils.toBN((stakeAmount / stateBackd.ethLpExchangeRate * 1000000000000000000).toFixed(0)).toString()
+                    ]
+
+                    let argsRegister = [
+                        state.myAccount + "000000000000000000000000",
+                        "0x66756a6964616f65746800000000000000000000000000000000000000000000",
+                        window.web3.utils.toBN((stakeAmount / stateBackd.ethLpExchangeRate * 1000000000000000000).toFixed(0)).toString(),
+                        [
+                            window.web3.utils.toBN(window.web3.utils.toWei((triggerHealthFactor).toString(), 'ether')).toString(),
+                            "0",
+                            "1",
+                            "0x9668f5f55f2712Dd2dfa316256609b516292D554",
+                            "0x22e9DEAB7fC35a85f4E33F88ff9012d4aF2d35f7",
+                            window.web3.utils.toBN((singleTopupAmount * 0.9999 * 1000000000000000000).toFixed(0)).toString(),
+                            window.web3.utils.toBN((stakeAmount * 0.9999 * 1000000000000000000).toFixed(0)).toString(),
+                            window.web3.utils.toBN((stakeAmount * 0.9999 * 1000000000000000000).toFixed(0)).toString(),
+                            "0x0000000000000000000000000000000000000000000000000000000000000000"
+                        ]
+                    ];
+
+                    setModal(!modal);
+                    dispatch(toggleLoading());
+
+                    state.myETHContract.methods
+                        .approve(...approveArgs)
+                        .send({ from: state.myAccount })
+                        .on("error", (error, receipt) => {
+                            dispatch(toggleLoading());
+                        })
+                        .then((receipt) => {
+                            stateBackd.lpPoolEth.methods
+                                .deposit(...args)
+                                .send({ from: state.myAccount })
+                                .on("error", (error, receipt) => {
+                                    dispatch(toggleLoading());
+                                })
+                                .then((receipt) => {
+                                    stateBackd.lpTokenEth.methods
+                                        .approve(...approveArgsForTopupAction)
+                                        .send({ from: state.myAccount })
+                                        .on("error", (error, receipt) => {
+                                            dispatch(toggleLoading());
+                                        })
+                                        .then((receipt) => {
+                                            stateBackd.topupAction.methods
+                                                .register(...argsRegister)
+                                                .send({ from: state.myAccount, value: 1000000000000 })
+                                                .on("error", (error, receipt) => {
+                                                    dispatch(toggleLoading());
+                                                })
+                                                .then((receipt) => {
+                                                    dispatch(toggleLoading());
+                                                    refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+                                                })
+                                        })
+                                })
+                        })
+                }
                 break;
             case "NOACTION":
                 break;
@@ -209,7 +283,13 @@ function SmartVault1() {
                                                                 textAlign: "end",
                                                             }}>
                                                                 <span>Balance: </span>
-                                                                <span style={{ fontWeight: "800" }}>{Number(Number(state.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
+                                                                <span style={{ fontWeight: "800" }}>
+                                                                    { 
+                                                                        stateSmartvault.myProtectingSmartVault == "ETH" ? 
+                                                                        Number(Number(state.myETHAmount).toFixed(2)).toLocaleString() + "ETH" : 
+                                                                        Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
+                                                                    }
+                                                                </span>
                                                             </div>
 
                                                         </Grid>
@@ -225,7 +305,12 @@ function SmartVault1() {
                                                                     }}
 
                                                                         onClick={() => {
-                                                                            setStakeAmount(state.myETHAmount)
+                                                                            if (stateSmartvault.myProtectingSmartVault == "ETH") {
+                                                                                setStakeAmount(state.myETHAmount)
+                                                                            } 
+                                                                            if (stateSmartvault.myProtectingSmartVault == "BTC") {
+                                                                                setStakeAmount(state.myBTCAmount)
+                                                                            } 
                                                                         }}
                                                                     >MAX</Button>
                                                                 </Grid>
@@ -264,7 +349,7 @@ function SmartVault1() {
                                                         }}
                                                         value={triggerHealthFactor}
                                                         onChange={(e) => {
-                                                            setTriggerHealthFactor(Number(e.target.value))
+                                                            setTriggerHealthFactor(e.target.value)
                                                         }}
                                                     ></input>
                                                 </Grid>
@@ -320,20 +405,22 @@ function SmartVault1() {
                                             "NOACTION" : "STAKESMARTVAULT"),
                                         (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
-                                        (triggerHealthFactor < 1.05 ?
-                                            "Please set the target health factor higher than 1.05"
-                                            :
-                                            singleTopupAmount > stakeAmount ?
-                                                "Please deposit more than the amount to repay for you each time the target heath factor is hit."
+                                        (isNaN(triggerHealthFactor) ? 
+                                            "Please enter a valid health factor" 
+                                            : triggerHealthFactor < 1.05 ?
+                                                "Please set the target health factor higher than 1.05"
                                                 :
-                                                stakeAmount > state.myBTCAmount ?
-                                                    "You do not have " + stakeAmount + " BTC to stake. You have " + state.myBTCAmount + " BTC only."
+                                                singleTopupAmount > stakeAmount ?
+                                                    "Please deposit more than the amount to repay for you each time the target heath factor is hit."
                                                     :
-                                                    "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                    "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " BTC (~" + Number((singleTopupAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span>. " +
-                                                    "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                    "until a total of <span class='fw-bold'>" + stakeAmount + " BTC (~$" + Number((stakeAmount * state.priceOfBtc / 100).toFixed(8)) + ")</span> is topped up."
-                                        ),
+                                                    stakeAmount > state.myBTCAmount ?
+                                                        "You do not have " + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + " to stake. You have " + (stateSmartvault.myProtectingSmartVault == "BTC"? state.myBTCAmount : state.myETHAmount) + " " + stateSmartvault.myProtectingSmartVault + " only."
+                                                        :
+                                                        "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                        "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " " + stateSmartvault.myProtectingSmartVault + " (~" + Number((singleTopupAmount * (stateSmartvault.myProtectingSmartVault == "BTC"? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span>. " +
+                                                        "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                        "until a total of <span class='fw-bold'>" + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + "  (~$" + Number((stakeAmount *  (stateSmartvault.myProtectingSmartVault == "BTC"? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span> is topped up."
+                                       ),
                                         stateSmartvault.myProtectingPair,
                                         0
                                     )

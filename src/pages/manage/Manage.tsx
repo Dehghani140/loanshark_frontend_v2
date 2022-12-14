@@ -507,6 +507,53 @@ function Manage() {
 						})
 				}
 				break;
+			case "LEAVESMARTVAULTETH":
+					let args2 = [
+						window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
+					];
+	
+					setModal(!modal);
+					dispatch(toggleLoading());
+	
+					let argsUnregister2 = [
+						stateLoanshark.myAccount + "000000000000000000000000",
+						"0x66756a6964616f65746800000000000000000000000000000000000000000000",
+						1
+					];
+	
+					if (stateBackd.myProtectionEth && stateBackd.myProtectionEth[0] > 0) {
+	
+						stateBackd.topupAction.methods
+							.resetPosition(...argsUnregister2)
+							.send({ from: stateLoanshark.myAccount })
+							.on("error", (error, receipt) => {
+								dispatch(toggleLoading());
+							})
+							.then((receipt) => {
+								stateBackd.lpPoolEth.methods
+									.redeem(...args2)
+									.send({ from: stateLoanshark.myAccount })
+									.on("error", (error, receipt) => {
+										dispatch(toggleLoading());
+									})
+									.then((receipt) => {
+										dispatch(toggleLoading());
+										refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+									})
+							})
+					} else {
+						stateBackd.lpPoolEth.methods
+							.redeem(...args2)
+							.send({ from: stateLoanshark.myAccount })
+							.on("error", (error, receipt) => {
+								dispatch(toggleLoading());
+							})
+							.then((receipt) => {
+								dispatch(toggleLoading());
+								refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+							})
+					}
+					break;
 			case "NOACTION":
 				break;
 			default:
@@ -742,8 +789,9 @@ function Manage() {
 					</Grid>
 					<Grid item xs={5}>
 						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px` }}>
-							<NoBorderCard>
-								<Grid container>
+							<Grid  hidden={stateBackd.myBtcLpAmount <= 0}  item xs={12}>
+							<NoBorderCard >
+								<Grid hidden={stateBackd.myEthLpAmount > 0} container>
 									<Grid item xs={12}>
 										<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
 									</Grid>
@@ -867,6 +915,135 @@ function Manage() {
 									</Grid>
 								</Grid>
 							</NoBorderCard>
+							</Grid>
+
+							<Grid  hidden={stateBackd.myEthLpAmount < 0}  item xs={12}>
+							<NoBorderCard>
+								<Grid container>
+									<Grid item xs={12}>
+										<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
+									</Grid>
+									<Grid item xs={12}>
+										<Grid container style={{
+											borderRadius: "3px",
+											border: "1px solid rgba(0,0,0, 0.15)",
+										}}
+										>
+											<Grid item xs={12}>
+												<div style={{ padding: "10px" }}>
+													<Grid container alignItems={'center'}>
+														<Grid item xs={9}>
+															<input
+																style={{
+																	width: "100%",
+																	height: "100%",
+																	border: "0px",
+																	backgroundColor: "transparent",
+																	fontFamily: "poppins",
+																	overflow: "hidden",
+																	fontSize: "48px",
+																	fontWeight: "700",
+																	color: "#333333",
+																}}
+																value={Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8)}
+																disabled={true}
+																onChange={(e) => {
+																	setValue(e.target.value)
+																}}
+															></input>
+														</Grid>
+														<Grid item xs={3}>
+															<Grid container alignItems={'center'}>
+																<Grid item>
+																	<div
+																		style={{
+																			maxHeight: "20px",
+																			maxWidth: "20px",
+																		}}
+																	>
+																		<img style={{ width: "100%", height: "100%" }}
+																			src={`/assets/icon/eth-logo.svg`} alt="" />
+																	</div>
+																</Grid>
+																<Grid item>
+																	<span style={{ fontSize: "24px" }}>ETH</span>
+																</Grid>
+															</Grid>
+
+														</Grid>
+													</Grid>
+												</div>
+											</Grid>
+										</Grid>
+
+									</Grid>
+
+									{[
+										{
+											title: "Trigger Health Factor",
+											value: (stateBackd.myProtectionEth[0] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether') : 0),
+										},
+										{
+											title: "Repay amount each time",
+											value: (stateBackd.myProtectionEth[5] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[5], 'gwei') * 10 : 0) + " ETH",
+										},
+										{
+											title: "Remaining prepaid gas free",
+											value: Number(stateBackd.myGasBankBalance).toFixed(2),
+										},
+									].map((item) => {
+										return (
+											<Grid item xs={12} key={item.title}>
+												<div style={{ padding: "10px 0px" }}>
+													<Grid container justifyContent={'space-between'}>
+														<Grid item>
+															<span className={`current-smart-vault-field`}>{item.title}</span>
+														</Grid>
+														<Grid item>
+															<span className={`current-smart-vault-value`}>{item.value}</span>
+														</Grid>
+													</Grid>
+												</div>
+											</Grid>
+										)
+									})
+									}
+
+									<Grid item xs={12}>
+										<div style={{ width: "100%" }}>
+											<RoundShapeButton
+												label={"Withdraw All"}
+												onClick={() => {
+													if (stateBackd.myEthLpAmount <= 0) {
+														toggleNoAction(
+															deposit,
+															'Unable to withdraw all from Smart Vault',
+															'You do not have any BTC in Smart Vault.',
+															deposit + debt
+														)
+													} else {
+														toggleAction(
+															deposit,
+															"LEAVESMARTVAULTETH",
+															'Confirm to withdraw all from Smart Vault?',
+															'You are withdrawing <span class="fw-bold">' +
+															Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8) +
+															' ETH (~$' +
+															Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * stateLoanshark.priceOfEth / 100).toFixed(2) +
+															')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
+															,
+															deposit + debt,
+															stateBackd.myEthLpAmount
+														)
+													}
+												}}
+												color={"white"}
+											></RoundShapeButton>
+										</div>
+									</Grid>
+								</Grid>
+							</NoBorderCard>
+							</Grid>
 						</div>
 					</Grid>
 					<Grid item xs={7}>
