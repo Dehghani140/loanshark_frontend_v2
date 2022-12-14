@@ -305,7 +305,7 @@ function Borrow() {
 			stateLoanshark.priceOfBtc);
 			
 		setDivStyle({
-			color: "rgb(" + pickHex([25,255,25], [255,0,0], (Number(newHealthFactor)-1.05)) + ")",
+			color: "rgb(" + pickHex([67, 99, 167 ], [156, 63, 114], (Number(newHealthFactor)-1.05)) + ")",
 		});
 
 		setBarData(
@@ -610,6 +610,19 @@ function Borrow() {
 												</Grid>
 											</Grid>
 										</Grid>
+										<br></br>
+										<Grid item xs={12}>
+											<Grid container justifyContent={'space-between'}>
+												<Grid item>
+													<span className={`borrow-card-trade-borrow-power-text`}>Route:</span>
+												</Grid>
+												<Grid item>
+													<Grid container spacing={1}>
+													<span className={`borrow-card-trade-borrow-power-text`}>AAVE</span>
+													</Grid>
+												</Grid>
+											</Grid>
+										</Grid>
 										<Grid item xs={12}>
 											<RoundShapeButton
 												label={"borrow BTC using ETH as collateral"}
@@ -652,6 +665,42 @@ function Borrow() {
 											</div>
 
 										</Grid>
+									</Grid>
+								</NoBorderCard>
+							</Grid>
+							<Grid item xs={12}>
+								<NoBorderCard>
+									<Grid container>
+										<Grid item xs={12}>
+											<span className={`borrow-card-market-apy-title`}>Market APY</span>
+										</Grid>
+
+										{[{
+											title: "AAVE",
+											value: "10.6",
+											textColor: "green",
+										},
+										{
+											title: "Tranquil",
+											value: "10.2",
+											textColor: "green",
+										}].map((item, index) => {
+											return (
+												<Grid item xs={12} key={item.title}>
+													<div style={{ padding: "10px 0px" }}>
+														<Grid container justifyContent={'space-between'}>
+															<Grid item>
+																<span className={`borrow-card-market-apy-field`}>{item.title}</span>
+															</Grid>
+															<Grid item>
+																<span className={`borrow-card-market-apy-value`}>{item.value}</span>
+															</Grid>
+														</Grid>
+													</div>
+												</Grid>
+											)
+										})
+										}
 									</Grid>
 								</NoBorderCard>
 							</Grid>
@@ -706,42 +755,6 @@ function Borrow() {
 															</Grid>
 															<Grid item>
 																<span className={`current-price-box-value`}>{item.value}</span>
-															</Grid>
-														</Grid>
-													</div>
-												</Grid>
-											)
-										})
-										}
-									</Grid>
-								</NoBorderCard>
-							</Grid>
-							<Grid item xs={12}>
-								<NoBorderCard>
-									<Grid container>
-										<Grid item xs={12}>
-											<span className={`borrow-card-market-apy-title`}>Market APY</span>
-										</Grid>
-
-										{[{
-											title: "AAVE",
-											value: "10.6",
-											textColor: "green",
-										},
-										{
-											title: "Tranquil",
-											value: "10.2",
-											textColor: "green",
-										}].map((item, index) => {
-											return (
-												<Grid item xs={12} key={item.title}>
-													<div style={{ padding: "10px 0px" }}>
-														<Grid container justifyContent={'space-between'}>
-															<Grid item>
-																<span className={`borrow-card-market-apy-field`}>{item.title}</span>
-															</Grid>
-															<Grid item>
-																<span className={`borrow-card-market-apy-value`}>{item.value}</span>
 															</Grid>
 														</Grid>
 													</div>

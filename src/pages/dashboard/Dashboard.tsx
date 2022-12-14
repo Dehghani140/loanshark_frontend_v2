@@ -189,7 +189,7 @@ function Dashboard() {
 						<Grid container spacing={1} justifyContent={"flex-end"} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 							<Grid item>
 								<RoundShapeButton
-									label={"add borrow"}
+									label={"borrow"}
 									onClick={() => {
 										navigate("/app/main/borrow")
 									}}
@@ -198,7 +198,7 @@ function Dashboard() {
 							</Grid>
 							<Grid item>
 								<RoundShapeButton
-									label={"add smart vault"}
+									label={"smart vault"}
 									onClick={() => {
 										navigate("/app/main/smartVault1")
 									}}
