@@ -4,7 +4,8 @@ import {
   ListItem,
   ListItemText,
   Menu,
-  MenuItem
+  MenuItem,
+  ListItemButton
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -64,7 +65,7 @@ function HeaderMenu() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
   const [menubar, setMenubar] = useState([true, false, false, false]);
-  console.log(menubar)
+
   const handleOpen = (): void => {
     setOpen(true);
   };
@@ -72,6 +73,23 @@ function HeaderMenu() {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  function handleClick(event) {
+    if (anchorEl !== event.currentTarget) {
+      console.log(event.currentTarget)
+      setAnchorEl(event.currentTarget);
+    }
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
+
+
+
 
   function clickMenu(position: number): void {
     let originMenubar = [false, false, false, false]
@@ -158,18 +176,38 @@ function HeaderMenu() {
               onClick={() => { clickMenu(2) }}
             />
           </ListItem>
+
           <ListItem
+            // disablePadding
             classes={{ root: 'MuiListItem-indicators' }}
             button
-            component={NavLink}
-            to="/app/main/more"
+            aria-owns={anchorEl ? "more-menu" : undefined}
+            onClick={handleClick}
+            onMouseOver={handleClick}
           >
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary="More"
-              className={'nav-item'}
-            ></ListItemText>
+            More
           </ListItem>
+
+          <Menu
+            id="more-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            // MenuListProps={{ onMouseLeave: handleMenuClose }}
+          >
+            <MenuItem
+            className={`nav-item-menu-item`}
+              onClick={() => {
+                window.open("https://testnet.loanshark.tech/#/twitter")
+                handleMenuClose()
+              }}>Twitter</MenuItem>
+            <MenuItem 
+            className={`nav-item-menu-item`}
+            onClick={() => {
+              window.open("https://testnet.loanshark.tech/#/twitter")
+              handleMenuClose()
+            }}>Discord</MenuItem>
+          </Menu>
         </List>
       </ListWrapper>
     </>
