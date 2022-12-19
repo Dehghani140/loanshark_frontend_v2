@@ -70,6 +70,12 @@ interface Column {
 }
 
 // const tableColumn: readonly Column[] = [
+const tableBorrowColumn: any = [
+    { id: 'name', label: '', minWidth: 250, },
+    { id: 'borrowApy', label: 'Borrow APY', minWidth: 120 },
+    { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
+]
+
 const tableColumn: any = [
     { id: 'name', label: '', minWidth: 250, },
     { id: 'depositApy', label: 'Deposit APY', minWidth: 120 },
@@ -280,20 +286,38 @@ const SelectToken = (selectTokenProps: any) => {
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         <TableRow style={{ background: "transparent" }}>
-                                            {tableColumn.map((eachColumn) => {
-                                                return (
-                                                    <React.Fragment key={eachColumn.id}>
-                                                        <TableCell style={{
-                                                            minWidth: eachColumn.minWidth,
-                                                            color: "rgba(38,38,38,1)",
-                                                            fontFamily: "Neometric-Regular",
-                                                            fontSize: "14px",
-                                                            fontWeight: "400",
-                                                            background: "transparent"
-                                                        }}> {eachColumn.label}</TableCell>
-                                                    </React.Fragment>
-                                                )
-                                            })}
+                                            {stateSelectToken.title === 'Select a token as collateral' &&
+                                                tableColumn.map((eachColumn) => {
+                                                    return (
+                                                        <React.Fragment key={eachColumn.id}>
+                                                            <TableCell style={{
+                                                                minWidth: eachColumn.minWidth,
+                                                                color: "rgba(38,38,38,1)",
+                                                                fontFamily: "Neometric-Regular",
+                                                                fontSize: "14px",
+                                                                fontWeight: "400",
+                                                                background: "transparent"
+                                                            }}> {eachColumn.label}</TableCell>
+                                                        </React.Fragment>
+                                                    )
+                                                })
+                                            }
+                                            {stateSelectToken.title === 'Select a token as borrow' &&
+                                                tableBorrowColumn.map((eachColumn) => {
+                                                    return (
+                                                        <React.Fragment key={eachColumn.id}>
+                                                            <TableCell style={{
+                                                                minWidth: eachColumn.minWidth,
+                                                                color: "rgba(38,38,38,1)",
+                                                                fontFamily: "Neometric-Regular",
+                                                                fontSize: "14px",
+                                                                fontWeight: "400",
+                                                                background: "transparent"
+                                                            }}> {eachColumn.label}</TableCell>
+                                                        </React.Fragment>
+                                                    )
+                                                })
+                                            }
                                         </TableRow>
                                     </TableHead>
                                     {tableTokenList.map((eachToken) => {
