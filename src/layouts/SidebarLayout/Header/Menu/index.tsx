@@ -207,6 +207,12 @@ function HeaderMenu() {
               window.open("https://testnet.loanshark.tech/#/twitter")
               handleMenuClose()
             }}>Discord</MenuItem>
+            <MenuItem 
+            className={`nav-item-menu-item`}
+            onClick={() => {
+              window.open("https://app.aave.com/faucet/")
+              handleMenuClose()
+            }}>Mint ETH/BTC</MenuItem>
           </Menu>
         </List>
       </ListWrapper>
