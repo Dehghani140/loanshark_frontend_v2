@@ -19,11 +19,11 @@ import { toggleLoading } from '../../slice/layoutSlice';
 import CustDialog from "../../components/Dialog/CustDialog";
 import TokenButton from '../../components/Button/TokenButton/TokenButton'
 import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
-import { 
-	changeDialogState, 
+import {
+	changeDialogState,
 	changeTokenListState,
 	changeSelectTokenTitleState,
- } from '../../slice/selectTokenSlice';
+} from '../../slice/selectTokenSlice';
 
 import { refreshPrice } from '../../utils/API'
 import {
@@ -145,7 +145,7 @@ function Borrow() {
 	const [borrowCurrency, setBorrowCurrency] = useState<string>("btc");
 	const [barData, setBarData] = useState(null)
 	const [divStyle, setDivStyle] = useState(null)
-	
+
 	const calculateHealthFactor = (depositAmouont, priceOfDeposite, LTV, debtAmount, priceOfDebt) => {
 		if (debtAmount === undefined || debtAmount === null || debtAmount === 0) {
 			return 0;
@@ -289,23 +289,23 @@ function Borrow() {
 		var w1 = weight;
 		var w2 = 1 - w1;
 		var rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-			Math.round(color1[1] * w1 + color2[1] * w2),
-			Math.round(color1[2] * w1 + color2[2] * w2)];
+		Math.round(color1[1] * w1 + color2[1] * w2),
+		Math.round(color1[2] * w1 + color2[2] * w2)];
 		return rgb;
 	}
-	
+
 	useEffect(() => {
 		console.log(`Borrow`)
 		let newHealthFactor =
-		calculateHealthFactor(
-			Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-			stateLoanshark.priceOfEth,
-			stateLoanshark.LTV["ETHBTC"],
-			Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-			stateLoanshark.priceOfBtc);
-			
+			calculateHealthFactor(
+				Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+				stateLoanshark.priceOfEth,
+				stateLoanshark.LTV["ETHBTC"],
+				Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+				stateLoanshark.priceOfBtc);
+
 		setDivStyle({
-			color: "rgb(" + pickHex([67, 99, 167 ], [156, 63, 114], (Number(newHealthFactor)-1.05)) + ")",
+			color: "rgb(" + pickHex([67, 99, 167], [156, 63, 114], (Number(newHealthFactor) - 1.05)) + ")",
 		});
 
 		setBarData(
@@ -313,12 +313,12 @@ function Borrow() {
 				data: [
 					{
 						x: 'ETH',
-						y: (( (Number(stateLoanshark.userDepositBalanceEth) + (Number(stateLoanshark.inputEthDeposit))) * stateLoanshark.priceOfEth / 100).toFixed(2)),
+						y: (((Number(stateLoanshark.userDepositBalanceEth) + (Number(stateLoanshark.inputEthDeposit))) * stateLoanshark.priceOfEth / 100).toFixed(2)),
 						fillColor: '#72BFFC',
 					},
 					{
 						x: 'BTC',
-						y: (( (Number(stateLoanshark.userDebtBalanceBtc) + (Number(stateLoanshark.inputBtcDept))) * stateLoanshark.priceOfBtc / 100).toFixed(2)),
+						y: (((Number(stateLoanshark.userDebtBalanceBtc) + (Number(stateLoanshark.inputBtcDept))) * stateLoanshark.priceOfBtc / 100).toFixed(2)),
 						fillColor: '#5EC7B6',
 					}
 				]
@@ -558,18 +558,18 @@ function Borrow() {
 																						borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
 																						borrowPower = borrowPower / stateLoanshark.priceOfBtc;
 																						borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
-																						
+
 																						let tempList = [...borrowTokenList]
-																						tempList.forEach((eachToken,index)=>{
+																						tempList.forEach((eachToken, index) => {
 																							tempList[index] = {
 																								...eachToken,
-																								apy:Number(Number(stateLoanshark.aaveBtcBorrowRate).toFixed(TOKEN_DISPLAY_DECIMAL)),
-																								balance:Number(borrowPower.toFixed(TOKEN_DISPLAY_DECIMAL)),
+																								apy: Number(Number(stateLoanshark.aaveBtcBorrowRate).toFixed(TOKEN_DISPLAY_DECIMAL)),
+																								balance: Number(borrowPower.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																							}
 																						})
 																						dispatch(changeSelectTokenTitleState(`Select a token as borrow`))
 																						dispatch(changeTokenListState(tempList))
-																						dispatch(changeDialogState(!stateSelectToken.dialogState))																			
+																						dispatch(changeDialogState(!stateSelectToken.dialogState))
 																					}}
 																				></TokenButton>
 																			</Grid>
@@ -618,7 +618,7 @@ function Borrow() {
 												</Grid>
 												<Grid item>
 													<Grid container spacing={1}>
-													<span className={`borrow-card-trade-borrow-power-text`}>AAVE</span>
+														<span className={`borrow-card-trade-borrow-power-text`}>AAVE</span>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -644,14 +644,14 @@ function Borrow() {
 									<Grid container>
 										<Grid item xs={12}>
 											<div style={{ width: "100%", textAlign: 'center' }}>
-											<span style={{
-												color: "rgba(38,38,38,1)",
-												fontFamily: "ClashDisplay-Semibold",
-												fontSize: "18px",
-												fontWeight: "600",
-												textAlign: 'center',
-												fontStyle: "normal",
-											}}>Health Factor</span>
+												<span style={{
+													color: "rgba(38,38,38,1)",
+													fontFamily: "ClashDisplay-Semibold",
+													fontSize: "18px",
+													fontWeight: "600",
+													textAlign: 'center',
+													fontStyle: "normal",
+												}}>Health Factor</span>
 											</div>
 										</Grid>
 										<Grid item xs={12}>
@@ -672,17 +672,16 @@ function Borrow() {
 								<NoBorderCard>
 									<Grid container>
 										<Grid item xs={12}>
-											<span className={`borrow-card-market-apy-title`}>Market APY</span>
+											<span className={`borrow-card-market-apy-title`}>Borrowing rate of BTC</span>
 										</Grid>
-
 										{[{
 											title: "AAVE",
-											value: "10.6",
+											value: `${stateLoanshark.aaveBtcBorrowRate}%`,
 											textColor: "green",
 										},
 										{
-											title: "Tranquil",
-											value: "10.2",
+											title: "Benqi",
+											value: "5%",
 											textColor: "green",
 										}].map((item, index) => {
 											return (
