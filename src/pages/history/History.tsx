@@ -55,7 +55,7 @@ function History() {
 			cache: new InMemoryCache()
 		  });
 
-		  var queryString = 'query GetPosts{posts(where:{account:{contains:"'+state.myAccount+'"}}){title,account,content,borrowingPosition,healthFactor,actionType,amount,value,newHealthFactor,publishDate}}'.replace(/(\r\n|\n|\r)/gm, "");
+		  var queryString = 'query GetPosts{posts(where:{account:{contains:"'+state.myAccount+'"}}, orderBy: {publishDate: desc}){title,account,content,borrowingPosition,healthFactor,actionType,amount,value,newHealthFactor,publishDate}}'.replace(/(\r\n|\n|\r)/gm, "");
 
 		  const GET_ROCKET_INVENTORY = gql`${queryString}`;
 
@@ -123,7 +123,6 @@ function History() {
 							pageSize={6}
 							rowsPerPageOptions={[6]}
 							density={"comfortable"}
-							sortingOrder={['desc', 'desc', 'asc', null, null, 'asc', 'asc', 'asc']}
 						/>
 					</Grid>
 				</Grid></div>
