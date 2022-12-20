@@ -32,6 +32,8 @@ import {
 	TOKEN_DISPLAY_DECIMAL,
 } from '../../utils/utilList'
 
+import { borrowBTC, depositETH } from '../../utils/LoansharkBackend'
+
 const options = {
 	chart: {
 		id: 'apexchart-example',
@@ -187,6 +189,14 @@ function Borrow() {
 					window.web3.utils.toBN(parseFloat((stateLoanshark.inputBtcDept * 100000000).toFixed(0))).toString()
 				]
 
+				let oldHealthFactor =
+				calculateHealthFactor(
+					Number(stateLoanshark.userDepositBalanceEth),
+					stateLoanshark.priceOfEth,
+					stateLoanshark.LTV["ETHBTC"],
+					Number(stateLoanshark.userDebtBalanceBtc),
+					stateLoanshark.priceOfBtc);
+
 				setModal(!modal);
 				dispatch(toggleLoading());
 
@@ -207,6 +217,17 @@ function Borrow() {
 								dispatch(toggleLoading());
 								dispatch(changeInputEthDeposit(0));
 								dispatch(changeInputBtcDebt(0));
+
+								let newHealthFactor =
+								calculateHealthFactor(
+									Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+									stateLoanshark.priceOfEth,
+									stateLoanshark.LTV["ETHBTC"],
+									Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+									stateLoanshark.priceOfBtc);
+
+								depositETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
+								borrowBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
 
 								refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
 							});
@@ -345,14 +366,6 @@ function Borrow() {
 	// }, [stateSelectToken])
 
 
-	function calculateNetInterestRate(): number {
-		return Number(((
-			0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
-			- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
-			+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
-		) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(TOKEN_DISPLAY_DECIMAL))
-	}
-
 	return (
 		<>
 			{<CustDialog
@@ -448,7 +461,7 @@ function Borrow() {
 																						tempList.forEach((eachToken, index) => {
 																							tempList[index] = {
 																								...eachToken,
-																								apy: calculateNetInterestRate(),
+																								apy: stateLoanshark.aaveEthDepositRate,
 																								balance: Number(Number(stateLoanshark.myETHAmount).toFixed(TOKEN_DISPLAY_DECIMAL)),
 																							}
 																						})
@@ -680,8 +693,8 @@ function Borrow() {
 											textColor: "green",
 										},
 										{
-											title: "Benqi",
-											value: "5%",
+											title: "Trader Joe",
+											value: `${stateLoanshark.traderJoeBtcBorrowRate}%`,
 											textColor: "green",
 										}].map((item, index) => {
 											return (
