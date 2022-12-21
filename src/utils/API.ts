@@ -181,8 +181,8 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
             state.providerAAVEAVAX?.methods.getBorrowRateFor(WBTC).call({}, (error, result) => {
                 console.log(`AAVE`,state.providerAAVEAVAX)
                 console.log(`borrowRate`,result)
-                // var APR = result / 1000000000000000000000000000;
-                const APR = result / 100000000000000000;
+                var APR = result / 1000000000000000000000000000;
+                // const APR = result / 100000000000000000;
                 const floatString = (Math.pow(1 + APR / 365, 365) - 1) * 100;
                 dispatch(changeAaveBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
             });

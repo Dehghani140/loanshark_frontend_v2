@@ -175,12 +175,14 @@ function Dashboard() {
 			<CustDialog
 				modal={modal} 
 				showConfirm={(modalAction !== "NOACTION")}
+				showCancel={true}
 				modalTitle={modalTitle} 
 				modalMessage={modalMessage} 
-				modalToken={modalToken} 
+				// modalToken={modalToken} 
 				modalCancel={()=> {setModal(!modal)}} 
 				modalConfirm={() => {modalConfirm(modalAction)}}
-				modalInputValue={modalInputValue}>
+				// modalInputValue={modalInputValue}
+				>
 			</CustDialog>
 			{/* <SelectToken></SelectToken> */}
 			<div className={'main-content-layout'}>

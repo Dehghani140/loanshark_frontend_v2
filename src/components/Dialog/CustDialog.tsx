@@ -1,8 +1,5 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-// import { NavLink } from "react-router-dom"
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Grid, TextField, Button } from '@mui/material';
+import { ReactNode, useEffect } from "react";
+import { Button } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -12,17 +9,18 @@ import Dialog from '@mui/material/Dialog';
 export interface CustDialogProps {
     modal: boolean;
     showConfirm: boolean;
+    showCancel: boolean;
     modalTitle: string;
     modalMessage: string;
-    modalToken: string;
+    // modalToken: string;
     modalCancel: () => void;
     modalConfirm: (string) => void;
-    modalInputValue: string;
+    // modalInputValue: string;
     children?: ReactNode;
 }
 
 const CustDialog = (custDialogProps: CustDialogProps) => {
-    const { modal, showConfirm, modalTitle, modalMessage, modalToken, modalCancel, modalConfirm, modalInputValue } = custDialogProps;
+    const { modal, showConfirm, showCancel, modalTitle, modalMessage, modalCancel, modalConfirm } = custDialogProps;
 
     useEffect(() => {
         console.log("modal");
@@ -55,10 +53,11 @@ const CustDialog = (custDialogProps: CustDialogProps) => {
                         fontSize: "20px",
                         fontFamily: "poppins"
                     }} onClick={modalConfirm}>Confirm</Button> : null}
-                    <Button style={{
-                        fontSize: "20px",
-                        fontFamily: "poppins"
-                    }} onClick={modalCancel}>Cancel</Button>
+                    {showCancel === true ?
+                        <Button style={{
+                            fontSize: "20px",
+                            fontFamily: "poppins"
+                        }} onClick={modalCancel}>Cancel</Button> : null}
                 </DialogActions>
             </Dialog>
         </>

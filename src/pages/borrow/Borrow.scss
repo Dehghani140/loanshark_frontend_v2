@@ -35,7 +35,7 @@
 
 .borrow-card-market-apy-title {
     opacity: 1;
-    color: rgba(38,38,38,1);
+    color: rgba(38, 38, 38, 1);
     font-family: "ClashDisplay-Semibold";
     font-size: 18px;
     font-weight: 600;
@@ -46,18 +46,18 @@
 
 .borrow-card-market-apy-field {
     opacity: 1;
-color: rgba(38,38,38,1);
-font-family: "poppins";
-font-size: 16px;
-font-weight: 400;
-font-style: normal;
-letter-spacing: 0px;
-text-align: left;
+    color: rgba(38, 38, 38, 1);
+    font-family: "poppins";
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0px;
+    text-align: left;
 }
 
 .borrow-card-market-apy-value {
     opacity: 1;
-    color: rgba(50,215,75,1);
+    color: rgb(64, 152, 77);
     font-family: "poppins";
     font-size: 14px;
     font-weight: 700;
@@ -70,10 +70,12 @@ text-align: left;
     border: 1px solid black;
     border-radius: 20px;
     text-align: center;
+
     ul {
         margin-top: 5px;
         margin-bottom: 5px;
-    }   
+    }
+
     // margin-block-start: 1em;
     // margin-block-end: 1em;
     // margin-inline-start: 0px;

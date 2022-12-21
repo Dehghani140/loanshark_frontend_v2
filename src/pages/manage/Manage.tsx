@@ -566,12 +566,14 @@ function Manage() {
 			{<CustDialog
 				modal={modal}
 				showConfirm={(modalAction !== "NOACTION")}
+				showCancel={true}
 				modalTitle={modalTitle}
 				modalMessage={modalMessage}
-				modalToken={modalToken}
+				// modalToken={modalToken}
 				modalCancel={() => { setModal(!modal) }}
 				modalConfirm={() => { modalConfirm(modalAction) }}
-				modalInputValue={modalInputValue}>
+				// modalInputValue={modalInputValue}
+				>
 			</CustDialog>}
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>

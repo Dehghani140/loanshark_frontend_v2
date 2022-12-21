@@ -13,6 +13,10 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import logo from "../../../../images/logo.png";
 import './menu.scss'
+
+const LOANSHARK_TWITTER = process.env.REACT_APP_LOANSHARK_TWITTER;
+const LOANSHARK_DISCORD = process.env.REACT_APP_LOANSHARK_DISCORD;
+
 const ListWrapper = styled(Box)(
   ({ theme }) => `
         .MuiTouchRipple-root {
@@ -198,13 +202,13 @@ function HeaderMenu() {
             <MenuItem
             className={`nav-item-menu-item`}
               onClick={() => {
-                window.open("https://testnet.loanshark.tech/#/twitter")
+                window.open(LOANSHARK_TWITTER)
                 handleMenuClose()
               }}>Twitter</MenuItem>
             <MenuItem 
             className={`nav-item-menu-item`}
             onClick={() => {
-              window.open("https://testnet.loanshark.tech/#/twitter")
+              window.open(LOANSHARK_DISCORD)
               handleMenuClose()
             }}>Discord</MenuItem>
           </Menu>

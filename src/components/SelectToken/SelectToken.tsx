@@ -69,60 +69,19 @@ interface Column {
     format?: (value: number) => string;
 }
 
-// const tableColumn: readonly Column[] = [
+
 const tableColumn: any = [
     { id: 'name', label: '', minWidth: 250, },
     { id: 'depositApy', label: 'Deposit APY', minWidth: 120 },
     { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
-    // {
-    //   id: 'population',
-    //   label: 'Population',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'size',
-    //   label: 'Size\u00a0(km\u00b2)',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'density',
-    //   label: 'Density',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toFixed(2),
-    // },
 ]
 
+const tableBorrowColumn: any = [
+    { id: 'name', label: '', minWidth: 250, },
+    { id: 'borrowApy', label: 'Borrow APY', minWidth: 120 },
+    { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
+]
 
-// const tableColumn: readonly Column[] = [
-//     { id: "name", label: "Name", minWidth: 150 },
-//     { id: "code", label: "ISO\u00a0Code", minWidth: 50 },
-//     {
-//       id: "population",
-//       label: "Population",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toLocaleString("en-US")
-//     },
-//     {
-//       id: "size",
-//       label: "Size\u00a0(km\u00b2)",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toLocaleString("en-US")
-//     },
-//     {
-//       id: "density",
-//       label: "Density",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toFixed(2)
-//     }
-//   ];
 
 function DefaultSelectToken(props) {
     const { code, onClick } = props
@@ -190,7 +149,7 @@ const SelectToken = (selectTokenProps: any) => {
     useEffect(() => {
         let tempList = []
         stateSelectToken.tokenList.map((e) => {
-            if(DEFAULT_SELECT_TOKEN_LIST.includes(e.code)) tempList.push(e.code)
+            if (DEFAULT_SELECT_TOKEN_LIST.includes(e.code)) tempList.push(e.code)
         })
         setDefaultTokenList(tempList)
     }, [stateSelectToken.tokenList])
@@ -280,7 +239,39 @@ const SelectToken = (selectTokenProps: any) => {
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         <TableRow style={{ background: "transparent" }}>
-                                            {tableColumn.map((eachColumn) => {
+                                            {stateSelectToken.title === 'Select a token as collateral' &&
+                                                tableColumn.map((eachColumn) => {
+                                                    return (
+                                                        <React.Fragment key={eachColumn.id}>
+                                                            <TableCell style={{
+                                                                minWidth: eachColumn.minWidth,
+                                                                color: "rgba(38,38,38,1)",
+                                                                fontFamily: "Neometric-Regular",
+                                                                fontSize: "14px",
+                                                                fontWeight: "400",
+                                                                background: "transparent"
+                                                            }}> {eachColumn.label}</TableCell>
+                                                        </React.Fragment>
+                                                    )
+                                                })
+                                            }
+                                               {stateSelectToken.title === 'Select a token as borrow' &&
+                                                tableBorrowColumn.map((eachColumn) => {
+                                                    return (
+                                                        <React.Fragment key={eachColumn.id}>
+                                                            <TableCell style={{
+                                                                minWidth: eachColumn.minWidth,
+                                                                color: "rgba(38,38,38,1)",
+                                                                fontFamily: "Neometric-Regular",
+                                                                fontSize: "14px",
+                                                                fontWeight: "400",
+                                                                background: "transparent"
+                                                            }}> {eachColumn.label}</TableCell>
+                                                        </React.Fragment>
+                                                    )
+                                                })
+                                            }
+                                            {/* {tableColumn.map((eachColumn) => {
                                                 return (
                                                     <React.Fragment key={eachColumn.id}>
                                                         <TableCell style={{
@@ -293,7 +284,7 @@ const SelectToken = (selectTokenProps: any) => {
                                                         }}> {eachColumn.label}</TableCell>
                                                     </React.Fragment>
                                                 )
-                                            })}
+                                            })} */}
                                         </TableRow>
                                     </TableHead>
                                     {tableTokenList.map((eachToken) => {

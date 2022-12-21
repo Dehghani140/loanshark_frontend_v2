@@ -230,12 +230,14 @@ function SmartVault1() {
             {<CustDialog
                 modal={modal}
                 showConfirm={(modalAction !== "NOACTION")}
+                showCancel={true}
                 modalTitle={modalTitle}
                 modalMessage={modalMessage}
-                modalToken={modalToken}
+                // modalToken={modalToken}
                 modalCancel={() => { setModal(!modal) }}
                 modalConfirm={() => { modalConfirm(modalAction) }}
-                modalInputValue={modalInputValue}>
+                // modalInputValue={modalInputValue}
+                >
             </CustDialog>}
             <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
                 <Grid container spacing={3}>
