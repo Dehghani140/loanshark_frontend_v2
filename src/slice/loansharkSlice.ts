@@ -6,6 +6,8 @@ const initialState = {
     numberOfEth: 0,
     numberOfAvax: 0,
     aaveBtcBorrowRate: 0,
+    traderJoeBtcBorrowRate: 0,
+    aaveEthDepositRate: 0,
     userDepositBalanceEth: 0,
     userDepositBalanceAvax: 0,
     userDebtBalanceBtc: 0,
@@ -25,7 +27,9 @@ const initialState = {
     priceOfAvax: null,
     priceOfUsdt: null,
     providerAAVEAVAX: null,
+    AAVEDataProvider: null,
     providerTraderJoe: null,
+    TraderJoeBtcMarket: null,
     smartVaultBtc: 0,
     inputBtcDept: 0,
     inputEthDeposit: 0,
@@ -64,6 +68,12 @@ export const loansharkSlice = createSlice({
         },
         changeAaveBtcBorrowRate: (state, action: PayloadAction<any>) => {
             state.aaveBtcBorrowRate = action.payload
+        },
+        changeTraderJoeBtcBorrowRate: (state, action: PayloadAction<any>) => {
+            state.traderJoeBtcBorrowRate = action.payload
+        },
+        changeAaveEthDepositRate: (state, action: PayloadAction<any>) => {
+            state.aaveEthDepositRate = action.payload
         },
         changeUserDepositBalanceAvax: (state, action: PayloadAction<any>) => {
             state.userDepositBalanceAvax = action.payload
@@ -115,6 +125,12 @@ export const loansharkSlice = createSlice({
         },
         changeProviderAAVEAVAX: (state, action: PayloadAction<any>) => {
             state.providerAAVEAVAX = action.payload
+        },
+        changeAAVEDataProvider: (state, action: PayloadAction<any>) => {
+            state.AAVEDataProvider = action.payload
+        },
+        changeTraderJoeBtcMarket: (state, action: PayloadAction<any>) => {
+            state.TraderJoeBtcMarket = action.payload
         },
         changeProviderTraderJoe: (state, action: PayloadAction<any>) => {
             state.providerTraderJoe = action.payload
@@ -171,6 +187,8 @@ export const {
     changeNumberOfEth,
     changeNumberOfAvax,
     changeAaveBtcBorrowRate,
+    changeTraderJoeBtcBorrowRate,
+    changeAaveEthDepositRate,
     changeUserDepositBalanceAvax,
     changeUserDebtBalanceBtc,
     changeUserDebtBalanceUsdt,
@@ -188,6 +206,8 @@ export const {
     changePriceOfAvax,
     changePriceOfUsdt,
     changeProviderAAVEAVAX,
+    changeAAVEDataProvider,
+    changeTraderJoeBtcMarket,
     changeProviderTraderJoe,
     changeSmartVaultBtc,
     changeSmartVaultUsdt,

@@ -537,7 +537,7 @@ function SmartVault1() {
                                         title: "APY",
                                         value: Number((
                                             (
-                                                0.0103 * (state.userDepositBalanceEth * state.priceOfEth / 100)
+                                                (state.aaveEthDepositRate) / 100  * (state.userDepositBalanceEth * state.priceOfEth / 100)
                                                 - state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
                                                 + 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
                                             ) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100

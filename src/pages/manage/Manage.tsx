@@ -23,6 +23,7 @@ import {
 	TOKEN_DISPLAY_DECIMAL,
 } from '../../utils/utilList'
 
+import { borrowBTC, repayBTC, depositETH, withdrawETH } from '../../utils/LoansharkBackend'
 
 const options = {
 	chart: {
@@ -216,7 +217,7 @@ function Manage() {
 
 	function calculateNetInterestRate():number{
 		return Number(((
-			0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
+			(stateLoanshark.aaveEthDepositRate)  * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
 			- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
 			+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
 		) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(TOKEN_DISPLAY_DECIMAL))
@@ -270,6 +271,14 @@ function Manage() {
 	const modalConfirm = (modalAction: string) => {
 		let args = [];
 		let approveArgs = [];
+		let oldHealthFactor = 
+			calculateHealthFactor(
+				Number(stateLoanshark.userDepositBalanceEth),
+				stateLoanshark.priceOfEth,
+				stateLoanshark.LTV["ETHBTC"],
+				Number(stateLoanshark.userDebtBalanceBtc),
+				stateLoanshark.priceOfBtc);;
+		let newHealthFactor = 0;
 		var finalModalInputValue;
 		switch (modalAction) {
 			case "DEPOSIT":
@@ -302,6 +311,17 @@ function Manage() {
 								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+
+									newHealthFactor =
+									calculateHealthFactor(
+										Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+										stateLoanshark.priceOfEth,
+										stateLoanshark.LTV["ETHBTC"],
+										Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+										stateLoanshark.priceOfBtc);
+
+									depositETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
+									
 								})
 						});
 				}
@@ -338,6 +358,17 @@ function Manage() {
 						.then((receipt) => {
 							dispatch(toggleLoading());
 							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+
+							newHealthFactor =
+							calculateHealthFactor(
+								Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+								stateLoanshark.priceOfEth,
+								stateLoanshark.LTV["ETHBTC"],
+								Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+								stateLoanshark.priceOfBtc);
+
+							withdrawETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, -1 * (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
+							
 						});
 				}
 
@@ -379,6 +410,18 @@ function Manage() {
 						.then((receipt) => {
 							dispatch(toggleLoading());
 							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+
+
+							newHealthFactor =
+							calculateHealthFactor(
+								Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+								stateLoanshark.priceOfEth,
+								stateLoanshark.LTV["ETHBTC"],
+								Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+								stateLoanshark.priceOfBtc);
+
+							borrowBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
+							
 						});
 				}
 
@@ -432,6 +475,17 @@ function Manage() {
 								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+
+									newHealthFactor =
+									calculateHealthFactor(
+										Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+										stateLoanshark.priceOfEth,
+										stateLoanshark.LTV["ETHBTC"],
+										Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+										stateLoanshark.priceOfBtc);
+
+									repayBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, -1 * (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
+									
 								})
 						});
 				}
@@ -762,7 +816,7 @@ function Manage() {
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
 																Number(Number(
 																	(
-																		0.0103 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
+																		(stateLoanshark.aaveEthDepositRate) / 100 * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
 																		- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
 																		+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
 																	) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(2)).toLocaleString()}%</span>

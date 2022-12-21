@@ -9,11 +9,15 @@ import {
     changeMyEthContract,
     changeMyUsdtContract,
     changeProviderAAVEAVAX,
+    changeAAVEDataProvider,
+    changeTraderJoeBtcMarket,
     changeMySmartVaultBtc,
     changeMySmartVaultUsdt,
     changeNumberOfEth,
     changeNumberOfAvax,
     changeAaveBtcBorrowRate,
+    changeTraderJoeBtcBorrowRate,
+    changeAaveEthDepositRate,
     changeUserDepositBalanceEth,
     changeUserDepositBalanceAvax,
     changeUserDebtBalanceBtc,
@@ -58,6 +62,8 @@ import FujiVaultAVAX from '../abi/fujidao/FujiVaultAVAX.json';
 import FliquidatorAVAX from '../abi/fujidao/FliquidatorAVAX.json';
 import FujiOracle from '../abi/fujidao/FujiOracle.json';
 import ProviderAAVEAVAX from '../abi/fujidao/ProviderAAVEAVAX.json';
+import AAVEDataProvider from '../abi/aave/AAVEDataProvider.json';
+import TraderJoeBtcMarket from '../abi/traderjoe/traderJoeBtcMarket.json';
 import SmartVault from '../abi/fujidao/SmartVault.json';
 
 import lpPoolAbi from '../abi/backd/lpPool.json';
@@ -87,6 +93,12 @@ const LP_POOL_ETH = process.env.REACT_APP_LP_POOL_ETH;
 const LP_TOKEN_ETH = process.env.REACT_APP_LP_TOKEN_ETH;
 const VAULT_ETH = process.env.REACT_APP_VAULT_ETH;
 
+//AAVE Contracts
+const AAVE_PROTOCOL_DATA_PROVIDER = process.env.REACT_APP_AAVE_PROTOCOL_DATA_PROVIDER;
+
+//AAVE Contracts
+const TRADER_JOE_BTC_MARKET = process.env.REACT_APP_TRADER_JOE_BTC_MARKET;
+
 //Asset Contracts
 const WBTC = process.env.REACT_APP_WBTC;
 const WETH = process.env.REACT_APP_WETH;
@@ -107,6 +119,8 @@ export function connectContract(dispatch) {
         dispatch(changeMyBtcContract(new window.web3.eth.Contract(dataHong, WBTC))),
         dispatch(changeMyUsdtContract(new window.web3.eth.Contract(dataHong, USDT))),
         dispatch(changeProviderAAVEAVAX(new window.web3.eth.Contract(ProviderAAVEAVAX.abi, AAVEAVAX))),
+        dispatch(changeAAVEDataProvider(new window.web3.eth.Contract(AAVEDataProvider, AAVE_PROTOCOL_DATA_PROVIDER))),
+        dispatch(changeTraderJoeBtcMarket(new window.web3.eth.Contract(TraderJoeBtcMarket, TRADER_JOE_BTC_MARKET))),
         dispatch(changeMySmartVaultBtc(new window.web3.eth.Contract(SmartVault, SMART_VAULT_BTC))),
         dispatch(changeMySmartVaultUsdt(new window.web3.eth.Contract(SmartVault, SMART_VAULT_USDT))),
         dispatch(changeLpPoolBtc(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_BTC))),
@@ -118,7 +132,7 @@ export function connectContract(dispatch) {
         dispatch(changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH))),
         dispatch(changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH))),
     ]);
-    dispatch(changeSelectedPair('AVAXUSDT'))
+    dispatch(changeSelectedPair('AVAXUSDT'));
 }
 
 export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") => {
@@ -179,12 +193,21 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
             });
 
             state.providerAAVEAVAX?.methods.getBorrowRateFor(WBTC).call({}, (error, result) => {
-                console.log(`AAVE`,state.providerAAVEAVAX)
-                console.log(`borrowRate`,result)
                 var APR = result / 1000000000000000000000000000;
-                // const APR = result / 100000000000000000;
-                const floatString = (Math.pow(1 + APR / 365, 365) - 1) * 100;
+                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
                 dispatch(changeAaveBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
+            });
+
+            state.TraderJoeBtcMarket?.methods.borrowRatePerSecond().call({}, (error, result) => {
+                var APR = result / 100000000000;
+                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
+                dispatch(changeTraderJoeBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
+            });
+
+            state.AAVEDataProvider?.methods.getReserveData(WETH).call({}, (error, result) => {
+                var APR = Number(result[3]) / 1000000000000000000000000000;
+                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
+                dispatch(changeAaveEthDepositRate(parseFloat(floatString + "").toFixed(2)));
             });
 
             //Backd

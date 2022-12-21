@@ -69,7 +69,6 @@ interface Column {
     format?: (value: number) => string;
 }
 
-
 const tableColumn: any = [
     { id: 'name', label: '', minWidth: 250, },
     { id: 'depositApy', label: 'Deposit APY', minWidth: 120 },
@@ -271,20 +270,6 @@ const SelectToken = (selectTokenProps: any) => {
                                                     )
                                                 })
                                             }
-                                            {/* {tableColumn.map((eachColumn) => {
-                                                return (
-                                                    <React.Fragment key={eachColumn.id}>
-                                                        <TableCell style={{
-                                                            minWidth: eachColumn.minWidth,
-                                                            color: "rgba(38,38,38,1)",
-                                                            fontFamily: "Neometric-Regular",
-                                                            fontSize: "14px",
-                                                            fontWeight: "400",
-                                                            background: "transparent"
-                                                        }}> {eachColumn.label}</TableCell>
-                                                    </React.Fragment>
-                                                )
-                                            })} */}
                                         </TableRow>
                                     </TableHead>
                                     {tableTokenList.map((eachToken) => {
