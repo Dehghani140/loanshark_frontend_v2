@@ -1,17 +1,9 @@
-import { useEffect, useState, CSSProperties, } from 'react';
-import { Dispatch, bindActionCreators } from "redux"
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useRoutes, HashRouter, BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { redirect as Redirect, Router } from 'react-router';
-
-import ClipLoader from "react-spinners/ClipLoader";
-// import router from 'src/router';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
-
-import GlobalStyle from './components/global';
 import ThemeProvider from './theme/ThemeProvider';
 
 import Dashboard from './pages/dashboard/Dashboard';
@@ -23,27 +15,12 @@ import SmartVault3 from './pages/smartvault/SmartVault3';
 import SmartVault4 from './pages/smartvault/SmartVault4';
 import History from './pages/history/History';
 import SidebarLayout from './layouts/SidebarLayout';
-import LayoutComponent from './components/Layout/Layout';
-import Tables from './pages/tables/Tables';
 import './App.scss'
-// background
-// import background from './'
-// "./img/placeholder.png";
+import CustDialog from './components/Dialog/CustDialog';
 
-const LOANSHARK_MINT = process.env.REACT_APP_LOANSHARK_MINT;
-const LOANSHARK_TWITTER = process.env.REACT_APP_LOANSHARK_TWITTER;
-const LOANSHARK_DOCUMENT = process.env.REACT_APP_LOANSHARK_DOCUMENT;
-const LOANSHARK_INTRODUCTION = process.env.REACT_APP_LOANSHARK_INTRODUCTION;
-const LOANSHARK_GITHUB = process.env.REACT_APP_LOANSHARK_GITHUB;
-const LOANSHARK_DISCORD = process.env.REACT_APP_LOANSHARK_DISCORD;
-
-const PrivateRoute = ({ dispatch, component, ...rest }: any) => {
-  return (
-    <Route element={<LayoutComponent />} />
-  );
-};
-
-const CloseButton = ({ closeToast }: any) => <i onClick={closeToast} className="la la-close notifications-close" />
+const DESKTOP_SCREEN_SIZE = {
+  width: 1024,
+}
 
 const RestUrl = () => {
   // const { url } = props
@@ -54,37 +31,45 @@ const RestUrl = () => {
   return <></>;
 };
 
+function App() {
+  const [modal, setModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [modalMessage, setModalMessage] = useState<string>("");
 
+  const [windowDimension, detectHW] = useState({
+    winWidth: window.innerWidth,
+    winHeight: window.innerHeight,
+  })
 
-function LoanSharkTwitter() {
-  window.location.href = LOANSHARK_TWITTER;
-  return null;
-}
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const detectSize = () => {
+    detectHW({
+      winWidth: window.innerWidth,
+      winHeight: window.innerHeight,
+    })
+  }
+  useEffect(() => {
+    if (windowDimension.winWidth <= DESKTOP_SCREEN_SIZE.width) {
+      setModal(true)
+      setModalTitle('Please switch over desktop to view this website');
+      setIsMobile(true)
+    }
+    else {
+      resetModal()
+      setIsMobile(false)
+    }
+    window.addEventListener('resize', detectSize)
+    return () => {
+      window.removeEventListener('resize', detectSize)
+    }
+  }, [windowDimension])
 
-function LoanSharkMint() {
-  window.location.href = LOANSHARK_MINT;
-  return null;
-}
+  function resetModal() {
+    setModal(false)
+    setModalTitle("");
+    setModalMessage("");
+  }
 
-function LoanSharkDocument() {
-  window.location.href = LOANSHARK_DOCUMENT;
-  return null;
-}
-function LoanSharkIntro() {
-  window.location.href = LOANSHARK_INTRODUCTION;
-  return null;
-}
-function LoanSharkGithub() {
-  window.location.href = LOANSHARK_GITHUB;
-  return null;
-}
-function LoanSharkDiscord() {
-  window.location.href = LOANSHARK_DISCORD;
-  return null;
-}
-
-function App(props: any) {
-  // const content = useRoutes(router);
 
   return (
     <>
@@ -101,16 +86,28 @@ function App(props: any) {
         <ThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <CssBaseline />
+            {isMobile === true &&
+              <CustDialog
+                modal={modal}
+                showConfirm={false}
+                showCancel={false}
+                modalTitle={modalTitle}
+                modalMessage={modalMessage}
+                modalCancel={() => { }}
+                modalConfirm={() => { }}
+              >
+              </CustDialog>
+            }
             <BrowserRouter>
               <Routes>
                 {/* <Route path="/" element={<LayoutComponent />} /> */}
                 {/* <Route path="/app" element={<LayoutComponent />} /> */}
-                <Route path="/twitter" element={<LoanSharkTwitter></LoanSharkTwitter>} />
+                {/* <Route path="/twitter" element={<LoanSharkTwitter></LoanSharkTwitter>} />
                 <Route path="/mint" element={<LoanSharkMint />} />
                 <Route path="/documentation" element={<LoanSharkDocument />} />
                 <Route path="/introduction" element={<LoanSharkIntro />} />
                 <Route path="/github" element={<LoanSharkGithub />} />
-                <Route path="/discord" element={<LoanSharkDiscord />} />
+                <Route path="/discord" element={<LoanSharkDiscord />} /> */}
                 <Route path="app" element={<SidebarLayout></SidebarLayout>} >
                   <Route path="main/dashboard" element={<Dashboard></Dashboard>}></Route>
                   <Route path="main/borrow" element={<Borrow></Borrow>}></Route>

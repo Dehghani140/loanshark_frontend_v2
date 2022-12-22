@@ -69,66 +69,18 @@ interface Column {
     format?: (value: number) => string;
 }
 
-// const tableColumn: readonly Column[] = [
+const tableColumn: any = [
+    { id: 'name', label: '', minWidth: 250, },
+    { id: 'depositApy', label: 'Deposit APY', minWidth: 120 },
+    { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
+]
+
 const tableBorrowColumn: any = [
     { id: 'name', label: '', minWidth: 250, },
     { id: 'borrowApy', label: 'Borrow APY', minWidth: 120 },
     { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
 ]
 
-const tableColumn: any = [
-    { id: 'name', label: '', minWidth: 250, },
-    { id: 'depositApy', label: 'Deposit APY', minWidth: 120 },
-    { id: 'yourBalance', label: 'Your Balance', minWidth: 120 },
-    // {
-    //   id: 'population',
-    //   label: 'Population',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'size',
-    //   label: 'Size\u00a0(km\u00b2)',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'density',
-    //   label: 'Density',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value: number) => value.toFixed(2),
-    // },
-]
-
-
-// const tableColumn: readonly Column[] = [
-//     { id: "name", label: "Name", minWidth: 150 },
-//     { id: "code", label: "ISO\u00a0Code", minWidth: 50 },
-//     {
-//       id: "population",
-//       label: "Population",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toLocaleString("en-US")
-//     },
-//     {
-//       id: "size",
-//       label: "Size\u00a0(km\u00b2)",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toLocaleString("en-US")
-//     },
-//     {
-//       id: "density",
-//       label: "Density",
-//       minWidth: 170,
-//       align: "right",
-//       format: (value: number) => value.toFixed(2)
-//     }
-//   ];
 
 function DefaultSelectToken(props) {
     const { code, onClick } = props
@@ -196,7 +148,7 @@ const SelectToken = (selectTokenProps: any) => {
     useEffect(() => {
         let tempList = []
         stateSelectToken.tokenList.map((e) => {
-            if(DEFAULT_SELECT_TOKEN_LIST.includes(e.code)) tempList.push(e.code)
+            if (DEFAULT_SELECT_TOKEN_LIST.includes(e.code)) tempList.push(e.code)
         })
         setDefaultTokenList(tempList)
     }, [stateSelectToken.tokenList])
@@ -302,7 +254,7 @@ const SelectToken = (selectTokenProps: any) => {
                                                     )
                                                 })
                                             }
-                                            {stateSelectToken.title === 'Select a token as borrow' &&
+                                               {stateSelectToken.title === 'Select a token as borrow' &&
                                                 tableBorrowColumn.map((eachColumn) => {
                                                     return (
                                                         <React.Fragment key={eachColumn.id}>

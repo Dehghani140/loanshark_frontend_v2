@@ -155,23 +155,23 @@ function Borrow() {
 		return ((depositAmouont * priceOfDeposite / 100) * LTV / (debtAmount * priceOfDebt / 100)).toFixed(2)
 	}
 
-	const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
-		setModal(!modal);
-		setModalToken(inputModalToken);
-		setModalAction("NOACTION");
-		setModalTitle(inputModalTitle);
-		setModalMessage(inputModalMessage);
-		setModalInputValue(0);
-	}
+	// const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
+	// 	setModal(!modal);
+	// 	setModalToken(inputModalToken);
+	// 	setModalAction("NOACTION");
+	// 	setModalTitle(inputModalTitle);
+	// 	setModalMessage(inputModalMessage);
+	// 	setModalInputValue(0);
+	// }
 
-	const toggleAction = (inputModalToken, inputModalAction, inputModalTitle, inputModalMessage, pair, inputValue) => {
-		setModal(!modal);
-		setModalToken(inputModalToken);
-		setModalAction(inputModalAction);
-		setModalTitle(inputModalTitle);
-		setModalMessage(inputModalMessage);
-		setModalInputValue(inputValue);
-	}
+	// const toggleAction = (inputModalToken, inputModalAction, inputModalTitle, inputModalMessage, pair, inputValue) => {
+	// 	setModal(!modal);
+	// 	setModalToken(inputModalToken);
+	// 	setModalAction(inputModalAction);
+	// 	setModalTitle(inputModalTitle);
+	// 	setModalMessage(inputModalMessage);
+	// 	setModalInputValue(inputValue);
+	// }
 
 	const modalConfirm = (modalAction: string) => {
 		let args = [];
@@ -371,12 +371,14 @@ function Borrow() {
 			{<CustDialog
 				modal={modal}
 				showConfirm={(modalAction !== "NOACTION")}
+				showCancel={true}
 				modalTitle={modalTitle}
 				modalMessage={modalMessage}
-				modalToken={modalToken}
+				// modalToken={modalToken}
 				modalCancel={() => { setModal(!modal) }}
 				modalConfirm={() => { modalConfirm(modalAction) }}
-				modalInputValue={modalInputValue}>
+			// modalInputValue={modalInputValue}
+			>
 			</CustDialog>}
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
