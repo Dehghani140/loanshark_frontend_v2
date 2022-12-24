@@ -40,6 +40,7 @@ function SmartVault1() {
                         <Widget whiteBackgroundColor={true} title={""}>
                             <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
                                 <div style={{textAlign: 'center'}}>Top-up
+                                    <br></br>
                                     <img style={{textAlign: 'center'}} src={Topup} height={"220"} width={"170"} alt="logo" />
                                 </div>
                                 <RoundShapeButton
@@ -59,6 +60,7 @@ function SmartVault1() {
                         <Widget whiteBackgroundColor={true} title={""}>
                             <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
                                 <div style={{textAlign: 'center'}}>Repay
+                                    <br></br>
                                     <img style={{textAlign: 'center'}} src={Repay} height={"220"} width={'170'} alt="logo" />
                                 </div>
                                 <RoundShapeButton

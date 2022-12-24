@@ -10,3 +10,12 @@
     max-width: 15px;
     max-height: 15px;
 }
+.wallet-address {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.wallet-address:hover {
+    overflow: visible;
+ }

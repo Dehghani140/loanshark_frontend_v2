@@ -67,27 +67,17 @@ function Header() {
       }}
     >
 
-      <div style={{ width: '100vw' }}>
+      <div style={{ width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
         <Stack
           direction="row"
           divider={<Divider orientation="vertical" flexItem />}
           alignItems="center"
           spacing={2}
         >
-          <div style={{
-            width: '1260px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-            <Grid container justifyContent={'space-between'}>
-              <Grid item>
+          <Box display="flex" justifyContent="spaceBetween" alignItems="center">
               <HeaderMenu />
-              </Grid>
-              <Grid item>
               <HeaderButtons />
-              </Grid>
-            </Grid>
-          </div>
+          </Box>
         </Stack>
       </div>
       <Box display="flex" alignItems="center">

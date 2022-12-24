@@ -158,8 +158,8 @@ function HeaderButtons() {
                     <Box sx={{ mr: 1 }}>
                         {state.myAccount ?
                             <Grid container alignItems={'center'} spacing={1}>
-                                <Grid xs={6}  item>
-                                    <p style={{fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden"}}>{state.myAccount}</p>
+                                <Grid xs={4}  item>
+                                    <p className='wallet-address'>{state.myAccount}</p>
                                 </Grid>
                                 <Grid xs={6}  item>
                                     <RoundShapeButton
@@ -170,6 +170,13 @@ function HeaderButtons() {
                                         }}
                                         color={"white"}
                                     ></RoundShapeButton>
+                                </Grid>
+                                <Grid xs={2} item>
+                                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
+                                        console.log(`on click refresh`)
+                                        refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+                                    }}
+                                        icon={faRotateRight} />
                                 </Grid>
                             </Grid>
                             :
@@ -184,27 +191,6 @@ function HeaderButtons() {
                             ></RoundShapeButton>
                         }
                     </Box>
-                </Grid>
-                <Grid item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click refresh`)
-                        refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-                    }}
-                        icon={faRotateRight} />
-                </Grid>
-
-                <Grid hidden item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click resize`)
-                    }}
-                        icon={faBars} />
-                </Grid>
-
-                <Grid hidden item>
-                    <FontAwesomeIcon style={{ cursor: "pointer" }} onClick={() => {
-                        console.log(`on click dark light mod`)
-                    }}
-                        icon={faLightbulb} />
                 </Grid>
             </Grid>
         </>
