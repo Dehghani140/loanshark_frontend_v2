@@ -126,7 +126,7 @@ function HeaderMenu() {
             <img
               style={{ maxWidth: "200px", maxHeight: "60px" }}
               src='/assets/logo/Loanshark_Logo-01.png'
-              alt="Loan Shark"></img>
+              alt="Loanshark"></img>
           </div>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
