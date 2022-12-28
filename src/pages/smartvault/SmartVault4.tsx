@@ -53,7 +53,7 @@ function SmartVault1() {
     const [triggerHealthFactor, setTriggerHealthFactor] = useState<any>(0);
     const [singleTopupAmount, setSingleTopupAmount] = useState<any>(0);
     const [stakeAmount, setStakeAmount] = useState<any>(0);
-    const [healthFactorPercentage,setHealthFactorPercentage] = useState<number>(0);
+    const [healthFactorPercentage, setHealthFactorPercentage] = useState<number>(0);
 
     const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
         setModal(!modal);
@@ -75,7 +75,7 @@ function SmartVault1() {
 
     const modalConfirm = (modalAction: string) => {
         switch (modalAction) {
-            case "STAKESMARTVAULT": 
+            case "STAKESMARTVAULT":
 
                 if (stateSmartvault.myProtectingSmartVault == "BTC") {
                     let approveArgs = [
@@ -237,8 +237,8 @@ function SmartVault1() {
                 // modalToken={modalToken}
                 modalCancel={() => { setModal(!modal) }}
                 modalConfirm={() => { modalConfirm(modalAction) }}
-                // modalInputValue={modalInputValue}
-                >
+            // modalInputValue={modalInputValue}
+            >
             </CustDialog>}
             <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
                 <Grid container spacing={3}>
@@ -287,10 +287,10 @@ function SmartVault1() {
                                                             }}>
                                                                 <span>Balance: </span>
                                                                 <span style={{ fontWeight: "800" }}>
-                                                                    { 
-                                                                        stateSmartvault.myProtectingSmartVault == "ETH" ? 
-                                                                        Number(Number(state.myETHAmount).toFixed(2)).toLocaleString() + "ETH" : 
-                                                                        Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
+                                                                    {
+                                                                        stateSmartvault.myProtectingSmartVault == "ETH" ?
+                                                                            Number(Number(state.myETHAmount).toFixed(2)).toLocaleString() + "ETH" :
+                                                                            Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
                                                                     }
                                                                 </span>
                                                             </div>
@@ -310,10 +310,10 @@ function SmartVault1() {
                                                                         onClick={() => {
                                                                             if (stateSmartvault.myProtectingSmartVault == "ETH") {
                                                                                 setStakeAmount(state.myETHAmount)
-                                                                            } 
+                                                                            }
                                                                             if (stateSmartvault.myProtectingSmartVault == "BTC") {
                                                                                 setStakeAmount(state.myBTCAmount)
-                                                                            } 
+                                                                            }
                                                                         }}
                                                                     >MAX</Button>
                                                                 </Grid>
@@ -367,9 +367,9 @@ function SmartVault1() {
                                         aria-label="healthFactor"
                                         defaultValue={0}
                                         value={healthFactorPercentage}
-                                        onChange={(e:any)=>{
+                                        onChange={(e: any) => {
                                             // console.log(e?.target?.value??0)
-                                            setHealthFactorPercentage(e?.target?.value??0)
+                                            setHealthFactorPercentage(e?.target?.value ?? 0)
                                         }}
                                         valueLabelDisplay="auto"
                                         step={10}
@@ -413,11 +413,43 @@ function SmartVault1() {
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={1} justifyContent={'end'}>
-                                    {["25%", "50%", "75%", "90%"].map((item) => {
+                                    {[{
+                                        value: 0.25,
+                                        label: "25%",
+                                    },
+                                    {
+                                        value: 0.5,
+                                        label: "50%",
+                                    },
+                                    {
+                                        value: 0.75,
+                                        label: "75%",
+                                    },
+                                    {
+                                        value: 0.9,
+                                        label: "90%",
+                                    }].map((item) => {
                                         return (
-                                            <Grid item key={item}>
-                                                <BorrwoingPowerButton label={item}
-                                                    onClick={() => {
+                                            <Grid item key={item.value}>
+                                                <BorrwoingPowerButton label={item.label} value={item.value}
+                                                    onClick={(e: any) => {
+                                                        console.log(item)
+                                                        console.log(item.value)
+
+                                                        console.log(e.target.value)
+                                                        
+                                                        if(stateSmartvault.myProtectingSmartVault == "ETH"){
+                                                            // Number(state.myETHAmount)*item.value
+                                                            setSingleTopupAmount(Number(state.myETHAmount)*item.value)
+                                                        }else{
+                                                            setSingleTopupAmount(Number(state.myBTCAmount)*item.value)
+                                                            // Number(state.myBTCAmount)*item.value
+                                                            // Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
+                                                        }
+
+
+
+
                                                         // let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
                                                         // borrowPower = borrowPower * stateLoanshark.priceOfEth;
                                                         // borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
