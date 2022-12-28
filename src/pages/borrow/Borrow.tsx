@@ -190,12 +190,12 @@ function Borrow() {
 				]
 
 				let oldHealthFactor =
-				calculateHealthFactor(
-					Number(stateLoanshark.userDepositBalanceEth),
-					stateLoanshark.priceOfEth,
-					stateLoanshark.LTV["ETHBTC"],
-					Number(stateLoanshark.userDebtBalanceBtc),
-					stateLoanshark.priceOfBtc);
+					calculateHealthFactor(
+						Number(stateLoanshark.userDepositBalanceEth),
+						stateLoanshark.priceOfEth,
+						stateLoanshark.LTV["ETHBTC"],
+						Number(stateLoanshark.userDebtBalanceBtc),
+						stateLoanshark.priceOfBtc);
 
 				setModal(!modal);
 				dispatch(toggleLoading());
@@ -219,12 +219,12 @@ function Borrow() {
 								dispatch(changeInputBtcDebt(0));
 
 								let newHealthFactor =
-								calculateHealthFactor(
-									Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-									stateLoanshark.priceOfEth,
-									stateLoanshark.LTV["ETHBTC"],
-									Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-									stateLoanshark.priceOfBtc);
+									calculateHealthFactor(
+										Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+										stateLoanshark.priceOfEth,
+										stateLoanshark.LTV["ETHBTC"],
+										Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+										stateLoanshark.priceOfBtc);
 
 								depositETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
 								borrowBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
@@ -604,10 +604,26 @@ function Borrow() {
 												</Grid>
 												<Grid item>
 													<Grid container spacing={1}>
-														{["25%", "50%", "75%", "90%"].map((item) => {
+
+														{[{
+															value: 0.25,
+															label: "25%",
+														},
+														{
+															value: 0.5,
+															label: "50%",
+														},
+														{
+															value: 0.75,
+															label: "75%",
+														},
+														{
+															value: 0.9,
+															label: "90%",
+														}].map((item) => {
 															return (
-																<Grid item key={item}>
-																	<BorrwoingPowerButton label={item}
+																<Grid item key={item.value}>
+																	<BorrwoingPowerButton label={item.label} value={item.value}
 																		onClick={() => {
 																			let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
 																			borrowPower = borrowPower * stateLoanshark.priceOfEth;
@@ -615,8 +631,7 @@ function Borrow() {
 																			borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
 																			borrowPower = borrowPower / stateLoanshark.priceOfBtc;
 																			borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
-
-																			dispatch(changeInputBtcDebt(borrowPower * parseFloat(item) / 100));
+																			dispatch(changeInputBtcDebt(borrowPower * item.value));
 																		}}></BorrwoingPowerButton>
 																</Grid>
 															)
