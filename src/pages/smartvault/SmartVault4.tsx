@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { NavLink, useNavigate } from "react-router-dom"
 import {
-    Button, Grid
+    Button, Grid, Slider
 } from '@mui/material';
 
 import Widget from '../../components/Widget/Widget'
@@ -16,12 +16,12 @@ import CustDialog from "../../components/Dialog/CustDialog";
 
 import { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
+import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
+import BorrwoingPowerButton from "src/components/Button/BorrowingPowerButton/BorrowingPowerButton";
 
 import './SmartVault.scss'
 import Repay from './Repay.svg';
 import Topup from './Topup.svg';
-
-import DashboardCard from '../../components/Card/DashboardCard/DashboardCard'
 
 import { refreshPrice } from '../../utils/API'
 
@@ -53,6 +53,7 @@ function SmartVault1() {
     const [triggerHealthFactor, setTriggerHealthFactor] = useState<any>(0);
     const [singleTopupAmount, setSingleTopupAmount] = useState<any>(0);
     const [stakeAmount, setStakeAmount] = useState<any>(0);
+    const [healthFactorPercentage,setHealthFactorPercentage] = useState<number>(0);
 
     const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
         setModal(!modal);
@@ -360,13 +361,30 @@ function SmartVault1() {
                                     </Grid>
                                 </Grid>
                             </Grid>
+                            <Grid item xs={12}>
+                                <div style={{ width: '100%' }}>
+                                    <Slider
+                                        aria-label="healthFactor"
+                                        defaultValue={0}
+                                        value={healthFactorPercentage}
+                                        onChange={(e:any)=>{
+                                            // console.log(e?.target?.value??0)
+                                            setHealthFactorPercentage(e?.target?.value??0)
+                                        }}
+                                        valueLabelDisplay="auto"
+                                        step={10}
+                                        marks
+                                        min={0}
+                                        max={100}
+                                    />
+                                </div>
+                            </Grid>
                             <p>How much would you like to top-up / repay each time?</p>
                             <Grid item xs={12}>
                                 <Grid container style={{
                                     borderRadius: "3px",
-                                    border: "1px solid rgba(0,0,0, 0.15)",
-                                }}
-                                >
+                                    border: "1px solid rgba(0,0,0, 0.15)"
+                                }}>
                                     <Grid item xs={12}>
                                         <div style={{ padding: "10px" }}>
                                             <Grid container>
@@ -394,6 +412,25 @@ function SmartVault1() {
                                         </div>
                                     </Grid>
                                 </Grid>
+                                <Grid container spacing={1} justifyContent={'end'}>
+                                    {["25%", "50%", "75%", "90%"].map((item) => {
+                                        return (
+                                            <Grid item key={item}>
+                                                <BorrwoingPowerButton label={item}
+                                                    onClick={() => {
+                                                        // let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
+                                                        // borrowPower = borrowPower * stateLoanshark.priceOfEth;
+                                                        // borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
+                                                        // borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
+                                                        // borrowPower = borrowPower / stateLoanshark.priceOfBtc;
+                                                        // borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
+
+                                                        // dispatch(changeInputBtcDebt(borrowPower * parseFloat(item) / 100));
+                                                    }}></BorrwoingPowerButton>
+                                            </Grid>
+                                        )
+                                    })}
+                                </Grid>
                             </Grid>
                             <br></br>
                             <br></br>
@@ -403,26 +440,26 @@ function SmartVault1() {
                                     console.log(`stake smart vault`)
                                     toggleAction(
                                         stateSmartvault.myProtectingSmartVault,
-                                        (triggerHealthFactor < 1.05 || Number(singleTopupAmount) > Number(stakeAmount) || Number(stakeAmount) > Number(stateSmartvault.myProtectingSmartVault == "BTC"? state.myBTCAmount :  state.myETHAmount) ?
+                                        (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "NOACTION" : "STAKESMARTVAULT"),
-                                        (triggerHealthFactor < 1.05 || Number(singleTopupAmount) > Number(stakeAmount) || Number(stakeAmount) > Number(stateSmartvault.myProtectingSmartVault == "BTC"? state.myBTCAmount :  state.myETHAmount) ?
+                                        (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
-                                        (isNaN(triggerHealthFactor) ? 
-                                            "Please enter a valid health factor" 
+                                        (isNaN(triggerHealthFactor) ?
+                                            "Please enter a valid health factor"
                                             : triggerHealthFactor < 1.05 ?
                                                 "Please set the target health factor higher than 1.05"
                                                 :
-                                                Number(singleTopupAmount) > Number(stakeAmount) ?
+                                                singleTopupAmount > stakeAmount ?
                                                     "Please deposit more than the amount to repay for you each time the target heath factor is hit."
                                                     :
-                                                    Number(stakeAmount) > Number(stateSmartvault.myProtectingSmartVault == "BTC"? state.myBTCAmount :  state.myETHAmount) ?
-                                                        "You do not have " + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + " to stake. You have " + (stateSmartvault.myProtectingSmartVault == "BTC"? state.myBTCAmount : state.myETHAmount) + " " + stateSmartvault.myProtectingSmartVault + " only."
+                                                    stakeAmount > state.myBTCAmount ?
+                                                        "You do not have " + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + " to stake. You have " + (stateSmartvault.myProtectingSmartVault == "BTC" ? state.myBTCAmount : state.myETHAmount) + " " + stateSmartvault.myProtectingSmartVault + " only."
                                                         :
                                                         "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                        "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " " + stateSmartvault.myProtectingSmartVault + " (~" + Number((singleTopupAmount * (stateSmartvault.myProtectingSmartVault == "BTC"? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span>. " +
+                                                        "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " " + stateSmartvault.myProtectingSmartVault + " (~" + Number((singleTopupAmount * (stateSmartvault.myProtectingSmartVault == "BTC" ? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span>. " +
                                                         "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
-                                                        "until a total of <span class='fw-bold'>" + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + "  (~$" + Number((stakeAmount *  (stateSmartvault.myProtectingSmartVault == "BTC"? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span> is topped up."
-                                       ),
+                                                        "until a total of <span class='fw-bold'>" + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + "  (~$" + Number((stakeAmount * (stateSmartvault.myProtectingSmartVault == "BTC" ? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span> is topped up."
+                                        ),
                                         stateSmartvault.myProtectingPair,
                                         0
                                     )
@@ -537,7 +574,7 @@ function SmartVault1() {
                                         title: "APY",
                                         value: Number((
                                             (
-                                                (state.aaveEthDepositRate) / 100  * (state.userDepositBalanceEth * state.priceOfEth / 100)
+                                                (state.aaveEthDepositRate) / 100 * (state.userDepositBalanceEth * state.priceOfEth / 100)
                                                 - state.aaveBtcBorrowRate / 100 * (state.userDebtBalanceBtc * state.priceOfBtc / 100)
                                                 + 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100)
                                             ) / (state.userDepositBalanceEth * state.priceOfEth / 100) * 100
