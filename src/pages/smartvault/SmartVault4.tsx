@@ -402,6 +402,7 @@ function SmartVault1() {
                                                             display: "none",
                                                             width: "100%",
                                                             height: "100%",
+                                                            paddingTop: "10px",
                                                             border: "0px",
                                                             backgroundColor: "transparent",
                                                         }}
