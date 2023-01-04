@@ -399,8 +399,16 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid item xs={12}>
+															<Grid 
+															style={{
+																display: "flex",
+																justifyContent: "space-between"
+															}} item xs={12}>
 																<span>Collateral</span>
+																<span style={{ textAlign: "right"}}>
+																	<span>Balance: </span>
+																	<span style={{ fontWeight: "800" }}>{Number(Number(stateLoanshark.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
+																</span>
 															</Grid>
 															<Grid item xs={7}>
 																<input
@@ -426,13 +434,6 @@ function Borrow() {
 
 																<Grid container>
 																	<Grid item xs={12}>
-																		<div style={{
-																			padding: "5px",
-																			textAlign: "end",
-																		}}>
-																			<span>Balance: </span>
-																			<span style={{ fontWeight: "800" }}>{Number(Number(stateLoanshark.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
-																		</div>
 
 																	</Grid>
 																	<Grid item xs={12}>
@@ -499,8 +500,24 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid item xs={12}>
+															<Grid 
+															style={{
+																display: "flex",
+																justifyContent: "space-between"
+															}}
+															item xs={12}>
 																<span>Borrow</span>
+																<span>
+																	<span>Max Borrow: </span>
+																	<span style={{ fontWeight: "800" }}>{
+																		Number(Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
+																			* stateLoanshark.priceOfEth
+																			* stateLoanshark.LTV["ETHBTC"]
+																			* stateLoanshark.liquidationPrice["ETHBTC"]
+																			/ stateLoanshark.priceOfBtc)
+																			- stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString()
+																	} BTC</span>
+																</span>
 															</Grid>
 															<Grid item xs={7}>
 																<input
@@ -513,6 +530,7 @@ function Borrow() {
 																		overflow: "hidden",
 																		width: "100%",
 																		height: "100%",
+																		paddingTop: "10px",
 																		border: "0px",
 																		backgroundColor: "transparent",
 																	}}
@@ -526,21 +544,6 @@ function Borrow() {
 
 																<Grid container>
 																	<Grid item xs={12}>
-																		<div style={{
-																			padding: "5px",
-																			textAlign: "end",
-																		}}>
-																			<span>Max Borrow: </span>
-																			<span style={{ fontWeight: "800" }}>{
-																				Number(Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
-																					* stateLoanshark.priceOfEth
-																					* stateLoanshark.LTV["ETHBTC"]
-																					* stateLoanshark.liquidationPrice["ETHBTC"]
-																					/ stateLoanshark.priceOfBtc)
-																					- stateLoanshark.userDebtBalanceBtc).toFixed(2)).toLocaleString()
-																			} BTC</span>
-																		</div>
-
 																	</Grid>
 																	<Grid item xs={12}>
 																		<Grid container justifyContent={'end'} alignItems={'center'} spacing={2}>
@@ -647,9 +650,19 @@ function Borrow() {
 													<span className={`borrow-card-trade-borrow-power-text`}>Route:</span>
 												</Grid>
 												<Grid item>
-													<Grid container spacing={1}>
+													<Grid spacing={1}>
 														<span className={`borrow-card-trade-borrow-power-text`}>AAVE</span>
 													</Grid>
+												</Grid>
+											</Grid>
+										</Grid>
+										<br></br>
+										<Grid item xs={12}>
+											<Grid container justifyContent={'space-between'}>
+												<Grid item>
+													<span className={`borrow-card-trade-borrow-power-text`}>You will save ${
+														Number((stateLoanshark.traderJoeBtcBorrowRate - stateLoanshark.aaveBtcBorrowRate) / 100 * stateLoanshark.inputBtcDept * stateLoanshark.priceOfBtc / 100).toLocaleString()
+													} in interest fee per year by using Loanshark</span>
 												</Grid>
 											</Grid>
 										</Grid>

@@ -9,6 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 import { useAppSelector } from '../../hooks';
 import SelectToken from 'src/components/SelectToken/SelectToken';
+import Web3 from 'web3';
 
 interface SidebarLayoutProps {
   // children?: ReactNode;
@@ -18,6 +19,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();
   console.log(theme)
   const stateSelectToken = useAppSelector((state) => state.selectToken)
+  const state = useAppSelector((state) => state.loanshark)
   useEffect(() => {
     console.log(`SidebarLayout`)
   }, [])
@@ -33,7 +35,6 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
     left: '45%',
     zIndex: '1000'
   };
-
 
   return (
     <>
@@ -91,6 +92,12 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         >
 
           <Box display="block">
+            <div style={{ width: '100%', height: '25px', textAlign:"center", backgroundColor: '#FFFF00' }}>
+              {state.currentChainID == 43113? 
+              "Loanshark has saved borrowers $" + 
+              Number((state.traderJoeBtcBorrowRate - state.aaveBtcBorrowRate) / 100 * state.totalUserDebtBalanceBtc * state.priceOfBtc / 100).toLocaleString() + 
+              " in interest fee already!" : "Please connect your wallet to Avalanche Testnet"}
+            </div>
             <div style={{ width: '100vw' }}>
               <Outlet />
               {stateLayout.loadingActive ? <div style={{

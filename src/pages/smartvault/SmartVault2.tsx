@@ -30,7 +30,7 @@ function SmartVault1() {
 
 	return (
 		<>
-			<div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
+			<div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
 				<Grid container spacing={3}>
 					<Grid item xs={12}>
                         <span className={'card-title'}>Select a loan to protect</span><span className={'card-subtitle'}> (2/4 steps)</span>

@@ -240,7 +240,7 @@ function SmartVault1() {
             // modalInputValue={modalInputValue}
             >
             </CustDialog>}
-            <div style={{ paddingTop: "50px", paddingRight: "20%", paddingLeft: "20%" }}>
+            <div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <span className={'card-title'}>Protection Setup</span><span className={'card-subtitle'}> (4/4 steps)</span>
@@ -330,6 +330,7 @@ function SmartVault1() {
                             <Grid item xs={12}>
                                 <Grid container style={{
                                     borderRadius: "3px",
+                                    display: 'none',
                                     border: "1px solid rgba(0,0,0, 0.15)",
                                 }}
                                 >
@@ -365,17 +366,17 @@ function SmartVault1() {
                                 <div style={{ width: '100%' }}>
                                     <Slider
                                         aria-label="healthFactor"
-                                        defaultValue={0}
+                                        defaultValue={1.05}
                                         value={healthFactorPercentage}
                                         onChange={(e: any) => {
                                             // console.log(e?.target?.value??0)
                                             setHealthFactorPercentage(e?.target?.value ?? 0)
                                         }}
                                         valueLabelDisplay="auto"
-                                        step={10}
+                                        step={0.01}
                                         marks
-                                        min={0}
-                                        max={100}
+                                        min={1.05}
+                                        max={1.65}
                                     />
                                 </div>
                             </Grid>
@@ -383,6 +384,7 @@ function SmartVault1() {
                             <Grid item xs={12}>
                                 <Grid container style={{
                                     borderRadius: "3px",
+                                    display: "none",
                                     border: "1px solid rgba(0,0,0, 0.15)"
                                 }}>
                                     <Grid item xs={12}>
@@ -397,6 +399,7 @@ function SmartVault1() {
                                                             fontWeight: "700",
                                                             fontStyle: "normal",
                                                             overflow: "hidden",
+                                                            display: "none",
                                                             width: "100%",
                                                             height: "100%",
                                                             border: "0px",
@@ -412,7 +415,7 @@ function SmartVault1() {
                                         </div>
                                     </Grid>
                                 </Grid>
-                                <Grid container spacing={1} justifyContent={'end'}>
+                                <Grid container spacing={1} justifyContent={'start'}>
                                     {[{
                                         value: 0.25,
                                         label: "25%",
@@ -440,9 +443,9 @@ function SmartVault1() {
                                                         
                                                         if(stateSmartvault.myProtectingSmartVault == "ETH"){
                                                             // Number(state.myETHAmount)*item.value
-                                                            setSingleTopupAmount(Number(state.myETHAmount)*item.value)
+                                                            setSingleTopupAmount(Number(stakeAmount)*item.value)
                                                         }else{
-                                                            setSingleTopupAmount(Number(state.myBTCAmount)*item.value)
+                                                            setSingleTopupAmount(Number(stakeAmount)*item.value)
                                                             // Number(state.myBTCAmount)*item.value
                                                             // Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
                                                         }

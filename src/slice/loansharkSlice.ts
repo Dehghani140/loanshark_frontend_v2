@@ -12,6 +12,7 @@ const initialState = {
     userDepositBalanceAvax: 0,
     userDebtBalanceBtc: 0,
     userDebtBalanceUsdt: 0,
+    totalUserDebtBalanceBtc: 0,
     myFujiVaultETHBTC: null,
     myFujiVaultAVAXUSDT: null,
     myFliquidatorAVAX: null,
@@ -39,6 +40,7 @@ const initialState = {
     myUSDTAmount: 0,
     LTV: { "ETHBTC": 0, "AVAXUSDT": 0 },
     liquidationPrice: { "ETHBTC": 0, "AVAXUSDT": 0 },
+    currentChainID: null
 }
 
 export const loansharkSlice = createSlice({
@@ -83,6 +85,9 @@ export const loansharkSlice = createSlice({
         },
         changeUserDebtBalanceUsdt: (state, action: PayloadAction<any>) => {
             state.userDebtBalanceUsdt = action.payload
+        },
+        changeTotalUserDebtBalanceBtc: (state, action: PayloadAction<any>) => {
+            state.totalUserDebtBalanceBtc = action.payload
         },
         changeMyFujiVaultAVAXUSDT: (state, action: PayloadAction<any>) => {
             state.myFujiVaultAVAXUSDT = action.payload
@@ -174,6 +179,9 @@ export const loansharkSlice = createSlice({
               if (action.payload.AVAXUSDT) {
                 state.liquidationPrice.AVAXUSDT = action.payload.AVAXUSDT;
               }
+        },
+        changeCurrentChainId: (state, action: PayloadAction<any>) => {
+            state.currentChainID = action.payload
         }
     },
 })
@@ -192,6 +200,7 @@ export const {
     changeUserDepositBalanceAvax,
     changeUserDebtBalanceBtc,
     changeUserDebtBalanceUsdt,
+    changeTotalUserDebtBalanceBtc,
     changeMyFujiVaultAVAXUSDT,
     changeMyFliquidatorAvax,
     changeMyFujiController,
@@ -219,6 +228,7 @@ export const {
     changeMyUSDTAmount,
     changeLTV,
     changeLiqudationPrice,
+    changeCurrentChainId,
 } = loansharkSlice.actions
 
 export default loansharkSlice.reducer

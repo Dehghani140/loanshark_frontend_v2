@@ -93,7 +93,7 @@ function DashboardCard(props: any) {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <div style={{ height: "30px" }}></div>
+                        <div style={{ height: "10px" }}></div>
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container>
@@ -110,7 +110,7 @@ function DashboardCard(props: any) {
                     </Grid>
                     <Grid container>
                         <Grid item xs={12}>
-                            <div style={{ height: '50px' }}>
+                            <div style={{ height: '10px' }}>
                                 <hr></hr>
                             </div>
                         </Grid>

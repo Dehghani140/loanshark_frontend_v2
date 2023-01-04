@@ -240,7 +240,7 @@ function Dashboard() {
 						<div style={{ height: "53px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<span className={'card-title'}>My Borrowing Position</span>
+						<span className={'card-title'}>My Borrowing Position {state.userDepositBalanceEth <= 0 ? "(0)" : "(1)"} </span>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "29px" }}></div>
@@ -336,7 +336,7 @@ function Dashboard() {
 						<div style={{ height: "53px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<span className={'card-title'}>My Smart Vault Position</span>
+						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount <= 0 ? "(0)" : "(1)"}</span>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "29px" }}></div>

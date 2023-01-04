@@ -176,8 +176,8 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary="History"
-              className={`nav-item${menubar[2] === true ? "__clicked" : ""}`}
-              onClick={() => { clickMenu(2) }}
+              className={`nav-item${menubar[3] === true ? "__clicked" : ""}`}
+              onClick={() => { clickMenu(3) }}
             />
           </ListItem>
 

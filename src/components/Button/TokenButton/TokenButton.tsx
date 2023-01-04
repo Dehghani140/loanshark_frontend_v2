@@ -74,8 +74,13 @@ const TokenButton = (props:any)=>{
 									</ImageListItem>
 								</ImageList>
 							</Grid>
+							&nbsp;
 							<Grid item>
 								<span>{collateralCurrency.toUpperCase()}</span>
+							</Grid>
+							&nbsp;
+							<Grid item>
+								<span>▼</span>
 							</Grid>
 						</Grid>
 					</div>

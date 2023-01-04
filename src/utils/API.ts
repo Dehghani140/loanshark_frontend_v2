@@ -22,6 +22,7 @@ import {
     changeUserDepositBalanceAvax,
     changeUserDebtBalanceBtc,
     changeUserDebtBalanceUsdt,
+    changeTotalUserDebtBalanceBtc,
     changePriceOfEth,
     changePriceOfBtc,
     changePriceOfAvax,
@@ -34,10 +35,12 @@ import {
     changeMyUSDTAmount,
     changeLTV,
     changeLiqudationPrice,
-    changeSelectedPair
+    changeSelectedPair,
+    changeCurrentChainId
 } from '../slice/loansharkSlice';
 
 import {
+    resetBackd,
     changeLpPoolBtc,
     changeLpTokenBtc,
     changeVaultBtc,
@@ -131,191 +134,209 @@ export function connectContract(dispatch) {
         dispatch(changeLpPoolEth(new window.web3.eth.Contract(lpPoolAbi, LP_POOL_ETH))),
         dispatch(changeLpTokenEth(new window.web3.eth.Contract(lpTokenAbi, LP_TOKEN_ETH))),
         dispatch(changeVaultEth(new window.web3.eth.Contract(vaultBtcAbi, VAULT_ETH))),
+        dispatch(changeCurrentChainId(window.ethereum.networkVersion)),
     ]);
     dispatch(changeSelectedPair('AVAXUSDT'));
 }
 
 export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") => {
-    console.log(action)
-    if (action === "GET_NEW") {
-        console.log(state.myFujiVaultETHBTC)
-        if (state.myFujiVaultETHBTC) {
-            let args = [1, true]
+    
+    dispatch(changeCurrentChainId(window.ethereum.networkVersion))
 
-            // ETH-BTC Vaults
-            state.myFujiVaultETHBTC?.methods.getNeededCollateralFor(...args).call({}, (error, result) => {
-                dispatch(changeNumberOfEth((result / 10000000000)));
-            });
-            state.myFujiVaultETHBTC?.methods.userDepositBalance(state.myAccount).call({}, (error, result) => {
-                dispatch(changeUserDepositBalanceEth(window.web3.utils.fromWei(result, 'ether')));
-            });
-            state.myFujiVaultETHBTC?.methods.userDebtBalance(state.myAccount).call({}, (error, result) => {
-                dispatch(changeUserDebtBalanceBtc(parseFloat((window.web3.utils.fromWei(result, 'gwei') * 10).toFixed(8))));
-            });
-            state.myFujiVaultETHBTC?.methods.collatF().call({}, (error, result) => {
-                dispatch(changeLTV({ "ETHBTC": result.b / result.a }));             
-            });
-            state.myFujiVaultETHBTC?.methods.safetyF().call({}, (error, result) => {
-                dispatch(changeLiqudationPrice({ "ETHBTC": result.b / result.a }));
-            });
+    try {
+        if (window.ethereum.networkVersion != 43113) {
+            dispatch(reset());
+            dispatch(resetBackd());
+            return
+        }
+        console.log(action)
+        if (action === "GET_NEW") {
+            console.log(state.myFujiVaultETHBTC)
+            if (state.myFujiVaultETHBTC) {
+                let args = [1, true]
 
-            // AVAX-USDT Vaults
-            state.myFujiVaultAVAXUSDT?.methods.getNeededCollateralFor(...args).call({}, (error, result) => {
-                dispatch(changeNumberOfAvax((result / 1000000000000)));
-            });
-            state.myFujiVaultAVAXUSDT?.methods.userDepositBalance(state.myAccount).call({}, (error, result) => {
-                dispatch(changeUserDepositBalanceAvax(window.web3.utils.fromWei(result, 'ether')));
-            });
-            state.myFujiVaultAVAXUSDT?.methods.userDebtBalance(state.myAccount).call({}, (error, result) => {
-                dispatch(changeUserDebtBalanceUsdt(window.web3.utils.fromWei(result, 'picoether')));
-            });
-            state.myFujiVaultAVAXUSDT?.methods.collatF().call({}, (error, result) => {
-                dispatch(changeLTV({ "AVAXUSDT": result.b / result.a }));
-            });
-            state.myFujiVaultAVAXUSDT?.methods.safetyF().call({}, (error, result) => {
-                dispatch(changeLiqudationPrice({ "AVAXUSDT": result.b / result.a }));
-            });
-            let argsPriceOfEth = [USDT, WETH, 2]
-            state.myFujiOracle?.methods.getPriceOf(...argsPriceOfEth).call({}, (error, result) => {
-                dispatch(changePriceOfEth(result));
-            });
-            let argsPriceOfBtc = [USDT, WBTC, 2]
-            state.myFujiOracle?.methods.getPriceOf(...argsPriceOfBtc).call({}, (error, result) => {
-                dispatch(changePriceOfBtc(result));
-            });
-            let argsPriceOfAvax = [USDT, AVAX, 2]
-            state.myFujiOracle?.methods.getPriceOf(...argsPriceOfAvax).call({}, (error, result) => {
-                dispatch(changePriceOfAvax(result));
-            });
-            let argsPriceOfUsdt = [USDT, USDT, 2]
-            state.myFujiOracle?.methods.getPriceOf(...argsPriceOfUsdt).call({}, (error, result) => {
-                dispatch(changePriceOfUsdt(result));
-            });
+                // ETH-BTC Vaults
+                state.myFujiVaultETHBTC?.methods.getNeededCollateralFor(...args).call({}, (error, result) => {
+                    dispatch(changeNumberOfEth((result / 10000000000)));
+                });
+                state.myFujiVaultETHBTC?.methods.userDepositBalance(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeUserDepositBalanceEth(window.web3.utils.fromWei(result, 'ether')));
+                });
+                state.myFujiVaultETHBTC?.methods.userDebtBalance(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeUserDebtBalanceBtc(parseFloat((window.web3.utils.fromWei(result, 'gwei') * 10).toFixed(8))));
+                });
+                state.myFujiVaultETHBTC?.methods.collatF().call({}, (error, result) => {
+                    dispatch(changeLTV({ "ETHBTC": result.b / result.a }));             
+                });
+                state.myFujiVaultETHBTC?.methods.safetyF().call({}, (error, result) => {
+                    dispatch(changeLiqudationPrice({ "ETHBTC": result.b / result.a }));
+                });
 
-            state.providerAAVEAVAX?.methods.getBorrowRateFor(WBTC).call({}, (error, result) => {
-                var APR = result / 1000000000000000000000000000;
-                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
-                dispatch(changeAaveBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
-            });
+                // AVAX-USDT Vaults
+                state.myFujiVaultAVAXUSDT?.methods.getNeededCollateralFor(...args).call({}, (error, result) => {
+                    dispatch(changeNumberOfAvax((result / 1000000000000)));
+                });
+                state.myFujiVaultAVAXUSDT?.methods.userDepositBalance(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeUserDepositBalanceAvax(window.web3.utils.fromWei(result, 'ether')));
+                });
+                state.myFujiVaultAVAXUSDT?.methods.userDebtBalance(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeUserDebtBalanceUsdt(window.web3.utils.fromWei(result, 'picoether')));
+                });
+                
+                state.myFujiVaultETHBTC?.methods.borrowBalance(AAVEAVAX).call({}, (error, result) => {
+                    dispatch(changeTotalUserDebtBalanceBtc(window.web3.utils.fromWei(result, 'gwei')  * 10 ));
+                });
 
-            state.TraderJoeBtcMarket?.methods.borrowRatePerSecond().call({}, (error, result) => {
-                var APR = result / 100000000000;
-                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
-                dispatch(changeTraderJoeBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
-            });
+                state.myFujiVaultAVAXUSDT?.methods.collatF().call({}, (error, result) => {
+                    dispatch(changeLTV({ "AVAXUSDT": result.b / result.a }));
+                });
+                state.myFujiVaultAVAXUSDT?.methods.safetyF().call({}, (error, result) => {
+                    dispatch(changeLiqudationPrice({ "AVAXUSDT": result.b / result.a }));
+                });
+                let argsPriceOfEth = [USDT, WETH, 2]
+                state.myFujiOracle?.methods.getPriceOf(...argsPriceOfEth).call({}, (error, result) => {
+                    dispatch(changePriceOfEth(result));
+                });
+                let argsPriceOfBtc = [USDT, WBTC, 2]
+                state.myFujiOracle?.methods.getPriceOf(...argsPriceOfBtc).call({}, (error, result) => {
+                    dispatch(changePriceOfBtc(result));
+                });
+                let argsPriceOfAvax = [USDT, AVAX, 2]
+                state.myFujiOracle?.methods.getPriceOf(...argsPriceOfAvax).call({}, (error, result) => {
+                    dispatch(changePriceOfAvax(result));
+                });
+                let argsPriceOfUsdt = [USDT, USDT, 2]
+                state.myFujiOracle?.methods.getPriceOf(...argsPriceOfUsdt).call({}, (error, result) => {
+                    dispatch(changePriceOfUsdt(result));
+                });
 
-            state.AAVEDataProvider?.methods.getReserveData(WETH).call({}, (error, result) => {
-                var APR = Number(result[3]) / 1000000000000000000000000000;
-                const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
-                dispatch(changeAaveEthDepositRate(parseFloat(floatString + "").toFixed(2)));
-            });
+                state.providerAAVEAVAX?.methods.getBorrowRateFor(WBTC).call({}, (error, result) => {
+                    var APR = result / 1000000000000000000000000000;
+                    const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
+                    dispatch(changeAaveBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
+                });
 
-            //Backd
-            stateBackd.lpTokenBtc?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                state.TraderJoeBtcMarket?.methods.borrowRatePerSecond().call({}, (error, result) => {
+                    var APR = result / 100000000000;
+                    const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
+                    dispatch(changeTraderJoeBtcBorrowRate(parseFloat(floatString + "").toFixed(2)));
+                });
+
+                state.AAVEDataProvider?.methods.getReserveData(WETH).call({}, (error, result) => {
+                    var APR = Number(result[3]) / 1000000000000000000000000000;
+                    const floatString = (Math.pow(1 + APR / 31536000, 31536000) - 1) * 100;
+                    dispatch(changeAaveEthDepositRate(parseFloat(floatString + "").toFixed(2)));
+                });
+
+                //Backd
+                stateBackd.lpTokenBtc?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    let argsGetPosition = [
+                        state.myAccount,
+                        state.myAccount + "000000000000000000000000",
+                        "0x66756a6964616f00000000000000000000000000000000000000000000000000"
+                    ];
+
+                    if (stateBackd.topupAction) {
+                        stateBackd.topupAction?.methods.getPosition(...argsGetPosition).call({}, (error, resultStakerVault) => {
+                            var floatValue = window.web3.utils.fromWei(resultStakerVault[7], 'gwei') * 10;
+                            let stakerVault = parseFloat(floatValue + "");
+                            dispatch(changeMyBtcLpAmount(stakerVault + window.web3.utils.fromWei(result, 'gwei') * 10));
+                        });
+                    }
+
+                    dispatch(changeMyBtcLpAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
+                });
+                stateBackd.mySmartVaultBtc?.methods.balances(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeSmartVaultBtc(window.web3.utils.fromWei(result, 'gwei') * 10));
+                });
+
+                // state.mySmartVaultUsdt?.methods.balances(state.myAccount).call({}, (error, result) => {
+                //     dispatch(changeSmartVaultUsdt(window.web3.utils.fromWei(result, 'picoether')));
+                // });
+
+                state.myBTCContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeMyBTCAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
+                });
+                state.myETHContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeMyETHAmount(window.web3.utils.fromWei(result, 'ether')));
+                });
+                state.myUSDTContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeMyUSDTAmount(window.web3.utils.fromWei(result, 'picoether')));
+                });
+
+                window.web3.eth.getBalance(state.myAccount, function (err, result) {
+                    if (err) {
+                    } else {
+                        dispatch(changeMyAVAXAmount(window.web3.utils.fromWei(result, 'ether')));
+                    }
+                })
+
+
+                let argsGetPositionEth = [
+                    state.myAccount,
+                    state.myAccount + "000000000000000000000000",
+                    "0x66756a6964616f65746800000000000000000000000000000000000000000000"
+                ];
+
+                stateBackd.topupAction?.methods.getPosition(...argsGetPositionEth).call({}, (error, result) => {
+                    dispatch(changeMyProtectionEth(result));
+                });
+
+                stateBackd.lpTokenBtc?.methods.totalSupply().call({}, (error, result) => {
+                    dispatch(changeTotalBtcLpAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
+                });
+
                 let argsGetPosition = [
                     state.myAccount,
                     state.myAccount + "000000000000000000000000",
                     "0x66756a6964616f00000000000000000000000000000000000000000000000000"
                 ];
 
-                if (stateBackd.topupAction) {
-                    stateBackd.topupAction?.methods.getPosition(...argsGetPosition).call({}, (error, resultStakerVault) => {
-                        var floatValue = window.web3.utils.fromWei(resultStakerVault[7], 'gwei') * 10;
-                        let stakerVault = parseFloat(floatValue + "");
-                        dispatch(changeMyBtcLpAmount(stakerVault + window.web3.utils.fromWei(result, 'gwei') * 10));
-                    });
-                }
+                stateBackd.topupAction?.methods.getPosition(...argsGetPosition).call({}, (error, result) => {
+                    dispatch(changeMyProtectionBtc(result));
+                });
 
-                dispatch(changeMyBtcLpAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
-            });
-            stateBackd.mySmartVaultBtc?.methods.balances(state.myAccount).call({}, (error, result) => {
-                dispatch(changeSmartVaultBtc(window.web3.utils.fromWei(result, 'gwei') * 10));
-            });
+                stateBackd.gasBank?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    dispatch(changeMyGasBankBalance(window.web3.utils.fromWei(result, 'ether')));
+                });
 
-            // state.mySmartVaultUsdt?.methods.balances(state.myAccount).call({}, (error, result) => {
-            //     dispatch(changeSmartVaultUsdt(window.web3.utils.fromWei(result, 'picoether')));
-            // });
+                stateBackd.lpTokenEth?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
+                    let argsGetPosition = [
+                        state.myAccount,
+                        state.myAccount + "000000000000000000000000",
+                        "0x66756a6964616f65746800000000000000000000000000000000000000000000"
+                    ];
 
-            state.myBTCContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
-                dispatch(changeMyBTCAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
-            });
-            state.myETHContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
-                dispatch(changeMyETHAmount(window.web3.utils.fromWei(result, 'ether')));
-            });
-            state.myUSDTContract?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
-                dispatch(changeMyUSDTAmount(window.web3.utils.fromWei(result, 'picoether')));
-            });
+                    let previousResult = String(result);
+                    if (stateBackd.topupAction) {
+                        stateBackd.topupAction.methods.getPosition(...argsGetPosition).call({}, (error, resultStakerVault) => {
+                            const amount = window.web3.utils.toBN(resultStakerVault[7]);
+                            const amountToAdd = window.web3.utils.toBN(previousResult);
+                            const newAmountInWei = amount.add(amountToAdd);
 
-            window.web3.eth.getBalance(state.myAccount, function (err, result) {
-                if (err) {
-                } else {
-                    dispatch(changeMyAVAXAmount(window.web3.utils.fromWei(result, 'ether')));
-                }
-            })
+                            dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei, 'ether')));
+                        });
+                    }
+                    dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(String(result), 'ether')));
+                });
 
+                stateBackd.lpPoolBtc?.methods.exchangeRate().call({}, (error, resultExchangeRate) => {
+                    dispatch(changeBtcLpExchangeRateAmount(window.web3.utils.fromWei(resultExchangeRate, 'ether')));
+                });
 
-            let argsGetPositionEth = [
-                state.myAccount,
-                state.myAccount + "000000000000000000000000",
-                "0x66756a6964616f65746800000000000000000000000000000000000000000000"
-            ];
+                stateBackd.lpPoolEth?.methods.exchangeRate().call({}, (error, resultExchangeRate) => {
+                    dispatch(changeEthLpExchangeRateAmount(window.web3.utils.fromWei(resultExchangeRate, 'ether')));
+                });
 
-            stateBackd.topupAction?.methods.getPosition(...argsGetPositionEth).call({}, (error, result) => {
-                dispatch(changeMyProtectionEth(result));
-            });
-
-            stateBackd.lpTokenBtc?.methods.totalSupply().call({}, (error, result) => {
-                dispatch(changeTotalBtcLpAmount(window.web3.utils.fromWei(result, 'gwei') * 10));
-            });
-
-            let argsGetPosition = [
-                state.myAccount,
-                state.myAccount + "000000000000000000000000",
-                "0x66756a6964616f00000000000000000000000000000000000000000000000000"
-            ];
-
-            stateBackd.topupAction?.methods.getPosition(...argsGetPosition).call({}, (error, result) => {
-                dispatch(changeMyProtectionBtc(result));
-            });
-
-            stateBackd.gasBank?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
-                dispatch(changeMyGasBankBalance(window.web3.utils.fromWei(result, 'ether')));
-            });
-
-            stateBackd.lpTokenEth?.methods.balanceOf(state.myAccount).call({}, (error, result) => {
-                let argsGetPosition = [
-                    state.myAccount,
-                    state.myAccount + "000000000000000000000000",
-                    "0x66756a6964616f65746800000000000000000000000000000000000000000000"
-                ];
-
-                let previousResult = String(result);
-                if (stateBackd.topupAction) {
-                    stateBackd.topupAction.methods.getPosition(...argsGetPosition).call({}, (error, resultStakerVault) => {
-                        const amount = window.web3.utils.toBN(resultStakerVault[7]);
-                        const amountToAdd = window.web3.utils.toBN(previousResult);
-                        const newAmountInWei = amount.add(amountToAdd);
-
-                        dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei, 'ether')));
-                    });
-                }
-                dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(String(result), 'ether')));
-            });
-
-            stateBackd.lpPoolBtc?.methods.exchangeRate().call({}, (error, resultExchangeRate) => {
-                dispatch(changeBtcLpExchangeRateAmount(window.web3.utils.fromWei(resultExchangeRate, 'ether')));
-            });
-
-            stateBackd.lpPoolEth?.methods.exchangeRate().call({}, (error, resultExchangeRate) => {
-                dispatch(changeEthLpExchangeRateAmount(window.web3.utils.fromWei(resultExchangeRate, 'ether')));
-            });
-
-            stateBackd.lpTokenEth?.methods.totalSupply().call({}, (error, result) => {
-                dispatch(changeTotalEthLpAmount(window.web3.utils.fromWei(result, 'ether') * 1));
-            });
+                stateBackd.lpTokenEth?.methods.totalSupply().call({}, (error, result) => {
+                    dispatch(changeTotalEthLpAmount(window.web3.utils.fromWei(result, 'ether') * 1));
+                });
+            }
+        } else if (action === "CLEAR") {
+            dispatch(reset());
+            dispatch(resetBackd());
         }
-    } else if (action === "CLEAR") {
-        dispatch(reset());
+    } catch (e: unknown) {
+        console.log(e)
     }
-
 }
