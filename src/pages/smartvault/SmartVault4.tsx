@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { NavLink, useNavigate } from "react-router-dom"
+import { makeStyles, withStyles } from '@mui/styles';
 import {
     Button, Grid, Slider
 } from '@mui/material';
@@ -24,6 +25,17 @@ import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
 import { refreshPrice } from '../../utils/API'
+
+const CustomSlider = withStyles({
+    rail: {
+        backgroundImage:
+            "linear-gradient(to right, #00dc5f, #8eb000, #b67f00, #c14812, #af003d)"
+    },
+    track: {
+        backgroundImage:
+            "linear-gradient(to right, #009d44, #637b00, #7e5600, #832d0d, #720028)"
+    }
+})(Slider);
 
 function SmartVault1() {
     let navigate = useNavigate();
@@ -327,7 +339,7 @@ function SmartVault1() {
                                 </Grid>
                             </Grid>
                             <p>At which health factor would you like to use smart vault?</p>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <Grid container style={{
                                     borderRadius: "3px",
                                     display: 'none',
@@ -361,10 +373,10 @@ function SmartVault1() {
                                         </div>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12}>
                                 <div style={{ width: '100%' }}>
-                                    <Slider
+                                    <CustomSlider
                                         aria-label="healthFactor"
                                         defaultValue={1.05}
                                         value={healthFactorPercentage}
@@ -377,7 +389,8 @@ function SmartVault1() {
                                         marks
                                         min={1.05}
                                         max={1.65}
-                                    />
+                                    ></CustomSlider>
+                                   
                                 </div>
                             </Grid>
                             <p>How much would you like to top-up / repay each time?</p>
@@ -441,12 +454,12 @@ function SmartVault1() {
                                                         console.log(item.value)
 
                                                         console.log(e.target.value)
-                                                        
-                                                        if(stateSmartvault.myProtectingSmartVault == "ETH"){
+
+                                                        if (stateSmartvault.myProtectingSmartVault == "ETH") {
                                                             // Number(state.myETHAmount)*item.value
-                                                            setSingleTopupAmount(Number(stakeAmount)*item.value)
-                                                        }else{
-                                                            setSingleTopupAmount(Number(stakeAmount)*item.value)
+                                                            setSingleTopupAmount(Number(stakeAmount) * item.value)
+                                                        } else {
+                                                            setSingleTopupAmount(Number(stakeAmount) * item.value)
                                                             // Number(state.myBTCAmount)*item.value
                                                             // Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
                                                         }
