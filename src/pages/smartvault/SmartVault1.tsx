@@ -34,7 +34,7 @@ function SmartVault1() {
                         <span className={'card-title'}>Protection Setup </span><span className={'card-subtitle'}>(1/4 steps)</span>
                     </Grid>
                     <Grid item xs={12}>
-                        <span className={'card-subtitle'}>Please select the way to setup protection:</span>
+                        <span className={'card-subtitle'}>Select your protection method</span>
                     </Grid>
                     <Grid item xs={5}>
                         <Widget whiteBackgroundColor={true} title={""}>

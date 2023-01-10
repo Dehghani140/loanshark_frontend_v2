@@ -17,16 +17,24 @@ function History() {
 
 	const columns = [
 		{ field: 'date', headerName: 'Date', width: 150 },
-		{ field: 'content', headerName: 'Transaction', width: 180, renderCell: (params) => {
-				return <a target="_blank" rel="noreferrer" href={"https://testnet.snowtrace.io/tx/" + params.row.content}>{params.row.content}</a>
-			}
-		},
 		{ field: 'borrowingPosition', headerName: 'Borrowing Position', width: 180 },
-		{ field: 'actionType', headerName: 'Action Type', width: 150 },
+		{ field: 'actionType', headerName: 'Action Type', width: 150, renderCell: (params) => {
+			return <span style={{
+				color: (
+					params.row.actionType == "Withdraw ETH" ? '#3168AB':
+					params.row.actionType == "Borrow BTC" ? '#3168AB':'#4EC0DE' 
+				)
+			}}>{params.row.actionType}</span>
+		} },
 		{ field: 'amount', headerName: 'Amount', },
 		{ field: 'value', headerName: 'Value', description: 'This column has a value getter and is not sortable.' },
 		{ field: 'initialHealthFactor', headerName: 'Initial Health Factor', type: 'number', width: 180 },
 		{ field: 'newHealthFactor', headerName: 'New Health Factor', type: 'number', width: 180 },
+		
+		{ field: 'content', headerName: 'Explorer', width: 100, renderCell: (params) => {
+			return <a target="_blank" rel="noreferrer" href={"https://testnet.snowtrace.io/tx/" + params.row.content}>link</a>
+		}
+	},
 	];
 
 	const callBackendAPI = () => {

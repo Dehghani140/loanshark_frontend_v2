@@ -313,11 +313,11 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                             const amount = window.web3.utils.toBN(resultStakerVault[7]);
                             const amountToAdd = window.web3.utils.toBN(previousResult);
                             const newAmountInWei = amount.add(amountToAdd);
-
-                            dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei, 'ether')));
+                            dispatch(changeMyEthLpAmount(newAmountInWei));
                         });
+                    } else {
+                        dispatch(changeMyEthLpAmount(String(result)));
                     }
-                    dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(String(result), 'ether')));
                 });
 
                 stateBackd.lpPoolBtc?.methods.exchangeRate().call({}, (error, resultExchangeRate) => {

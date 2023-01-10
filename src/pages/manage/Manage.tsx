@@ -796,7 +796,7 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Smart Vault</span>
+															<span>Smart Vault Balance</span>
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span> */}
@@ -810,7 +810,7 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>APY</span>
+															<span>Net APY</span>
 														</Grid>
 														<Grid item>
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
@@ -912,7 +912,7 @@ function Manage() {
 											value: (stateBackd.myProtectionBtc[0] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[0], 'ether') : 0),
 										},
 										{
-											title: "Repay amount each time",
+											title: "Protection amount each time",
 											value: (stateBackd.myProtectionBtc[5] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[5], 'gwei') * 10 : 0) + " BTC",
 										},
 										{
@@ -973,9 +973,9 @@ function Manage() {
 							</NoBorderCard>
 							</Grid>
 
-							<Grid  hidden={stateBackd.myEthLpAmount < 0}  item xs={12}>
+							<Grid  hidden={stateBackd.myEthLpAmount <= 0}  item xs={12}>
 							<NoBorderCard>
-								<Grid container>
+								<Grid hidden={stateBackd.myBtcLpAmount >= 0} container>
 									<Grid item xs={12}>
 										<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
 									</Grid>
@@ -1040,7 +1040,7 @@ function Manage() {
 											value: (stateBackd.myProtectionEth[0] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether') : 0),
 										},
 										{
-											title: "Repay amount each time",
+											title: "Protection amount each time",
 											value: (stateBackd.myProtectionEth[5] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[5], 'gwei') * 10 : 0) + " ETH",
 										},
 										{
@@ -1676,12 +1676,12 @@ function Manage() {
 									<Grid container>
 										{[{
 											title: "Current Price of ETH",
-											value: stateLoanshark.priceOfEth / 100,
+											value: "$" + stateLoanshark.priceOfEth / 100,
 											textColor: "black",
 										},
 										{
 											title: "Current Price of BTC",
-											value: stateLoanshark.priceOfBtc / 100,
+											value: "$" + stateLoanshark.priceOfBtc / 100,
 											textColor: "black",
 										},
 										{
@@ -1690,18 +1690,13 @@ function Manage() {
 											textColor: "black",
 										},
 										{
-											title: "Max Borrow Power",
+											title: "Max Borrow Capacity",
 											value: `${maxBorrowPower} BTC`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidity Threshold",
-											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
-											textColor: "black",
-										},
-										{
 											title: "Liquidation Price of ETH",
-											value: `${((Number(stateLoanshark.userDebtBalanceBtc))
+											value: "$" + `${((Number(stateLoanshark.userDebtBalanceBtc))
 												* (stateLoanshark.priceOfBtc) / 100
 												/ (Number(stateLoanshark.userDepositBalanceEth))
 												/ stateLoanshark.LTV["ETHBTC"]).toFixed(2)}`,

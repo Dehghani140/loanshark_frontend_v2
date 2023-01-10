@@ -34,7 +34,7 @@ class TableRow extends React.Component {
                             Staking Amount
                         </th>
                         <th key={4} scope="col" className={"pl-0"}>
-                            APY
+                            Net APY
                         </th>
                         <th key={0} scope="col" className={"pl-0"}>
                             Threshold

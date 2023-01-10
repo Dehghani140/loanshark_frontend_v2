@@ -118,7 +118,7 @@ function Dashboard() {
 				break;
 			case "LEAVESMARTVAULTETH":
 					args = [
-						window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
+						window.web3.utils.toBN((modalInputValue)).toString(),
 					];
 	
 					setModal(!modal);
@@ -282,7 +282,7 @@ function Dashboard() {
 												value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
 											},
 											{
-												title: "APY",
+												title: "Net APY",
 												value: Number((
 													(
 														(state.aaveEthDepositRate) / 100 * (state.userDepositBalanceEth * state.priceOfEth / 100)
@@ -302,7 +302,7 @@ function Dashboard() {
 												)).toFixed(2)).toLocaleString()
 											},
 											{
-												title: "Smart Vault",
+												title: "Smart Vault Balance",
 												value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString()
 											},
 											{
@@ -336,7 +336,7 @@ function Dashboard() {
 						<div style={{ height: "53px" }}></div>
 					</Grid>
 					<Grid item xs={12}>
-						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount <= 0 ? "(0)" : "(1)"}</span>
+						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount && stateBackd.myBtcLpAmount <= 0 ? "(0)" : "(1)"}</span>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "29px" }}></div>
@@ -362,7 +362,7 @@ function Dashboard() {
 									detail={
 										[
 											{
-												title: "APY",
+												title: "Net APY",
 												value: "5.4%"
 											},
 											{
@@ -390,7 +390,7 @@ function Dashboard() {
 														"LEAVESMARTVAULTETH",
 														'Confirm to withdraw all from Smart Vault?',
 														'You are withdrawing <span class="fw-bold">' +
-														Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8) +
+														Number(stateBackd.myEthLpAmount) +
 														' ETH (~$' +
 														Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2) +
 														')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
@@ -425,7 +425,7 @@ function Dashboard() {
 									detail={
 										[
 											{
-												title: "APY",
+												title: "Net APY",
 												value: "5.4%"
 											},
 											{
