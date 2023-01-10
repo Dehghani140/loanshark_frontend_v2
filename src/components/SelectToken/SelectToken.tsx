@@ -29,7 +29,7 @@ import {
     ImageList,
     ImageListItem,
 } from '@mui/material';
-
+import CloseIcon from '@mui/icons-material/Close';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -181,12 +181,24 @@ const SelectToken = (selectTokenProps: any) => {
                 }}>
                     <Grid container>
                         <Grid item xs={12}>
-                            <span style={{
-                                color: "rgba(38,38,38,1)",
-                                fontSize: "21px",
-                                fontWeight: "600",
-                            }}
-                            >{stateSelectToken.title}</span>
+                            <Grid container justifyContent={'space-between'}>
+                                <Grid item>
+                                    <span style={{
+                                        color: "rgba(38,38,38,1)",
+                                        fontSize: "21px",
+                                        fontWeight: "blod",
+                                    }}
+                                    >{stateSelectToken.title}</span>
+                                </Grid>
+                                <Grid item alignContent={'center'} alignItems={'center'}>
+                                    <IconButton color="primary" aria-label="upload picture" component="label"
+                                        onClick={() => { onClose() }}
+                                    >
+                                        <CloseIcon style={{ color: "black" }}></CloseIcon>
+                                    </IconButton>
+
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12}>
                             <input
@@ -197,7 +209,7 @@ const SelectToken = (selectTokenProps: any) => {
                                     width: "100%",
                                     height: "40px",
                                     color: "rgba(153,153,153,1)",
-                                    fontFamily: "Poppins-Regular",
+                                    fontFamily: "poppins",
                                     fontSize: "16px",
                                     fontWeight: "400",
                                 }}
@@ -238,32 +250,32 @@ const SelectToken = (selectTokenProps: any) => {
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         <TableRow style={{ background: "transparent" }}>
-                                            {stateSelectToken.title === 'Select a token as collateral' &&
+                                            {(stateSelectToken.title === 'Select a token as collateral' || stateSelectToken.title === 'Select a token to deposit') &&
                                                 tableColumn.map((eachColumn) => {
                                                     return (
                                                         <React.Fragment key={eachColumn.id}>
                                                             <TableCell style={{
                                                                 minWidth: eachColumn.minWidth,
                                                                 color: "rgba(38,38,38,1)",
-                                                                fontFamily: "Neometric-Regular",
+                                                                fontFamily: "poppins",
                                                                 fontSize: "14px",
-                                                                fontWeight: "400",
+                                                                fontWeight: "bold",
                                                                 background: "transparent"
                                                             }}> {eachColumn.label}</TableCell>
                                                         </React.Fragment>
                                                     )
                                                 })
                                             }
-                                               {stateSelectToken.title === 'Select a token as borrow' &&
+                                            {stateSelectToken.title === 'Select a token as borrow' &&
                                                 tableBorrowColumn.map((eachColumn) => {
                                                     return (
                                                         <React.Fragment key={eachColumn.id}>
                                                             <TableCell style={{
                                                                 minWidth: eachColumn.minWidth,
                                                                 color: "rgba(38,38,38,1)",
-                                                                fontFamily: "Neometric-Regular",
+                                                                fontFamily: "poppins",
                                                                 fontSize: "14px",
-                                                                fontWeight: "400",
+                                                                fontWeight: "bold",
                                                                 background: "transparent"
                                                             }}> {eachColumn.label}</TableCell>
                                                         </React.Fragment>
@@ -305,6 +317,7 @@ const SelectToken = (selectTokenProps: any) => {
                                                                                         color: "rgba(38,38,38,1)",
                                                                                         fontSize: "14px",
                                                                                         fontWeight: "400",
+                                                                                        // fontFamily: "poppins",
                                                                                     }}>
                                                                                         {eachToken.code.toUpperCase()}
                                                                                     </span>
@@ -314,6 +327,7 @@ const SelectToken = (selectTokenProps: any) => {
                                                                                         color: "rgba(0,0,0,1)",
                                                                                         fontSize: "12px",
                                                                                         fontWeight: "400",
+                                                                                        // fontFamily: "poppins",
                                                                                     }}>
                                                                                         {eachToken.name}
                                                                                     </span>
@@ -326,12 +340,12 @@ const SelectToken = (selectTokenProps: any) => {
                                                             </TableCell>
                                                             <TableCell style={{ borderBottom: "0px" }}>
                                                                 <Grid container justifyContent={'center'}>
-                                                                    <Grid item><span>{`${eachToken.apy}%`}</span></Grid>
+                                                                    <Grid item><span style={{ fontFamily: "poppins" }}>{`${eachToken.apy}%`}</span></Grid>
                                                                 </Grid>
                                                             </TableCell>
                                                             <TableCell style={{ borderBottom: "0px" }}>
                                                                 <Grid container justifyContent={'center'}>
-                                                                    <Grid item><span>{eachToken.balance}</span></Grid>
+                                                                    <Grid item><span style={{ fontFamily: "poppins" }}>{eachToken.balance}</span></Grid>
                                                                 </Grid>
                                                             </TableCell>
                                                         </TableRow>
@@ -342,6 +356,8 @@ const SelectToken = (selectTokenProps: any) => {
                                     })}
                                 </Table>
                             </TableContainer>
+                            {/* <pre>{JSON.stringify(tableColumn, null, 2)}</pre> */}
+                            {/* <pre>{JSON.stringify(stateSelectToken, null, 2)}</pre> */}
 
                         </Grid>
                     </Grid>
