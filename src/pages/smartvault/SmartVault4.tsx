@@ -436,6 +436,14 @@ function SmartVault1() {
                                 </Grid>
                                 <Grid container spacing={1} justifyContent={'start'}>
                                     {[{
+                                        value: 0.1,
+                                        label: "10%",
+                                    },
+                                    {
+                                        value: 0.2,
+                                        label: "20%",
+                                    },
+                                    {
                                         value: 0.25,
                                         label: "25%",
                                     },
@@ -444,12 +452,8 @@ function SmartVault1() {
                                         label: "50%",
                                     },
                                     {
-                                        value: 0.75,
-                                        label: "75%",
-                                    },
-                                    {
-                                        value: 0.9,
-                                        label: "90%",
+                                        value: 1,
+                                        label: "100%",
                                     }].map((item) => {
                                         return (
                                             <Grid item key={item.value}>
