@@ -1,11 +1,25 @@
-.borrowing-power-button{
+.borrowing-power-button {
     border-radius: 6px;
-    border: 1px solid white;
-    background-color: rgba(255,255,255, 1);
-    padding: 2px 5px;
-    color: black;
-    font-size: 14px;
+    border: 1px solid #4791FF;
+    background-color: #4791FF;
+    color: #FFFFFF;
+    padding: 5px 5px;
+    font-size: 20px;
     font-weight: 400;
     font-family: 'poppins';
     cursor: pointer;
+
+    &:hover {
+        text-decoration: none;
+        border: 1px solid #4791FF;
+        background-color: #FFFFFF;
+        color: #4791FF;
+    }
+
+    &:active {
+        text-decoration: none;
+        border: 1px solid #4791FF;
+        background-color: #FFFFFF;
+        color: #4791FF;
+    }
 }

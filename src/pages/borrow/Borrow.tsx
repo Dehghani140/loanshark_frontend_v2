@@ -33,6 +33,7 @@ import {
 } from '../../utils/utilList'
 
 import { borrowBTC, depositETH } from '../../utils/LoansharkBackend'
+import CustSlider from "src/components/Slider/CustSlider";
 
 const options = {
 	chart: {
@@ -399,13 +400,13 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid 
-															style={{
-																display: "flex",
-																justifyContent: "space-between"
-															}} item xs={12}>
+															<Grid
+																style={{
+																	display: "flex",
+																	justifyContent: "space-between"
+																}} item xs={12}>
 																<span>Collateral</span>
-																<span style={{ textAlign: "right"}}>
+																<span style={{ textAlign: "right" }}>
 																	<span>Balance: </span>
 																	<span style={{ fontWeight: "800" }}>{Number(Number(stateLoanshark.myETHAmount).toFixed(2)).toLocaleString()} ETH</span>
 																</span>
@@ -501,12 +502,12 @@ function Borrow() {
 												<Grid item xs={12}>
 													<div style={{ padding: "10px" }}>
 														<Grid container>
-															<Grid 
-															style={{
-																display: "flex",
-																justifyContent: "space-between"
-															}}
-															item xs={12}>
+															<Grid
+																style={{
+																	display: "flex",
+																	justifyContent: "space-between"
+																}}
+																item xs={12}>
 																<span>Borrow</span>
 																<span>
 																	<span>Max Borrow: </span>
@@ -608,38 +609,22 @@ function Borrow() {
 												</Grid>
 												<Grid item>
 													<Grid container spacing={1}>
-
-														{[{
-															value: 0.25,
-															label: "25%",
-														},
-														{
-															value: 0.5,
-															label: "50%",
-														},
-														{
-															value: 0.75,
-															label: "75%",
-														},
-														{
-															value: 0.9,
-															label: "90%",
-														}].map((item) => {
-															return (
-																<Grid item key={item.value}>
-																	<BorrwoingPowerButton label={item.label} value={item.value}
-																		onClick={() => {
-																			let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
-																			borrowPower = borrowPower * stateLoanshark.priceOfEth;
-																			borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
-																			borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
-																			borrowPower = borrowPower / stateLoanshark.priceOfBtc;
-																			borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
-																			dispatch(changeInputBtcDebt(borrowPower * item.value));
-																		}}></BorrwoingPowerButton>
-																</Grid>
-															)
-														})}
+														<Grid item>
+															<BorrwoingPowerButton
+																// label={item.label} value={item.value}
+																buttonStyle={'BLUE_SHAPE'}
+																buttonSetSelect={'max90'}
+																onClick={(value) => {
+																	console.log(value)
+																	let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
+																	borrowPower = borrowPower * stateLoanshark.priceOfEth;
+																	borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
+																	borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
+																	borrowPower = borrowPower / stateLoanshark.priceOfBtc;
+																	borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
+																	dispatch(changeInputBtcDebt(borrowPower * value));
+																}}></BorrwoingPowerButton>
+														</Grid>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -700,6 +685,24 @@ function Borrow() {
 										</Grid>
 										<Grid item xs={12}>
 											<div style={{ width: "100%", textAlign: 'center' }}>
+												<CustSlider
+													aria-label="healthFactor"
+													defaultValue={Number(calculateHealthFactor(
+														Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+														stateLoanshark.priceOfEth,
+														stateLoanshark.LTV["ETHBTC"],
+														Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+														stateLoanshark.priceOfBtc))}
+													value={0}
+													onChange={(e: any, newValue: number | number[], activeThumb: number) => {}}
+													valueLabelDisplay="auto"
+													step={0.05}
+													marks={false}
+													min={0}
+													max={3}
+													disabled={true}
+												></CustSlider>
+
 												<span style={divStyle} className={`health-factor-value`}>{calculateHealthFactor(
 													Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
 													stateLoanshark.priceOfEth,
