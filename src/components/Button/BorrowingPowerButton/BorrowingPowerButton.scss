@@ -23,3 +23,29 @@
         color: #4791FF;
     }
 }
+
+.borrowing-power-button-active {
+    border-radius: 6px;
+    border: 1px solid #4791FF;
+    background-color: #FFFFFF;
+    color: #4791FF;
+    padding: 5px 5px;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'poppins';
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: none;
+        border: 1px solid #4791FF;
+        background-color: #FFFFFF;
+        color: #4791FF;
+    }
+
+    &:active {
+        text-decoration: none;
+        border: 1px solid #4791FF;
+        background-color: #FFFFFF;
+        color: #4791FF;
+    }
+}

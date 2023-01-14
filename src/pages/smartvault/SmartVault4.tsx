@@ -409,7 +409,7 @@ function SmartVault1() {
                                         aria-label="healthFactor"
                                         // size={}
                                         defaultValue={1.05}
-                                        value={healthFactorPercentage}
+                                        value={healthFactorPercentage?healthFactorPercentage:0}
                                         onChange={(e: any, newValue: number | number[], activeThumb: number) => {
                                             if (newValue <= MIN_HEALTH_FACTOR) setHealthFactorPercentage(MIN_HEALTH_FACTOR)
                                             else setHealthFactorPercentage(e?.target?.value ?? 0)
@@ -418,7 +418,7 @@ function SmartVault1() {
                                         step={0.05}
                                         marks={false}
                                         min={0}
-                                        max={5}
+                                        max={2}
                                         disabled={false}
                                     ></CustSlider>
                                 </div>
@@ -459,8 +459,28 @@ function SmartVault1() {
                                         </div>
                                     </Grid>
                                 </Grid> */}
+                                <input
+                                    style={{
+                                        color: "rgba(51,51,51,1)",
+                                        fontFamily: "poppins",
+                                        fontSize: "24px",
+                                        fontWeight: "700",
+                                        fontStyle: "normal",
+                                        overflow: "hidden",
+                                        width: "100%",
+                                        height: "100%",
+                                        border: "0px",
+                                        backgroundColor: "transparent",
+                                    }}
+                                    value={singleTopupAmount}
+                                    onChange={(e) => {
+                                        // setStakeAmount(e.target.value)
+                                    }}
+                                    disabled ={true}
+                                ></input>
+
                                 <BorrwoingPowerButton
-                                buttonStyle={'BLUE_SHAPE'}
+                                    buttonStyle={'BLUE_SHAPE'}
                                     buttonSetSelect={'max100'}
                                     onClick={(value) => {
                                         if (stateSmartvault.myProtectingSmartVault == "ETH") {
@@ -468,6 +488,7 @@ function SmartVault1() {
                                         } else {
                                             setSingleTopupAmount(Number(stakeAmount) * value)
                                         }
+                                        console.log(Number(stakeAmount) * value)
                                     }}></BorrwoingPowerButton>
                             </Grid>
                             <br></br>

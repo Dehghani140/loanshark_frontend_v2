@@ -76,7 +76,7 @@ function App() {
       <div 
       // className={'background'}
       style={{
-        // position: 'absolute',
+        position: 'absolute',
         top: '0px',
         left: '0px',
         minHeight: '100%',
