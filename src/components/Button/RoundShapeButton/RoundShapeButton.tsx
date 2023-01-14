@@ -28,7 +28,7 @@ function RoundShapeButton(props: RoundShapeButtonProps) {
       // className={"round-shape-button"}
       className={openButtonSection}
       onClick={props.onClick}
-      style={{fontFamily: 'ClashDisplay-Semibold' }}
+      // style={{fontFamily: 'ClashDisplay-Semibold' }}
     >
       {props.label.toUpperCase()}
     </Button>

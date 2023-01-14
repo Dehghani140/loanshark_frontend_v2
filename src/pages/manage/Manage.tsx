@@ -915,7 +915,7 @@ function Manage() {
 												value: (stateBackd.myProtectionBtc[0] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[0], 'ether') : 0),
 											},
 											{
-												title: "Repay amount each time",
+												title: "Protection amount each time",
 												value: (stateBackd.myProtectionBtc[5] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[5], 'gwei') * 10 : 0) + " BTC",
 											},
 											{
@@ -1043,7 +1043,7 @@ function Manage() {
 												value: (stateBackd.myProtectionEth[0] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether') : 0),
 											},
 											{
-												title: "Repay amount each time",
+												title: "Protection amount each time",
 												value: (stateBackd.myProtectionEth[5] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[5], 'gwei') * 10 : 0) + " ETH",
 											},
 											{
@@ -1159,25 +1159,37 @@ function Manage() {
 														<div style={{ padding: "10px" }}>
 															<Grid container>
 																<Grid item xs={6}>
-																	<input
-																		style={{
-																			color: "rgba(51,51,51,1)",
-																			fontFamily: "Poppins-Bold",
-																			fontSize: "20px",
-																			fontWeight: "700",
-																			fontStyle: "normal",
-																			overflow: "hidden",
-																			width: "100%",
-																			height: "100%",
-																			border: "0px",
-																			backgroundColor: "transparent",
-																		}}
-																		value={collateralAmount}
-																		onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-																			setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
-																			dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
-																		}}
-																	></input>
+																	<Grid container>
+																		<Grid item xs={12}>
+																			<input
+																				style={{
+																					color: "rgba(51,51,51,1)",
+																					fontFamily: "Poppins-Bold",
+																					fontSize: "48px",
+																					fontWeight: "700",
+																					fontStyle: "normal",
+																					overflow: "hidden",
+																					width: "100%",
+																					height: "100%",
+																					border: "0px",
+																					backgroundColor: "transparent",
+																				}}
+																				value={collateralAmount}
+																				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+																					setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																					dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
+																				}}
+																			></input>
+																		</Grid>
+																		<Grid item xs={12}>
+																			<span style={{
+																				color: 'rgba(123,130,148,1)',
+																				fontFamily: 'poppins',
+																				fontSize: '14px',
+																			}}
+																			>{`$${(stateLoanshark.priceOfEth / 100 * collateralAmount).toFixed(2)}`}</span>
+																		</Grid>
+																	</Grid>
 																</Grid>
 																<Grid item xs={6}>
 																	<Grid container>
@@ -1408,25 +1420,37 @@ function Manage() {
 														<div style={{ padding: "10px" }}>
 															<Grid container>
 																<Grid item xs={6}>
-																	<input
-																		style={{
-																			color: "rgba(51,51,51,1)",
-																			fontFamily: "Poppins-Bold",
-																			fontSize: "20px",
-																			fontWeight: "700",
-																			fontStyle: "normal",
-																			overflow: "hidden",
-																			width: "100%",
-																			height: "100%",
-																			border: "0px",
-																			backgroundColor: "transparent",
-																		}}
-																		value={debtAmount}
-																		onChange={(e) => {
-																			setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
-																			dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
-																		}}
-																	></input>
+																	<Grid container>
+																		<Grid item xs={12}>
+																			<input
+																				style={{
+																					color: "rgba(51,51,51,1)",
+																					fontFamily: "Poppins-Bold",
+																					fontSize: "48px",
+																					fontWeight: "700",
+																					fontStyle: "normal",
+																					overflow: "hidden",
+																					width: "100%",
+																					height: "100%",
+																					border: "0px",
+																					backgroundColor: "transparent",
+																				}}
+																				value={debtAmount}
+																				onChange={(e) => {
+																					setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																					dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
+																				}}
+																			></input>
+																		</Grid>
+																		<Grid item xs={12}>
+																			<span style={{
+																				color: 'rgba(123,130,148,1)',
+																				fontFamily: 'poppins',
+																				fontSize: '14px',
+																			}}
+																			>{`$${(stateLoanshark.priceOfBtc / 100 * debtAmount).toFixed(2)}`}</span>
+																		</Grid>
+																	</Grid>
 																</Grid>
 																<Grid item xs={6}>
 																	<Grid container>
@@ -1495,7 +1519,7 @@ function Manage() {
 													</Grid>
 													<Grid item>
 														{/* <Grid container > */}
-															{/* {[{
+														{/* {[{
 																value: 25,
 																name: "25%",
 															},
@@ -1535,14 +1559,14 @@ function Manage() {
 																)
 															})} */}
 
-															<BorrwoingPowerButton
+														<BorrwoingPowerButton
 															buttonStyle={'WHITE_SMALL'}
-																buttonSetSelect={'max90'}
-																onClick={(value) => {
-																	let finalAmount = roundDown(maxdebtAmount * value, 8)
-																	setDebtAmount(finalAmount)
-																	dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
-																}}></BorrwoingPowerButton>
+															buttonSetSelect={'max90'}
+															onClick={(value) => {
+																let finalAmount = roundDown(maxdebtAmount * value, 8)
+																setDebtAmount(finalAmount)
+																dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
+															}}></BorrwoingPowerButton>
 														{/* </Grid> */}
 													</Grid>
 												</Grid>
@@ -1684,7 +1708,7 @@ function Manage() {
 														step={0.05}
 														marks={false}
 														min={0}
-														max={3}
+														max={5}
 														disabled={true}
 													></CustSlider>
 												</div>
@@ -1707,12 +1731,12 @@ function Manage() {
 									<Grid container>
 										{[{
 											title: "Current Price of ETH",
-											value: stateLoanshark.priceOfEth / 100,
+											value: `$${stateLoanshark.priceOfEth / 100}`,
 											textColor: "black",
 										},
 										{
 											title: "Current Price of BTC",
-											value: stateLoanshark.priceOfBtc / 100,
+											value: `$${stateLoanshark.priceOfBtc / 100}`,
 											textColor: "black",
 										},
 										{
@@ -1732,11 +1756,11 @@ function Manage() {
 										},
 										{
 											title: "Liquidation Price of ETH",
-											value: `${((Number(stateLoanshark.userDebtBalanceBtc))
+											value: `$${((Number(stateLoanshark.userDebtBalanceBtc))
 												* (stateLoanshark.priceOfBtc) / 100
 												/ (Number(stateLoanshark.userDepositBalanceEth))
 												/ stateLoanshark.LTV["ETHBTC"]).toFixed(2)}`,
-											textColor: "blue",
+											textColor: 'blue',
 										},
 										].map((item, index) => {
 											return (
@@ -1747,7 +1771,13 @@ function Manage() {
 																<span className={`current-price-box-title`}>{item.title}</span>
 															</Grid>
 															<Grid item>
-																<span className={`current-price-box-value`}>{item.value}</span>
+																{item.title !== 'Liquidation Price of ETH' &&
+																	<span className={`current-price-box-value`}>{item.value}</span>
+																}
+																{item.title === 'Liquidation Price of ETH' &&
+																	<span className={`current-price-box-value__liquidation`}>{item.value}</span>
+																}
+
 															</Grid>
 														</Grid>
 													</div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { Slider } from '@mui/material';
+import { Grid, Slider } from '@mui/material';
 import { withStyles } from '@mui/styles';
 
 import './CustSlider.scss'
@@ -14,27 +14,29 @@ interface CustSliderProps {
     marks: boolean | null;
     min: number | null;
     max: number | null;
-    valueLabelDisplay:any;
+    valueLabelDisplay: any;
     // railColor: any;
     // trackColor: any;
-    disabled:boolean;
+    disabled: boolean;
 }
 
 const CustomSlider = withStyles({
     rail: {
         height: 12,
         borderRadius: 4,
-        backgroundImage: "linear-gradient(to right, #00dc5f, #8eb000, #b67f00, #c14812, #af003d)",
+        backgroundImage: "linear-gradient(to right, #af003d,#c14812,#b67f00,#8eb000,#00dc5f)",
     },
     track: {
         height: 12,
         borderRadius: 4,
-        backgroundImage: "linear-gradient(to right, #009d44, #637b00, #7e5600, #b53606d9, #df0c0c)",
+        backgroundImage: "linear-gradient(to right, #df0c0c, #b53606d9,  #7e5600,  #637b00,#009d44)",
     }
 })(Slider);
 
 function CustSlider(props: CustSliderProps) {
-    const { defaultValue, value, onChange, step, marks, min, max, valueLabelDisplay, disabled
+    const { defaultValue, value, onChange, step, 
+        marks, 
+        min, max, valueLabelDisplay, disabled
         // railColor, trackColor 
     } = props
 
@@ -48,10 +50,22 @@ function CustSlider(props: CustSliderProps) {
                 onChange={onChange}
                 valueLabelDisplay={valueLabelDisplay}
                 step={step}
-                marks={marks}
+                // marks={marks}
                 min={min}
                 max={max}
                 disabled={disabled}
+                marks={[{
+                    value: 1,
+                    label:
+                        <div style={{textAlign:'center'}}>
+                            <div style={{color:'red'}}>
+                                1.00
+                            </div>
+                            <div style={{color:'red'}}>
+                                Liquidation Value
+                            </div>
+                        </div>
+                },]}
             ></CustomSlider>
         </>
     )

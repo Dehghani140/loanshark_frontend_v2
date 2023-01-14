@@ -265,7 +265,7 @@ function SmartVault1() {
             <div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <span className={'card-title'}>Protection Setup</span><span className={'card-subtitle'}> (4/4 steps)</span>
+                        <span className={'card-title'}>Finalize your protection.</span><span className={'card-subtitle'}> (4/4 steps)</span>
                     </Grid>
                     <Grid item xs={7}>
                         <div style={{ padding: '20px' }} className={`dashboard-card-layout`}>
@@ -418,7 +418,7 @@ function SmartVault1() {
                                         step={0.05}
                                         marks={false}
                                         min={0}
-                                        max={3}
+                                        max={5}
                                         disabled={false}
                                     ></CustSlider>
                                 </div>
@@ -609,7 +609,7 @@ function SmartVault1() {
                                         value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
                                     },
                                     {
-                                        title: "APY",
+                                        title: "Net APY",
                                         value: Number((
                                             (
                                                 (state.aaveEthDepositRate) / 100 * (state.userDepositBalanceEth * state.priceOfEth / 100)
@@ -629,7 +629,7 @@ function SmartVault1() {
                                         )).toFixed(2)).toLocaleString()
                                     },
                                     {
-                                        title: "Smart Vault",
+                                        title: " Smart Vault Balance",
                                         value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)).toLocaleString()
                                     },
                                     {

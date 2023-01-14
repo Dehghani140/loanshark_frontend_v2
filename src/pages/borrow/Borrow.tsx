@@ -687,19 +687,19 @@ function Borrow() {
 											<div style={{ width: "100%", textAlign: 'center' }}>
 												<CustSlider
 													aria-label="healthFactor"
-													defaultValue={Number(calculateHealthFactor(
+													defaultValue={0}
+													value={Number(calculateHealthFactor(
 														Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
 														stateLoanshark.priceOfEth,
 														stateLoanshark.LTV["ETHBTC"],
 														Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
 														stateLoanshark.priceOfBtc))}
-													value={0}
 													onChange={(e: any, newValue: number | number[], activeThumb: number) => {}}
 													valueLabelDisplay="auto"
 													step={0.05}
 													marks={false}
 													min={0}
-													max={3}
+													max={5}
 													disabled={true}
 												></CustSlider>
 
