@@ -70,7 +70,9 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           }
         }}
       >
-        <Grid container justifyContent={'center'}>
+        <Grid container 
+        // justifyContent={'center'}
+        >
           <Grid item>
             <Header />
           </Grid>
@@ -91,14 +93,18 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           }}
         >
 
-          <Box display="block">
+          <Box 
+          // display="block"
+          >
             <div style={{ width: '100%', height: '25px', textAlign:"center", backgroundColor: '#FFFF00' }}>
               {state.currentChainID == 43113? 
               "Loanshark has saved borrowers $" + 
               Number((state.traderJoeBtcBorrowRate - state.aaveBtcBorrowRate) / 100 * state.totalUserDebtBalanceBtc * state.priceOfBtc / 100).toLocaleString() + 
               " in interest fee already!" : "Please connect your wallet to Avalanche Testnet"}
             </div>
-            <div style={{ width: '100vw' }}>
+            <div 
+            // style={{ width: '100vw' }}
+            >
               <Outlet />
               {stateLayout.loadingActive ? <div style={{
                 position: 'fixed',
