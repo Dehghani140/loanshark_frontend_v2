@@ -799,7 +799,7 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>Smart Vault</span>
+															<span>Smart Vault Balance</span>
 														</Grid>
 														<Grid item>
 															{/* <span style={{ fontWeight: "800", fontSize: "16px" }}>$19294</span> */}
@@ -813,7 +813,7 @@ function Manage() {
 												<div style={{ padding: "10px 0px" }}>
 													<Grid container justifyContent={"space-between"}>
 														<Grid item>
-															<span>APY</span>
+															<span>Net APY</span>
 														</Grid>
 														<Grid item>
 															<span style={{ fontWeight: "800", fontSize: "16px" }}>{
@@ -1731,12 +1731,12 @@ function Manage() {
 									<Grid container>
 										{[{
 											title: "Current Price of ETH",
-											value: `$${stateLoanshark.priceOfEth / 100}`,
+											value: "$" + stateLoanshark.priceOfEth / 100,
 											textColor: "black",
 										},
 										{
 											title: "Current Price of BTC",
-											value: `$${stateLoanshark.priceOfBtc / 100}`,
+											value: "$" + stateLoanshark.priceOfBtc / 100,
 											textColor: "black",
 										},
 										{
@@ -1745,18 +1745,13 @@ function Manage() {
 											textColor: "black",
 										},
 										{
-											title: "Max Borrow Power",
+											title: "Max Borrow Capacity",
 											value: `${maxBorrowPower} BTC`,
 											textColor: "black",
 										},
 										{
-											title: "Liquidity Threshold",
-											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
-											textColor: "black",
-										},
-										{
 											title: "Liquidation Price of ETH",
-											value: `$${((Number(stateLoanshark.userDebtBalanceBtc))
+											value: "$" + `${((Number(stateLoanshark.userDebtBalanceBtc))
 												* (stateLoanshark.priceOfBtc) / 100
 												/ (Number(stateLoanshark.userDepositBalanceEth))
 												/ stateLoanshark.LTV["ETHBTC"]).toFixed(2)}`,

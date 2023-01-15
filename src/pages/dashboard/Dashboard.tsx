@@ -117,53 +117,53 @@ function Dashboard() {
 				}
 				break;
 			case "LEAVESMARTVAULTETH":
-				args = [
-					window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
-				];
-
-				setModal(!modal);
-				dispatch(toggleLoading());
-
-				argsUnregister = [
-					state.myAccount + "000000000000000000000000",
-					"0x66756a6964616f65746800000000000000000000000000000000000000000000",
-					1
-				];
-
-				if (stateBackd.myProtectionEth && stateBackd.myProtectionEth[0] > 0) {
-
-					stateBackd.topupAction.methods
-						.resetPosition(...argsUnregister)
-						.send({ from: state.myAccount })
-						.on("error", (error, receipt) => {
-							dispatch(toggleLoading());
-						})
-						.then((receipt) => {
-							stateBackd.lpPoolEth.methods
-								.redeem(...args)
-								.send({ from: state.myAccount })
-								.on("error", (error, receipt) => {
-									dispatch(toggleLoading());
-								})
-								.then((receipt) => {
-									dispatch(toggleLoading());
-									refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-								})
-						})
-				} else {
-					stateBackd.lpPoolEth.methods
-						.redeem(...args)
-						.send({ from: state.myAccount })
-						.on("error", (error, receipt) => {
-							dispatch(toggleLoading());
-						})
-						.then((receipt) => {
-							dispatch(toggleLoading());
-							refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-						})
-				}
-				break;
-			case "NOACTION":
+					args = [
+						window.web3.utils.toBN((modalInputValue)).toString(),
+					];
+	
+					setModal(!modal);
+					dispatch(toggleLoading());
+	
+					argsUnregister = [
+						state.myAccount + "000000000000000000000000",
+						"0x66756a6964616f65746800000000000000000000000000000000000000000000",
+						1
+					];
+	
+					if (stateBackd.myProtectionEth && stateBackd.myProtectionEth[0] > 0) {
+	
+						stateBackd.topupAction.methods
+							.resetPosition(...argsUnregister)
+							.send({ from: state.myAccount })
+							.on("error", (error, receipt) => {
+								dispatch(toggleLoading());
+							})
+							.then((receipt) => {
+								stateBackd.lpPoolEth.methods
+									.redeem(...args)
+									.send({ from: state.myAccount })
+									.on("error", (error, receipt) => {
+										dispatch(toggleLoading());
+									})
+									.then((receipt) => {
+										dispatch(toggleLoading());
+										refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+									})
+							})
+					} else {
+						stateBackd.lpPoolEth.methods
+							.redeem(...args)
+							.send({ from: state.myAccount })
+							.on("error", (error, receipt) => {
+								dispatch(toggleLoading());
+							})
+							.then((receipt) => {
+								dispatch(toggleLoading());
+								refreshPrice(state, stateBackd, dispatch, "GET_NEW");
+							})
+					}
+					break;
+			case "NOACTION": 
 				break;
 			default:
 				break;
@@ -284,7 +284,7 @@ function Dashboard() {
 												value: "$" + Number((state.userDebtBalanceBtc * state.priceOfBtc / 100).toFixed(2)).toLocaleString() + " / " + Number(Number(state.userDebtBalanceBtc).toFixed(2)).toLocaleString() + " BTC"
 											},
 											{
-												title: "APY",
+												title: "Net APY",
 												value: Number((
 													(
 														(state.aaveEthDepositRate) / 100 * (state.userDepositBalanceEth * state.priceOfEth / 100)
@@ -304,8 +304,8 @@ function Dashboard() {
 												)).toFixed(2)).toLocaleString()
 											},
 											{
-												title: "Smart Vault",
-												value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)).toLocaleString()
+												title: "Smart Vault Balance",
+												value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)).toFixed(2)).toLocaleString()
 											},
 											{
 												title: "Provider",
@@ -342,7 +342,7 @@ function Dashboard() {
 
 
 					<Grid item xs={12}>
-						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount <= 0 ? "(0)" : "(1)"}</span>
+						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount  <= 0  && stateBackd.myBtcLpAmount <= 0 ? "(0)" : "(1)"}</span>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "29px" }}></div>
@@ -368,7 +368,7 @@ function Dashboard() {
 									detail={
 										[
 											{
-												title: "APY",
+												title: "Net APY",
 												value: "5.4%"
 											},
 											{
@@ -396,7 +396,7 @@ function Dashboard() {
 														"LEAVESMARTVAULTETH",
 														'Confirm to withdraw all from Smart Vault?',
 														'You are withdrawing <span class="fw-bold">' +
-														Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8) +
+														Number(stateBackd.myEthLpAmount) +
 														' ETH (~$' +
 														Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2) +
 														')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
@@ -431,7 +431,7 @@ function Dashboard() {
 									detail={
 										[
 											{
-												title: "APY",
+												title: "Net APY",
 												value: "5.4%"
 											},
 											{

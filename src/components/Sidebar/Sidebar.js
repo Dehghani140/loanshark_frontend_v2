@@ -102,7 +102,7 @@ class Sidebar extends React.Component {
 								this.props.dispatch(changeActiveSidebarItem(activeItem))
 							}
 							activeItem={this.props.activeItem}
-							header="Smart Vault"
+							header="Smart Vault Balance"
 							isHeader
 							link="/app/main/smartVault1"
 							index="main"

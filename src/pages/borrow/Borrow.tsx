@@ -770,17 +770,12 @@ function Borrow() {
 										},
 										{
 											title: "Max Borrow Power",
-											value: "$" + `${Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
+											value: `${Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
 												* stateLoanshark.priceOfEth
 												* stateLoanshark.LTV["ETHBTC"]
 												* stateLoanshark.liquidationPrice["ETHBTC"]
 												/ stateLoanshark.priceOfBtc)
 												- stateLoanshark.userDebtBalanceBtc).toFixed(2).toLocaleString()} BTC`,
-											textColor: "black",
-										},
-										{
-											title: "Liquidity Threshold",
-											value: `${(stateLoanshark.LTV[stateLoanshark.selectedPair] * 100).toFixed(2)} %`,
 											textColor: "black",
 										},
 										{

@@ -98,7 +98,7 @@ function SmartVault1() {
     const modalConfirm = (modalAction: string) => {
         switch (modalAction) {
             case "STAKESMARTVAULT":
-
+                alert(stateSmartvault.myProtectingSmartVault)
                 if (stateSmartvault.myProtectingSmartVault == "BTC") {
                     let approveArgs = [
                         stateBackd.lpPoolBtc.options.address,
@@ -265,7 +265,7 @@ function SmartVault1() {
             <div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <span className={'card-title'}>Finalize your protection.</span><span className={'card-subtitle'}> (4/4 steps)</span>
+                        <span className={'card-title'}>Finalize your protection</span><span className={'card-subtitle'}> (4/4 steps)</span>
                     </Grid>
                     <Grid item xs={7}>
                         <div style={{ padding: '20px' }} className={`dashboard-card-layout`}>
@@ -353,11 +353,17 @@ function SmartVault1() {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <p>Choose a health factor as the trigger.</p>
+                            <p>Choose a health factor as the trigger? (Your current health factor: {Number(Number(calculateHealthFactor(
+                                            state.userDepositBalanceEth,
+                                            state.priceOfEth,
+                                            state.LTV["ETHBTC"],
+                                            state.userDebtBalanceBtc,
+                                            state.priceOfBtc
+                                        )).toFixed(2)).toLocaleString()})</p>
                             {/* <Grid item xs={12}>
                                 <Grid container style={{
                                     borderRadius: "3px",
-                                    display: 'none',
+                                    display: "none",
                                     border: "1px solid rgba(0,0,0, 0.15)",
                                 }}
                                 >
@@ -372,6 +378,7 @@ function SmartVault1() {
                                                             fontSize: "48px",
                                                             fontWeight: "700",
                                                             fontStyle: "normal",
+                                                            display: "none",
                                                             overflow: "hidden",
                                                             width: "100%",
                                                             height: "100%",
@@ -423,11 +430,10 @@ function SmartVault1() {
                                     ></CustSlider>
                                 </div>
                             </Grid>
-                            <p>Choose the percentage of your deposit to be used for automated protection each time.</p>
+                            <p>Choose the percentage of your deposit for automated protection each time</p>
                             <Grid item xs={12}>
                                 {/* <Grid container style={{
                                     borderRadius: "3px",
-                                    display: "none",
                                     border: "1px solid rgba(0,0,0, 0.15)"
                                 }}>
                                     <Grid item xs={12}>
@@ -442,7 +448,6 @@ function SmartVault1() {
                                                             fontWeight: "700",
                                                             fontStyle: "normal",
                                                             overflow: "hidden",
-                                                            display: "none",
                                                             width: "100%",
                                                             height: "100%",
                                                             paddingTop: "10px",
