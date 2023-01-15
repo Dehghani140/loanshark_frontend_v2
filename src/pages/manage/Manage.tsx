@@ -1697,14 +1697,21 @@ function Manage() {
 												<div style={{ width: '100%' }}>
 													<CustSlider
 														aria-label="healthFactor"
-														defaultValue={Number(calculateHealthFactor(
+														defaultValue={0}
+														// defaultValue={Number(calculateHealthFactor(
+														// 	stateLoanshark.userDepositBalanceEth,
+														// 	stateLoanshark.priceOfEth,
+														// 	stateLoanshark.LTV["ETHBTC"],
+														// 	stateLoanshark.userDebtBalanceBtc,
+														// 	stateLoanshark.priceOfBtc
+														// ))}
+														value={Number(calculateHealthFactor(
 															stateLoanshark.userDepositBalanceEth,
 															stateLoanshark.priceOfEth,
 															stateLoanshark.LTV["ETHBTC"],
 															stateLoanshark.userDebtBalanceBtc,
 															stateLoanshark.priceOfBtc
 														))}
-														value={0}
 														onChange={(e: any, newValue: number | number[], activeThumb: number) => { }}
 														valueLabelDisplay="on"
 														step={0.05}
