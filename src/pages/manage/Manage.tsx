@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Grid, Button } from '@mui/material';
+import { Grid, Button, ImageListItem, ImageList } from '@mui/material';
 import Chart from 'react-apexcharts'
 import NoBorderCard from './Card/NoBorderCard'
 import RoundShapeButton from '../../components/Button/RoundShapeButton/RoundShapeButton'
@@ -884,23 +884,23 @@ function Manage() {
 																></input>
 															</Grid>
 															<Grid item xs={3}>
-																<Grid container alignItems={'center'}>
+															<Grid container alignContent={'center'} alignItems={'center'}>
 																	<Grid item>
-																		<div
-																			style={{
-																				maxHeight: "30px",
-																				maxWidth: "30px",
-																			}}
-																		>
-																			<img style={{ width: "100%", height: "100%" }}
-																				src={`/assets/icon/btc-logo.svg`} alt="" />
-																		</div>
+																		<ImageList sx={{ maxWidth: 30, maxHeight: 30 }} cols={1} gap={0}>
+																			<ImageListItem>
+																				<img
+																					style={{ width: '18px', height: '30px' }}
+																					src={`/assets/icon/btc-logo.svg`}
+																					alt={""}
+																					loading="lazy"
+																				/>
+																			</ImageListItem>
+																		</ImageList>
 																	</Grid>
 																	<Grid item>
-																		<span style={{ fontSize: "24px" }}>BTC</span>
+																	<span style={{ fontSize: "24px" }}>BTC</span>
 																	</Grid>
 																</Grid>
-
 															</Grid>
 														</Grid>
 													</div>
@@ -1012,24 +1012,26 @@ function Manage() {
 																></input>
 															</Grid>
 															<Grid item xs={3}>
-																<Grid container alignItems={'center'}>
+																<Grid container alignContent={'center'} alignItems={'center'}>
 																	<Grid item>
-																		<div
-																			style={{
-																				maxHeight: "20px",
-																				maxWidth: "20px",
-																			}}
-																		>
-																			<img style={{ width: "100%", height: "100%" }}
-																				src={`/assets/icon/eth-logo.svg`} alt="" />
-																		</div>
+																		<ImageList sx={{ maxWidth: 30, maxHeight: 30 }} cols={1} gap={0}>
+																			<ImageListItem>
+																				<img
+																					style={{ width: '18px', height: '30px' }}
+																					src={`/assets/icon/eth-logo.svg`}
+																					alt={""}
+																					loading="lazy"
+																				/>
+																			</ImageListItem>
+																		</ImageList>
 																	</Grid>
 																	<Grid item>
 																		<span style={{ fontSize: "24px" }}>ETH</span>
 																	</Grid>
 																</Grid>
-
 															</Grid>
+
+
 														</Grid>
 													</div>
 												</Grid>
@@ -1704,7 +1706,7 @@ function Manage() {
 														))}
 														value={0}
 														onChange={(e: any, newValue: number | number[], activeThumb: number) => { }}
-														valueLabelDisplay="auto"
+														valueLabelDisplay="on"
 														step={0.05}
 														marks={false}
 														min={0}
@@ -1712,7 +1714,7 @@ function Manage() {
 														disabled={true}
 													></CustSlider>
 												</div>
-												<div style={{ width: "100%", textAlign: 'center' }}>
+												{/* <div style={{ width: "100%", textAlign: 'center' }}>
 													<span className={`health-factor-value`}>{calculateHealthFactor(
 														stateLoanshark.userDepositBalanceEth,
 														stateLoanshark.priceOfEth,
@@ -1720,7 +1722,7 @@ function Manage() {
 														stateLoanshark.userDebtBalanceBtc,
 														stateLoanshark.priceOfBtc
 													)}</span>
-												</div>
+												</div> */}
 											</Grid>
 										</Grid>
 									</NoBorderCard>

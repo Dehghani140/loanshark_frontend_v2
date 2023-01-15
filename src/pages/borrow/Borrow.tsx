@@ -695,7 +695,7 @@ function Borrow() {
 														Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
 														stateLoanshark.priceOfBtc))}
 													onChange={(e: any, newValue: number | number[], activeThumb: number) => {}}
-													valueLabelDisplay="auto"
+													valueLabelDisplay="on"
 													step={0.05}
 													marks={false}
 													min={0}
@@ -703,12 +703,12 @@ function Borrow() {
 													disabled={true}
 												></CustSlider>
 
-												<span style={divStyle} className={`health-factor-value`}>{calculateHealthFactor(
+												{/* <span style={divStyle} className={`health-factor-value`}>{calculateHealthFactor(
 													Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
 													stateLoanshark.priceOfEth,
 													stateLoanshark.LTV["ETHBTC"],
 													Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-													stateLoanshark.priceOfBtc)}</span>
+													stateLoanshark.priceOfBtc)}</span> */}
 											</div>
 
 										</Grid>
