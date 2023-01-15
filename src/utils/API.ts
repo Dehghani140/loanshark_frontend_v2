@@ -313,10 +313,10 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                             const amount = window.web3.utils.toBN(resultStakerVault[7]);
                             const amountToAdd = window.web3.utils.toBN(previousResult);
                             const newAmountInWei = amount.add(amountToAdd);
-                            dispatch(changeMyEthLpAmount(newAmountInWei / 10000000000000000));
+                            dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei , 'ether')));
                         });
                     } else {
-                        dispatch(changeMyEthLpAmount(String(result  / 10000000000000000)));
+                        dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(previousResult , 'ether')));
                     }
                 });
 
