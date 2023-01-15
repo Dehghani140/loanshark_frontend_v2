@@ -17,7 +17,10 @@ function RoundShapeButton(props: RoundShapeButtonProps) {
   const openButtonSection = useMemo(() => {
     if (props.color === "white") return "round-shape-button-white"
     if (props.color === "black") return "round-shape-button-black"
+    if (props.color === "blue") return "round-shape-button-blue"
+        // if (props.color === "black") return "round-shape-button-black"
     return "round-shape-button-white"
+    // testing
   }, [props.color])
 
 

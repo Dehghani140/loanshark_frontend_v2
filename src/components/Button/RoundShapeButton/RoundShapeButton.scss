@@ -47,3 +47,18 @@
     background-color: rgb(40, 40, 40) !important;
   }
 }
+
+.round-shape-button-blue {
+  border: 1px solid #4791FF !important;
+  background-color: #FFFFFF !important;
+  color: #4791FF !important;
+  border-radius: 20px !important;
+  width: 100%;
+  font-family: "poppins";
+
+  &:hover {
+    background-color: #4791FF !important;
+    border: 1px solid #4791FF !important;
+    color: #FFFFFF !important;
+  }
+}

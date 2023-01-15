@@ -1708,7 +1708,7 @@ function Manage() {
 														step={0.05}
 														marks={false}
 														min={0}
-														max={5}
+														max={10}
 														disabled={true}
 													></CustSlider>
 												</div>

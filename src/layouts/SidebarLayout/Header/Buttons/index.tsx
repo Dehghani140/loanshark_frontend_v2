@@ -168,7 +168,7 @@ function HeaderButtons() {
                                             localStorage.setItem("isWalletConnected", "false")
                                             clearAccount()
                                         }}
-                                        color={"white"}
+                                        color={"blue"}
                                     ></RoundShapeButton>
                                 </Grid>
                                 <Grid xs={2} item>
@@ -187,7 +187,7 @@ function HeaderButtons() {
                                     setModalTitle("Please choose wallet type to connect")
                                     setModalAction("connect_wallet")
                                 }}
-                                color={"white"}
+                                color={"black"}
                             ></RoundShapeButton>
                         }
                     </Box>

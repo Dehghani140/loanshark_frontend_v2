@@ -62,7 +62,7 @@ function CustSlider(props: CustSliderProps) {
                                 1.00
                             </div>
                             <div style={{color:'red'}}>
-                                Liquidation Value
+                            Liquidation Value
                             </div>
                         </div>
                 },]}

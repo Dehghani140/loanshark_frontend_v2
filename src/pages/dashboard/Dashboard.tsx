@@ -405,7 +405,7 @@ function Dashboard() {
 														stateBackd.myEthLpAmount 
 													)
 												}),
-												color: "black"
+												color: "white"
 											},
 										]
 									}
@@ -468,7 +468,7 @@ function Dashboard() {
 														stateBackd.myBtcLpAmount 
 													)
 												}),
-												color: "black"
+												color: "white"
 											},
 										]
 									}

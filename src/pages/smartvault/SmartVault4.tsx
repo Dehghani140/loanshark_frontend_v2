@@ -417,7 +417,7 @@ function SmartVault1() {
                                         valueLabelDisplay="auto"
                                         step={0.05}
                                         marks={false}
-                                        min={0}
+                                        min={0.75}
                                         max={2}
                                         disabled={false}
                                     ></CustSlider>
