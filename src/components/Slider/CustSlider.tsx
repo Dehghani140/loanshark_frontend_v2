@@ -22,15 +22,21 @@ interface CustSliderProps {
 
 const CustomSlider = withStyles({
     rail: {
-        height: 12,
+        height: "14px !important",
+        // width: "14px !important",
         borderRadius: 4,
         backgroundImage: "linear-gradient(to right, #af003d,#c14812,#b67f00,#8eb000,#00dc5f)",
     },
     track: {
-        height: 12,
+        height: "14px !important",
+        // width: "14px !important",
         borderRadius: 4,
-        backgroundImage: "linear-gradient(to right, #df0c0c, #b53606d9,  #7e5600,  #637b00,#009d44)",
-    }
+        backgroundImage: "linear-gradient(to right, #ff0000, #d9501dd9,  #99711c,  #637b00,#009d44)",
+    },
+    mark: {
+        height: "14px !important",
+        width:"6px !important"
+    },
 })(Slider);
 
 function CustSlider(props: CustSliderProps) {
@@ -50,7 +56,6 @@ function CustSlider(props: CustSliderProps) {
                 onChange={onChange}
                 valueLabelDisplay={valueLabelDisplay}
                 step={step}
-                // marks={marks}
                 min={min}
                 max={max}
                 disabled={disabled}
