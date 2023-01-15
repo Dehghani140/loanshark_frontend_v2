@@ -65,56 +65,56 @@ function Dashboard() {
 		setModalInputValue(inputValue);
 	}
 
-	const modalConfirm = (modalAction : string) => {
+	const modalConfirm = (modalAction: string) => {
 		let args = [];
 		let argsUnregister = [];
 		var finalModalInputValue;
-		switch(modalAction) {
+		switch (modalAction) {
 			case "LEAVESMARTVAULTBTC":
 				args = [
-                    window.web3.utils.toBN((modalInputValue * 100000000).toFixed(0)).toString(),
-                ];
+					window.web3.utils.toBN((modalInputValue * 100000000).toFixed(0)).toString(),
+				];
 
 				setModal(!modal);
 				dispatch(toggleLoading());
 
-                argsUnregister = [
-                    state.myAccount + "000000000000000000000000",
-                    "0x66756a6964616f00000000000000000000000000000000000000000000000000",
-                    1
-                ];
+				argsUnregister = [
+					state.myAccount + "000000000000000000000000",
+					"0x66756a6964616f00000000000000000000000000000000000000000000000000",
+					1
+				];
 
-                if (stateBackd.myProtectionBtc && stateBackd.myProtectionBtc[0] > 0) {
-                    stateBackd.topupAction.methods
-                        .resetPosition(...argsUnregister)
-                        .send({ from: state.myAccount })
-                        .on("error", (error, receipt) => {
+				if (stateBackd.myProtectionBtc && stateBackd.myProtectionBtc[0] > 0) {
+					stateBackd.topupAction.methods
+						.resetPosition(...argsUnregister)
+						.send({ from: state.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
-                            stateBackd.lpPoolBtc.methods
-                                .redeem(...args)
-                                .send({ from: state.myAccount })
-                                .on("error", (error, receipt) => {
+						})
+						.then((receipt) => {
+							stateBackd.lpPoolBtc.methods
+								.redeem(...args)
+								.send({ from: state.myAccount })
+								.on("error", (error, receipt) => {
 									dispatch(toggleLoading());
-                                })
-                                .then((receipt) => {
+								})
+								.then((receipt) => {
 									dispatch(toggleLoading());
 									refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-                                })
-                        })
-                } else {
-                    stateBackd.lpPoolBtc.methods
-                        .redeem(...args)
-                        .send({ from: state.myAccount })
-                        .on("error", (error, receipt) => {
+								})
+						})
+				} else {
+					stateBackd.lpPoolBtc.methods
+						.redeem(...args)
+						.send({ from: state.myAccount })
+						.on("error", (error, receipt) => {
 							dispatch(toggleLoading());
-                        })
-                        .then((receipt) => {
+						})
+						.then((receipt) => {
 							dispatch(toggleLoading());
 							refreshPrice(state, stateBackd, dispatch, "GET_NEW");
-                        })
-                }
+						})
+				}
 				break;
 			case "LEAVESMARTVAULTETH":
 					args = [
@@ -173,16 +173,16 @@ function Dashboard() {
 	return (
 		<>
 			<CustDialog
-				modal={modal} 
+				modal={modal}
 				showConfirm={(modalAction !== "NOACTION")}
 				showCancel={true}
-				modalTitle={modalTitle} 
-				modalMessage={modalMessage} 
+				modalTitle={modalTitle}
+				modalMessage={modalMessage}
 				// modalToken={modalToken} 
-				modalCancel={()=> {setModal(!modal)}} 
-				modalConfirm={() => {modalConfirm(modalAction)}}
-				// modalInputValue={modalInputValue}
-				>
+				modalCancel={() => { setModal(!modal) }}
+				modalConfirm={() => { modalConfirm(modalAction) }}
+			// modalInputValue={modalInputValue}
+			>
 			</CustDialog>
 			{/* <SelectToken></SelectToken> */}
 			<div className={'main-content-layout'}>
@@ -229,9 +229,9 @@ function Dashboard() {
 								<Widget
 									title={"Your Smart Vault Balance"}
 								>
-									<div className={'display-title'}>${ 
-										Number((stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100 + 
-										 stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()  }</div>
+									<div className={'display-title'}>${
+										Number((stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100 +
+											stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()}</div>
 								</Widget>
 							</Grid>
 						</Grid>
@@ -247,12 +247,14 @@ function Dashboard() {
 					</Grid>
 					<Grid item xs={12}>
 						<Grid container spacing={2}>
-							<Grid  hidden={state.userDepositBalanceEth <= 0} item xs={4}>
+							<Grid
+								hidden={state.userDepositBalanceEth <= 0} 
+								item xs={4}>
 								<DashboardCard
 									label={`ETH/BTC`}
 									labelInUSD={"$" + Number((
-										stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth/100)  + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc/100)
-										).toFixed(2)).toLocaleString()
+										stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)
+									).toFixed(2)).toLocaleString()
 									}
 									numberOfAssest={2}
 									assest1Code={`eth`}
@@ -294,10 +296,10 @@ function Dashboard() {
 											{
 												title: "Health Factor",
 												value: Number(Number(calculateHealthFactor(
-													state.userDepositBalanceEth, 
-													state.priceOfEth, 
-													state.LTV["ETHBTC"], 
-													state.userDebtBalanceBtc, 
+													state.userDepositBalanceEth,
+													state.priceOfEth,
+													state.LTV["ETHBTC"],
+													state.userDebtBalanceBtc,
 													state.priceOfBtc
 												)).toFixed(2)).toLocaleString()
 											},
@@ -317,10 +319,10 @@ function Dashboard() {
 											callbackFunction: (() => {
 												console.log(`on click manage`)
 												//to manage page
-												navigate("/app/main/manage",{
-													state:{
-														assest1Code:"ETH",
-														assest2Code:"BTC",
+												navigate("/app/main/manage", {
+													state: {
+														assest1Code: "ETH",
+														assest2Code: "BTC",
 													}
 												});
 											}),
@@ -329,12 +331,16 @@ function Dashboard() {
 									]}
 								>
 								</DashboardCard>
-							</Grid>
+							</Grid>								
 						</Grid>
 					</Grid>
 					<Grid item xs={12}>
 						<div style={{ height: "53px" }}></div>
 					</Grid>
+
+
+
+
 					<Grid item xs={12}>
 						<span className={'card-title'}>My Smart Vault Position {stateBackd.myEthLpAmount  <= 0  && stateBackd.myBtcLpAmount <= 0 ? "(0)" : "(1)"}</span>
 					</Grid>
@@ -399,7 +405,7 @@ function Dashboard() {
 														stateBackd.myEthLpAmount 
 													)
 												}),
-												color: "black"
+												color: "white"
 											},
 										]
 									}
@@ -462,7 +468,7 @@ function Dashboard() {
 														stateBackd.myBtcLpAmount 
 													)
 												}),
-												color: "black"
+												color: "white"
 											},
 										]
 									}

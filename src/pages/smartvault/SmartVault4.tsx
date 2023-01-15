@@ -9,7 +9,7 @@ import {
 
 import Widget from '../../components/Widget/Widget'
 import NoBorderCard from '../../pages/manage/Card/NoBorderCard'
-
+import CustSlider from '../../components/Slider/CustSlider'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 
 import { toggleLoading } from '../../slice/layoutSlice';
@@ -25,15 +25,19 @@ import Repay from './Repay.svg';
 import Topup from './Topup.svg';
 
 import { refreshPrice } from '../../utils/API'
+import RectangleShapeButton from "src/components/Button/RectangleShapeButton/RectangleShapeButton";
 
+const MIN_HEALTH_FACTOR = 1.05
 const CustomSlider = withStyles({
     rail: {
-        backgroundImage:
-            "linear-gradient(to right, #00dc5f, #8eb000, #b67f00, #c14812, #af003d)"
+        height: 12,
+        borderRadius: 4,
+        backgroundImage: "linear-gradient(to right, #00dc5f, #8eb000, #b67f00, #c14812, #af003d)",
     },
     track: {
-        backgroundImage:
-            "linear-gradient(to right, #009d44, #637b00, #7e5600, #832d0d, #720028)"
+        height: 12,
+        borderRadius: 4,
+        backgroundImage: "linear-gradient(to right, #009d44, #637b00, #7e5600, #b53606d9, #df0c0c)",
     }
 })(Slider);
 
@@ -65,7 +69,13 @@ function SmartVault1() {
     const [triggerHealthFactor, setTriggerHealthFactor] = useState<any>(0);
     const [singleTopupAmount, setSingleTopupAmount] = useState<any>(0);
     const [stakeAmount, setStakeAmount] = useState<any>(0);
-    const [healthFactorPercentage, setHealthFactorPercentage] = useState<number>(0);
+    const [healthFactorPercentage, setHealthFactorPercentage] = useState<number>(Number(Number(calculateHealthFactor(
+        state.userDepositBalanceEth,
+        state.priceOfEth,
+        state.LTV["ETHBTC"],
+        state.userDebtBalanceBtc,
+        state.priceOfBtc
+    )).toFixed(2)))
 
     const toggleNoAction = (inputModalToken, inputModalTitle, inputModalMessage, pair) => {
         setModal(!modal);
@@ -311,14 +321,8 @@ function SmartVault1() {
                                                         <Grid item xs={12}>
                                                             <Grid container justifyContent={'end'} alignItems={'center'} spacing={2}>
                                                                 <Grid item>
-                                                                    <Button style={{
-                                                                        backgroundColor: "white",
-                                                                        color: "black",
-                                                                        borderRadius: "4px",
-                                                                        border: "1px solid black",
-                                                                        padding: "0px",
-                                                                    }}
-
+                                                                    <RectangleShapeButton
+                                                                        color={'white'}
                                                                         onClick={() => {
                                                                             if (stateSmartvault.myProtectingSmartVault == "ETH") {
                                                                                 setStakeAmount(state.myETHAmount)
@@ -327,7 +331,18 @@ function SmartVault1() {
                                                                                 setStakeAmount(state.myBTCAmount)
                                                                             }
                                                                         }}
-                                                                    >MAX</Button>
+                                                                        label={'MAX'}
+                                                                    ></RectangleShapeButton>
+                                                                    {/* <Button style={{
+                                                                        backgroundColor: "white",
+                                                                        color: "black",
+                                                                        borderRadius: "4px",
+                                                                        border: "1px solid black",
+                                                                        padding: "0px",
+                                                                    }}
+
+
+                                                                    >MAX</Button> */}
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -383,26 +398,41 @@ function SmartVault1() {
                             </Grid> */}
                             <Grid item xs={12}>
                                 <div style={{ width: '100%' }}>
-                                    <CustomSlider
-                                        aria-label="healthFactor"
+                                    {/* <CustSlider
                                         defaultValue={1.05}
                                         value={healthFactorPercentage}
                                         onChange={(e: any) => {
                                             // console.log(e?.target?.value??0)
                                             setHealthFactorPercentage(e?.target?.value ?? 0)
                                         }}
-                                        valueLabelDisplay="auto"
                                         step={0.01}
-                                        marks
+                                        marks={true}
                                         min={1.05}
                                         max={1.65}
-                                    ></CustomSlider>
-                                   
+                                        railColor={''}
+                                        trackColor={''}
+                                    ></CustSlider> */}
+                                    <CustSlider
+                                        aria-label="healthFactor"
+                                        // size={}
+                                        defaultValue={1.05}
+                                        value={healthFactorPercentage?healthFactorPercentage:0}
+                                        onChange={(e: any, newValue: number | number[], activeThumb: number) => {
+                                            if (newValue <= MIN_HEALTH_FACTOR) setHealthFactorPercentage(MIN_HEALTH_FACTOR)
+                                            else setHealthFactorPercentage(e?.target?.value ?? 0)
+                                        }}
+                                        valueLabelDisplay="auto"
+                                        step={0.05}
+                                        marks={false}
+                                        min={0.75}
+                                        max={2}
+                                        disabled={false}
+                                    ></CustSlider>
                                 </div>
                             </Grid>
                             <p>Choose the percentage of your deposit for automated protection each time</p>
                             <Grid item xs={12}>
-                                <Grid container style={{
+                                {/* <Grid container style={{
                                     borderRadius: "3px",
                                     border: "1px solid rgba(0,0,0, 0.15)"
                                 }}>
@@ -433,62 +463,38 @@ function SmartVault1() {
                                             </Grid>
                                         </div>
                                     </Grid>
-                                </Grid>
-                                <Grid container spacing={1} justifyContent={'start'}>
-                                    {[{
-                                        value: 0.1,
-                                        label: "10%",
-                                    },
-                                    {
-                                        value: 0.2,
-                                        label: "20%",
-                                    },
-                                    {
-                                        value: 0.25,
-                                        label: "25%",
-                                    },
-                                    {
-                                        value: 0.5,
-                                        label: "50%",
-                                    },
-                                    {
-                                        value: 1,
-                                        label: "100%",
-                                    }].map((item) => {
-                                        return (
-                                            <Grid item key={item.value}>
-                                                <BorrwoingPowerButton label={item.label} value={item.value}
-                                                    onClick={(e: any) => {
-                                                        console.log(item)
-                                                        console.log(item.value)
+                                </Grid> */}
+                                <input
+                                    style={{
+                                        color: "rgba(51,51,51,1)",
+                                        fontFamily: "poppins",
+                                        fontSize: "24px",
+                                        fontWeight: "700",
+                                        fontStyle: "normal",
+                                        overflow: "hidden",
+                                        width: "100%",
+                                        height: "100%",
+                                        border: "0px",
+                                        backgroundColor: "transparent",
+                                    }}
+                                    value={singleTopupAmount}
+                                    onChange={(e) => {
+                                        // setStakeAmount(e.target.value)
+                                    }}
+                                    disabled ={true}
+                                ></input>
 
-                                                        console.log(e.target.value)
-
-                                                        if (stateSmartvault.myProtectingSmartVault == "ETH") {
-                                                            // Number(state.myETHAmount)*item.value
-                                                            setSingleTopupAmount(Number(stakeAmount) * item.value)
-                                                        } else {
-                                                            setSingleTopupAmount(Number(stakeAmount) * item.value)
-                                                            // Number(state.myBTCAmount)*item.value
-                                                            // Number(Number(state.myBTCAmount).toFixed(2)).toLocaleString() + "BTC"
-                                                        }
-
-
-
-
-                                                        // let borrowPower = Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit);
-                                                        // borrowPower = borrowPower * stateLoanshark.priceOfEth;
-                                                        // borrowPower = borrowPower * stateLoanshark.LTV["ETHBTC"];
-                                                        // borrowPower = borrowPower * stateLoanshark.liquidationPrice["ETHBTC"];
-                                                        // borrowPower = borrowPower / stateLoanshark.priceOfBtc;
-                                                        // borrowPower = borrowPower - stateLoanshark.userDebtBalanceBtc;
-
-                                                        // dispatch(changeInputBtcDebt(borrowPower * parseFloat(item) / 100));
-                                                    }}></BorrwoingPowerButton>
-                                            </Grid>
-                                        )
-                                    })}
-                                </Grid>
+                                <BorrwoingPowerButton
+                                    buttonStyle={'BLUE_SHAPE'}
+                                    buttonSetSelect={'max100'}
+                                    onClick={(value) => {
+                                        if (stateSmartvault.myProtectingSmartVault == "ETH") {
+                                            setSingleTopupAmount(Number(stakeAmount) * value)
+                                        } else {
+                                            setSingleTopupAmount(Number(stakeAmount) * value)
+                                        }
+                                        console.log(Number(stakeAmount) * value)
+                                    }}></BorrwoingPowerButton>
                             </Grid>
                             <br></br>
                             <br></br>
@@ -649,7 +655,7 @@ function SmartVault1() {
                                         )).toFixed(2)).toLocaleString()
                                     },
                                     {
-                                        title: "Smart Vault",
+                                        title: " Smart Vault Balance",
                                         value: "$" + Number((stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * (state.priceOfEth / 100) + stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * (state.priceOfBtc / 100)).toFixed(2)).toLocaleString()
                                     },
                                     {
