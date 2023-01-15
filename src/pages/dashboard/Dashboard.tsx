@@ -368,7 +368,7 @@ function Dashboard() {
 									detail={
 										[
 											{
-												title: "Net APY",
+												title: "APY",
 												value: "5.4%"
 											},
 											{

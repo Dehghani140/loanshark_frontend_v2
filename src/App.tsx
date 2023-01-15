@@ -83,7 +83,6 @@ function App() {
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
         backgroundImage: "url(/assets/background/app_background_blur.svg)",
       }}
       >

@@ -75,9 +75,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           }
         }}
       >
-        <Grid container 
-        // justifyContent={'center'}
-        >
+        <Grid container justifyContent={'center'}>
           <Grid item>
             <Header />
           </Grid>
@@ -99,28 +97,29 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         >
 
           <Box display="block">
-            <div style={{ 
-              display: (showBar? 'relative':'none'),
-              fontFamily: "poppins", 
-              width: '100%', 
-              height: '30px', 
-              lineHeight: '34px', 
-              verticalAlign: "middle", 
-              textAlign:"center", 
-              backgroundColor: (state.currentChainID == 43113?  '#b4ebfa' : '#FFCC00') }}>
-              {state.currentChainID == 43113? 
-              "Loanshark has saved borrowers $" + 
-              Number((state.traderJoeBtcBorrowRate - state.aaveBtcBorrowRate) / 100 * state.totalUserDebtBalanceBtc * state.priceOfBtc / 100).toLocaleString() + 
-              " in interest fee already!" : "Please connect your wallet to Avalanche Testnet"}
-              {state.currentChainID == 43113? 
+            <div style={{
+              display: (showBar ? 'relative' : 'none'),
+              fontFamily: "poppins",
+              width: '100%',
+              height: '30px',
+              lineHeight: '34px',
+              verticalAlign: "middle",
+              textAlign: "center",
+              backgroundColor: (state.currentChainID == 43113 ? '#b4ebfa' : '#FFCC00')
+            }}>
+              {state.currentChainID == 43113 ?
+                "Loanshark has saved borrowers $" +
+                Number((state.traderJoeBtcBorrowRate - state.aaveBtcBorrowRate) / 100 * state.totalUserDebtBalanceBtc * state.priceOfBtc / 100).toLocaleString() +
+                " in interest fee already!" : "Please connect your wallet to Avalanche Testnet"}
+              {state.currentChainID == 43113 ?
                 <Button aria-label="delete" color="primary" size="small"
                   onClick={() => {
                     setShowBar(!showBar)
                   }}> X </Button> : null
               }
             </div>
-            <div 
-            // style={{ width: '100vw' }}
+            <div
+              style={{ width: '100vw' }}
             >
               <Outlet />
               {stateLayout.loadingActive ? <div style={{
