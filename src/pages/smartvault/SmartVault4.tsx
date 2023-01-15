@@ -65,8 +65,6 @@ function SmartVault1() {
     const [modalToken, setModalToken] = useState<string>("");
     const [modalInputValue, setModalInputValue] = useState<any>("");
 
-
-    const [triggerHealthFactor, setTriggerHealthFactor] = useState<any>(0);
     const [singleTopupAmount, setSingleTopupAmount] = useState<any>(0);
     const [stakeAmount, setStakeAmount] = useState<any>(0);
     const [healthFactorPercentage, setHealthFactorPercentage] = useState<number>(Number(Number(calculateHealthFactor(
@@ -98,7 +96,6 @@ function SmartVault1() {
     const modalConfirm = (modalAction: string) => {
         switch (modalAction) {
             case "STAKESMARTVAULT":
-                alert(stateSmartvault.myProtectingSmartVault)
                 if (stateSmartvault.myProtectingSmartVault == "BTC") {
                     let approveArgs = [
                         stateBackd.lpPoolBtc.options.address,
@@ -119,7 +116,7 @@ function SmartVault1() {
                         "0x66756a6964616f00000000000000000000000000000000000000000000000000",
                         window.web3.utils.toBN((stakeAmount / stateBackd.btcLpExchangeRate * 100000000).toFixed(0)).toString(),
                         [
-                            window.web3.utils.toBN(window.web3.utils.toWei((triggerHealthFactor).toString(), 'ether')).toString(),
+                            window.web3.utils.toBN(window.web3.utils.toWei((healthFactorPercentage).toString(), 'ether')).toString(),
                             "0",
                             "1",
                             "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
@@ -190,7 +187,7 @@ function SmartVault1() {
                         "0x66756a6964616f65746800000000000000000000000000000000000000000000",
                         window.web3.utils.toBN((stakeAmount / stateBackd.ethLpExchangeRate * 1000000000000000000).toFixed(0)).toString(),
                         [
-                            window.web3.utils.toBN(window.web3.utils.toWei((triggerHealthFactor).toString(), 'ether')).toString(),
+                            window.web3.utils.toBN(window.web3.utils.toWei((healthFactorPercentage).toString(), 'ether')).toString(),
                             "0",
                             "1",
                             "0x9668f5f55f2712Dd2dfa316256609b516292D554",
@@ -419,7 +416,9 @@ function SmartVault1() {
                                         value={healthFactorPercentage?healthFactorPercentage:0}
                                         onChange={(e: any, newValue: number | number[], activeThumb: number) => {
                                             if (newValue <= MIN_HEALTH_FACTOR) setHealthFactorPercentage(MIN_HEALTH_FACTOR)
-                                            else setHealthFactorPercentage(e?.target?.value ?? 0)
+                                            else  {
+                                                setHealthFactorPercentage(e?.target?.value ?? 0)
+                                            }
                                         }}
                                         valueLabelDisplay="auto"
                                         step={0.05}
@@ -504,13 +503,13 @@ function SmartVault1() {
                                     console.log(`stake smart vault`)
                                     toggleAction(
                                         stateSmartvault.myProtectingSmartVault,
-                                        (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
+                                        (healthFactorPercentage < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "NOACTION" : "STAKESMARTVAULT"),
-                                        (triggerHealthFactor < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
+                                        (healthFactorPercentage < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
                                             "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
-                                        (isNaN(triggerHealthFactor) ?
+                                        (isNaN(healthFactorPercentage) ?
                                             "Please enter a valid health factor"
-                                            : triggerHealthFactor < 1.05 ?
+                                            : healthFactorPercentage < 1.05 ?
                                                 "Please set the target health factor higher than 1.05"
                                                 :
                                                 singleTopupAmount > stakeAmount ?
@@ -519,9 +518,9 @@ function SmartVault1() {
                                                     stakeAmount > state.myBTCAmount ?
                                                         "You do not have " + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + " to stake. You have " + (stateSmartvault.myProtectingSmartVault == "BTC" ? state.myBTCAmount : state.myETHAmount) + " " + stateSmartvault.myProtectingSmartVault + " only."
                                                         :
-                                                        "When the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                        "When the health factor drops below <span style='color: #00ff00'>" + healthFactorPercentage + "</span>, " +
                                                         "it will be topped up with <span class='fw-bold'>" + singleTopupAmount + " " + stateSmartvault.myProtectingSmartVault + " (~" + Number((singleTopupAmount * (stateSmartvault.myProtectingSmartVault == "BTC" ? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span>. " +
-                                                        "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + triggerHealthFactor + "</span>, " +
+                                                        "This will be repeated each time the health factor drops below <span style='color: #00ff00'>" + healthFactorPercentage + "</span>, " +
                                                         "until a total of <span class='fw-bold'>" + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + "  (~$" + Number((stakeAmount * (stateSmartvault.myProtectingSmartVault == "BTC" ? state.priceOfBtc : state.priceOfEth) / 100).toFixed(8)) + ")</span> is topped up."
                                         ),
                                         stateSmartvault.myProtectingPair,

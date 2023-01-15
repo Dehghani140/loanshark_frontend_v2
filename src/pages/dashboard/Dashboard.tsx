@@ -118,7 +118,7 @@ function Dashboard() {
 				break;
 			case "LEAVESMARTVAULTETH":
 					args = [
-						window.web3.utils.toBN((modalInputValue)).toString(),
+						window.web3.utils.toBN(window.web3.utils.toWei(modalInputValue, 'ether')).toString(),
 					];
 	
 					setModal(!modal);
@@ -396,7 +396,7 @@ function Dashboard() {
 														"LEAVESMARTVAULTETH",
 														'Confirm to withdraw all from Smart Vault?',
 														'You are withdrawing <span class="fw-bold">' +
-														Number(stateBackd.myEthLpAmount) +
+														Number(stateBackd.myEthLpAmount  * stateBackd.ethLpExchangeRate ) +
 														' ETH (~$' +
 														Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2) +
 														')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'

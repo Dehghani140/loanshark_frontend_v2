@@ -566,7 +566,7 @@ function Manage() {
 				break;
 			case "LEAVESMARTVAULTETH":
 				let args2 = [
-					window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
+					window.web3.utils.toBN(window.web3.utils.toWei(modalInputValue, 'ether')).toString(),
 				];
 
 				setModal(!modal);
