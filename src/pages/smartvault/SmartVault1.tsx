@@ -30,9 +30,9 @@ function SmartVault1() {
         <>
             <div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <span className={'card-title'}>Protection Setup </span><span className={'card-subtitle'}>(1/4 steps)</span>
-                    </Grid>
+                    {/* <Grid item xs={12}>
+                        <span className={'card-title'}>Select your protection method. </span><span className={'card-subtitle'}>(1/4 steps)</span>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <span className={'card-subtitle'}>Select your protection method</span>
                     </Grid>

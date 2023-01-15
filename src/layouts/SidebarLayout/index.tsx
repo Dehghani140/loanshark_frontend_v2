@@ -75,7 +75,9 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           }
         }}
       >
-        <Grid container justifyContent={'center'}>
+        <Grid container 
+        // justifyContent={'center'}
+        >
           <Grid item>
             <Header />
           </Grid>
@@ -117,7 +119,9 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
                   }}> X </Button> : null
               }
             </div>
-            <div style={{ width: '100vw' }}>
+            <div 
+            // style={{ width: '100vw' }}
+            >
               <Outlet />
               {stateLayout.loadingActive ? <div style={{
                 position: 'fixed',

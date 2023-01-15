@@ -17,12 +17,24 @@
 
 @import url("https://use.typekit.net/phv7ejb.css");
 
-.body{
+.body {
     font-family: 'ClashDisplay-Semibold', sans-serif;
     font-family: 'poppins', sans-serif;
-}  
+}
 
-.main-content-layout{
+.background {
+    top: 0px;
+    left: 0px;
+    min-height: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+    // background-repeat: no-repeat;
+    // background-image: url(/assets/background/app_background_blur.svg),
+}
+
+.main-content-layout {
     padding-top: 32px;
     width: 1260px;
     margin-left: auto;

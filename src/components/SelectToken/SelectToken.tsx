@@ -131,11 +131,8 @@ const SelectToken = (selectTokenProps: any) => {
     const [searchKey, setSearchKey] = useState("")
     const [tableTokenList, setTableTokenList] = useState([])
     const [defaultTokenList, setDefaultTokenList] = useState([])
-    console.log(tableTokenList)
+
     useEffect(() => {
-        console.log(searchKey)
-        console.log(selectTokenPopupList)
-        console.log(tableTokenList)
         if (searchKey === "") {
             setTableTokenList(stateSelectToken.tokenList)
             return

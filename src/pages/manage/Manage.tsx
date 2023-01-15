@@ -8,7 +8,8 @@ import '../../App.scss'
 import './Manage.scss'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 import loansharkSlice, { changeInputEthDeposit, changeInputBtcDebt } from '../../slice/loansharkSlice';
-import { changeDialogState, 
+import {
+	changeDialogState,
 	changeTokenListState,
 	changeSelectTokenTitleState,
 } from '../../slice/selectTokenSlice';
@@ -24,6 +25,8 @@ import {
 } from '../../utils/utilList'
 
 import { borrowBTC, repayBTC, depositETH, withdrawETH } from '../../utils/LoansharkBackend'
+import CustSlider from "src/components/Slider/CustSlider";
+import BorrwoingPowerButton from "src/components/Button/BorrowingPowerButton/BorrowingPowerButton";
 
 const options = {
 	chart: {
@@ -144,7 +147,7 @@ export enum IDebt {
 	PAYBACK = "payback",
 }
 
- 
+
 
 function Manage() {
 	let navigate = useNavigate();
@@ -215,9 +218,9 @@ function Manage() {
 		return false
 	}, [barData])
 
-	function calculateNetInterestRate():number{
+	function calculateNetInterestRate(): number {
 		return Number(((
-			(stateLoanshark.aaveEthDepositRate)  * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
+			(stateLoanshark.aaveEthDepositRate) * (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100)
 			- stateLoanshark.aaveBtcBorrowRate / 100 * (stateLoanshark.userDebtBalanceBtc * stateLoanshark.priceOfBtc / 100)
 			+ 0.054 * (stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100)
 		) / (stateLoanshark.userDepositBalanceEth * stateLoanshark.priceOfEth / 100) * 100).toFixed(TOKEN_DISPLAY_DECIMAL))
@@ -271,7 +274,7 @@ function Manage() {
 	const modalConfirm = (modalAction: string) => {
 		let args = [];
 		let approveArgs = [];
-		let oldHealthFactor = 
+		let oldHealthFactor =
 			calculateHealthFactor(
 				Number(stateLoanshark.userDepositBalanceEth),
 				stateLoanshark.priceOfEth,
@@ -313,15 +316,15 @@ function Manage() {
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
 
 									newHealthFactor =
-									calculateHealthFactor(
-										Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-										stateLoanshark.priceOfEth,
-										stateLoanshark.LTV["ETHBTC"],
-										Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-										stateLoanshark.priceOfBtc);
+										calculateHealthFactor(
+											Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+											stateLoanshark.priceOfEth,
+											stateLoanshark.LTV["ETHBTC"],
+											Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+											stateLoanshark.priceOfBtc);
 
 									depositETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
-									
+
 								})
 						});
 				}
@@ -360,15 +363,15 @@ function Manage() {
 							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
 
 							newHealthFactor =
-							calculateHealthFactor(
-								Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-								stateLoanshark.priceOfEth,
-								stateLoanshark.LTV["ETHBTC"],
-								Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-								stateLoanshark.priceOfBtc);
+								calculateHealthFactor(
+									Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+									stateLoanshark.priceOfEth,
+									stateLoanshark.LTV["ETHBTC"],
+									Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+									stateLoanshark.priceOfBtc);
 
 							withdrawETH(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, -1 * (stateLoanshark.inputEthDeposit), stateLoanshark.priceOfEth);
-							
+
 						});
 				}
 
@@ -413,15 +416,15 @@ function Manage() {
 
 
 							newHealthFactor =
-							calculateHealthFactor(
-								Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-								stateLoanshark.priceOfEth,
-								stateLoanshark.LTV["ETHBTC"],
-								Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-								stateLoanshark.priceOfBtc);
+								calculateHealthFactor(
+									Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+									stateLoanshark.priceOfEth,
+									stateLoanshark.LTV["ETHBTC"],
+									Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+									stateLoanshark.priceOfBtc);
 
 							borrowBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
-							
+
 						});
 				}
 
@@ -477,15 +480,15 @@ function Manage() {
 									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
 
 									newHealthFactor =
-									calculateHealthFactor(
-										Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
-										stateLoanshark.priceOfEth,
-										stateLoanshark.LTV["ETHBTC"],
-										Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
-										stateLoanshark.priceOfBtc);
+										calculateHealthFactor(
+											Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
+											stateLoanshark.priceOfEth,
+											stateLoanshark.LTV["ETHBTC"],
+											Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
+											stateLoanshark.priceOfBtc);
 
 									repayBTC(stateLoanshark.myAccount, receipt.transactionHash, oldHealthFactor, newHealthFactor, -1 * (stateLoanshark.inputBtcDept), stateLoanshark.priceOfBtc);
-									
+
 								})
 						});
 				}
@@ -562,52 +565,52 @@ function Manage() {
 				}
 				break;
 			case "LEAVESMARTVAULTETH":
-					let args2 = [
-						window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
-					];
-	
-					setModal(!modal);
-					dispatch(toggleLoading());
-	
-					let argsUnregister2 = [
-						stateLoanshark.myAccount + "000000000000000000000000",
-						"0x66756a6964616f65746800000000000000000000000000000000000000000000",
-						1
-					];
-	
-					if (stateBackd.myProtectionEth && stateBackd.myProtectionEth[0] > 0) {
-	
-						stateBackd.topupAction.methods
-							.resetPosition(...argsUnregister2)
-							.send({ from: stateLoanshark.myAccount })
-							.on("error", (error, receipt) => {
-								dispatch(toggleLoading());
-							})
-							.then((receipt) => {
-								stateBackd.lpPoolEth.methods
-									.redeem(...args2)
-									.send({ from: stateLoanshark.myAccount })
-									.on("error", (error, receipt) => {
-										dispatch(toggleLoading());
-									})
-									.then((receipt) => {
-										dispatch(toggleLoading());
-										refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-									})
-							})
-					} else {
-						stateBackd.lpPoolEth.methods
-							.redeem(...args2)
-							.send({ from: stateLoanshark.myAccount })
-							.on("error", (error, receipt) => {
-								dispatch(toggleLoading());
-							})
-							.then((receipt) => {
-								dispatch(toggleLoading());
-								refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
-							})
-					}
-					break;
+				let args2 = [
+					window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
+				];
+
+				setModal(!modal);
+				dispatch(toggleLoading());
+
+				let argsUnregister2 = [
+					stateLoanshark.myAccount + "000000000000000000000000",
+					"0x66756a6964616f65746800000000000000000000000000000000000000000000",
+					1
+				];
+
+				if (stateBackd.myProtectionEth && stateBackd.myProtectionEth[0] > 0) {
+
+					stateBackd.topupAction.methods
+						.resetPosition(...argsUnregister2)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
+							dispatch(toggleLoading());
+						})
+						.then((receipt) => {
+							stateBackd.lpPoolEth.methods
+								.redeem(...args2)
+								.send({ from: stateLoanshark.myAccount })
+								.on("error", (error, receipt) => {
+									dispatch(toggleLoading());
+								})
+								.then((receipt) => {
+									dispatch(toggleLoading());
+									refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+								})
+						})
+				} else {
+					stateBackd.lpPoolEth.methods
+						.redeem(...args2)
+						.send({ from: stateLoanshark.myAccount })
+						.on("error", (error, receipt) => {
+							dispatch(toggleLoading());
+						})
+						.then((receipt) => {
+							dispatch(toggleLoading());
+							refreshPrice(stateLoanshark, stateBackd, dispatch, "GET_NEW");
+						})
+				}
+				break;
 			case "NOACTION":
 				break;
 			default:
@@ -626,8 +629,8 @@ function Manage() {
 				// modalToken={modalToken}
 				modalCancel={() => { setModal(!modal) }}
 				modalConfirm={() => { modalConfirm(modalAction) }}
-				// modalInputValue={modalInputValue}
-				>
+			// modalInputValue={modalInputValue}
+			>
 			</CustDialog>}
 			<div className={'main-content-layout'}>
 				<Grid container spacing={3}>
@@ -845,260 +848,260 @@ function Manage() {
 					</Grid>
 					<Grid item xs={5}>
 						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px` }}>
-							<Grid  hidden={stateBackd.myBtcLpAmount <= 0}  item xs={12}>
-							<NoBorderCard >
-								<Grid hidden={stateBackd.myEthLpAmount > 0} container>
-									<Grid item xs={12}>
-										<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
-									</Grid>
-									<Grid item xs={12}>
-										<Grid container style={{
-											borderRadius: "3px",
-											border: "1px solid rgba(0,0,0, 0.15)",
-										}}
-										>
-											<Grid item xs={12}>
-												<div style={{ padding: "10px" }}>
-													<Grid container alignItems={'center'}>
-														<Grid item xs={9}>
-															<input
-																style={{
-																	width: "100%",
-																	height: "100%",
-																	border: "0px",
-																	backgroundColor: "transparent",
-																	fontFamily: "poppins",
-																	overflow: "hidden",
-																	fontSize: "48px",
-																	fontWeight: "700",
-																	color: "#333333",
-																}}
-																value={Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8)}
-																disabled={true}
-																onChange={(e) => {
-																	setValue(e.target.value)
-																}}
-															></input>
-														</Grid>
-														<Grid item xs={3}>
-															<Grid container alignItems={'center'}>
-																<Grid item>
-																	<div
-																		style={{
-																			maxHeight: "30px",
-																			maxWidth: "30px",
-																		}}
-																	>
-																		<img style={{ width: "100%", height: "100%" }}
-																			src={`/assets/icon/btc-logo.svg`} alt="" />
-																	</div>
-																</Grid>
-																<Grid item>
-																	<span style={{ fontSize: "24px" }}>BTC</span>
-																</Grid>
+							<Grid hidden={stateBackd.myBtcLpAmount <= 0} item xs={12}>
+								<NoBorderCard >
+									<Grid hidden={stateBackd.myEthLpAmount > 0} container>
+										<Grid item xs={12}>
+											<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
+										</Grid>
+										<Grid item xs={12}>
+											<Grid container style={{
+												borderRadius: "3px",
+												border: "1px solid rgba(0,0,0, 0.15)",
+											}}
+											>
+												<Grid item xs={12}>
+													<div style={{ padding: "10px" }}>
+														<Grid container alignItems={'center'}>
+															<Grid item xs={9}>
+																<input
+																	style={{
+																		width: "100%",
+																		height: "100%",
+																		border: "0px",
+																		backgroundColor: "transparent",
+																		fontFamily: "poppins",
+																		overflow: "hidden",
+																		fontSize: "48px",
+																		fontWeight: "700",
+																		color: "#333333",
+																	}}
+																	value={Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8)}
+																	disabled={true}
+																	onChange={(e) => {
+																		setValue(e.target.value)
+																	}}
+																></input>
 															</Grid>
+															<Grid item xs={3}>
+																<Grid container alignItems={'center'}>
+																	<Grid item>
+																		<div
+																			style={{
+																				maxHeight: "30px",
+																				maxWidth: "30px",
+																			}}
+																		>
+																			<img style={{ width: "100%", height: "100%" }}
+																				src={`/assets/icon/btc-logo.svg`} alt="" />
+																		</div>
+																	</Grid>
+																	<Grid item>
+																		<span style={{ fontSize: "24px" }}>BTC</span>
+																	</Grid>
+																</Grid>
 
+															</Grid>
 														</Grid>
-													</Grid>
-												</div>
+													</div>
+												</Grid>
 											</Grid>
+
 										</Grid>
 
-									</Grid>
-
-									{[
-										{
-											title: "Trigger Health Factor",
-											value: (stateBackd.myProtectionBtc[0] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[0], 'ether') : 0),
-										},
-										{
-											title: "Protection amount each time",
-											value: (stateBackd.myProtectionBtc[5] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[5], 'gwei') * 10 : 0) + " BTC",
-										},
-										{
-											title: "Remaining prepaid gas free",
-											value: Number(stateBackd.myGasBankBalance).toFixed(2),
-										},
-									].map((item) => {
-										return (
-											<Grid item xs={12} key={item.title}>
-												<div style={{ padding: "10px 0px" }}>
-													<Grid container justifyContent={'space-between'}>
-														<Grid item>
-															<span className={`current-smart-vault-field`}>{item.title}</span>
+										{[
+											{
+												title: "Trigger Health Factor",
+												value: (stateBackd.myProtectionBtc[0] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[0], 'ether') : 0),
+											},
+											{
+												title: "Protection amount each time",
+												value: (stateBackd.myProtectionBtc[5] ? window.web3.utils.fromWei(stateBackd.myProtectionBtc[5], 'gwei') * 10 : 0) + " BTC",
+											},
+											{
+												title: "Remaining prepaid gas free",
+												value: Number(stateBackd.myGasBankBalance).toFixed(2),
+											},
+										].map((item) => {
+											return (
+												<Grid item xs={12} key={item.title}>
+													<div style={{ padding: "10px 0px" }}>
+														<Grid container justifyContent={'space-between'}>
+															<Grid item>
+																<span className={`current-smart-vault-field`}>{item.title}</span>
+															</Grid>
+															<Grid item>
+																<span className={`current-smart-vault-value`}>{item.value}</span>
+															</Grid>
 														</Grid>
-														<Grid item>
-															<span className={`current-smart-vault-value`}>{item.value}</span>
-														</Grid>
-													</Grid>
-												</div>
-											</Grid>
-										)
-									})
-									}
+													</div>
+												</Grid>
+											)
+										})
+										}
 
-									<Grid item xs={12}>
-										<div style={{ width: "100%" }}>
-											<RoundShapeButton
-												label={"Withdraw All"}
-												onClick={() => {
-													if (stateBackd.myBtcLpAmount <= 0) {
-														toggleNoAction(
-															deposit,
-															'Unable to withdraw all from Smart Vault',
-															'You do not have any BTC in Smart Vault.',
-															deposit + debt
-														)
-													} else {
-														toggleAction(
-															deposit,
-															"LEAVESMARTVAULTBTC",
-															'Confirm to withdraw all from Smart Vault?',
-															'You are withdrawing <span class="fw-bold">' +
-															Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8) +
-															' BTC (~$' +
-															Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100).toFixed(2) +
-															')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
-															,
-															deposit + debt,
-															stateBackd.myBtcLpAmount
-														)
-													}
-												}}
-												color={"white"}
-											></RoundShapeButton>
-										</div>
+										<Grid item xs={12}>
+											<div style={{ width: "100%" }}>
+												<RoundShapeButton
+													label={"Withdraw All"}
+													onClick={() => {
+														if (stateBackd.myBtcLpAmount <= 0) {
+															toggleNoAction(
+																deposit,
+																'Unable to withdraw all from Smart Vault',
+																'You do not have any BTC in Smart Vault.',
+																deposit + debt
+															)
+														} else {
+															toggleAction(
+																deposit,
+																"LEAVESMARTVAULTBTC",
+																'Confirm to withdraw all from Smart Vault?',
+																'You are withdrawing <span class="fw-bold">' +
+																Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate).toFixed(8) +
+																' BTC (~$' +
+																Number(stateBackd.myBtcLpAmount * stateBackd.btcLpExchangeRate * stateLoanshark.priceOfBtc / 100).toFixed(2) +
+																')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
+																,
+																deposit + debt,
+																stateBackd.myBtcLpAmount
+															)
+														}
+													}}
+													color={"white"}
+												></RoundShapeButton>
+											</div>
+										</Grid>
 									</Grid>
-								</Grid>
-							</NoBorderCard>
+								</NoBorderCard>
 							</Grid>
 
-							<Grid  hidden={stateBackd.myEthLpAmount <= 0}  item xs={12}>
-							<NoBorderCard>
-								<Grid hidden={stateBackd.myBtcLpAmount >= 0} container>
-									<Grid item xs={12}>
-										<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
-									</Grid>
-									<Grid item xs={12}>
-										<Grid container style={{
-											borderRadius: "3px",
-											border: "1px solid rgba(0,0,0, 0.15)",
-										}}
-										>
-											<Grid item xs={12}>
-												<div style={{ padding: "10px" }}>
-													<Grid container alignItems={'center'}>
-														<Grid item xs={9}>
-															<input
-																style={{
-																	width: "100%",
-																	height: "100%",
-																	border: "0px",
-																	backgroundColor: "transparent",
-																	fontFamily: "poppins",
-																	overflow: "hidden",
-																	fontSize: "48px",
-																	fontWeight: "700",
-																	color: "#333333",
-																}}
-																value={Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8)}
-																disabled={true}
-																onChange={(e) => {
-																	setValue(e.target.value)
-																}}
-															></input>
-														</Grid>
-														<Grid item xs={3}>
-															<Grid container alignItems={'center'}>
-																<Grid item>
-																	<div
-																		style={{
-																			maxHeight: "20px",
-																			maxWidth: "20px",
-																		}}
-																	>
-																		<img style={{ width: "100%", height: "100%" }}
-																			src={`/assets/icon/eth-logo.svg`} alt="" />
-																	</div>
-																</Grid>
-																<Grid item>
-																	<span style={{ fontSize: "24px" }}>ETH</span>
-																</Grid>
+							<Grid hidden={stateBackd.myEthLpAmount < 0} item xs={12}>
+								<NoBorderCard>
+									<Grid container>
+										<Grid item xs={12}>
+											<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
+										</Grid>
+										<Grid item xs={12}>
+											<Grid container style={{
+												borderRadius: "3px",
+												border: "1px solid rgba(0,0,0, 0.15)",
+											}}
+											>
+												<Grid item xs={12}>
+													<div style={{ padding: "10px" }}>
+														<Grid container alignItems={'center'}>
+															<Grid item xs={9}>
+																<input
+																	style={{
+																		width: "100%",
+																		height: "100%",
+																		border: "0px",
+																		backgroundColor: "transparent",
+																		fontFamily: "poppins",
+																		overflow: "hidden",
+																		fontSize: "48px",
+																		fontWeight: "700",
+																		color: "#333333",
+																	}}
+																	value={Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8)}
+																	disabled={true}
+																	onChange={(e) => {
+																		setValue(e.target.value)
+																	}}
+																></input>
 															</Grid>
+															<Grid item xs={3}>
+																<Grid container alignItems={'center'}>
+																	<Grid item>
+																		<div
+																			style={{
+																				maxHeight: "20px",
+																				maxWidth: "20px",
+																			}}
+																		>
+																			<img style={{ width: "100%", height: "100%" }}
+																				src={`/assets/icon/eth-logo.svg`} alt="" />
+																		</div>
+																	</Grid>
+																	<Grid item>
+																		<span style={{ fontSize: "24px" }}>ETH</span>
+																	</Grid>
+																</Grid>
 
+															</Grid>
 														</Grid>
-													</Grid>
-												</div>
+													</div>
+												</Grid>
 											</Grid>
+
 										</Grid>
 
-									</Grid>
-
-									{[
-										{
-											title: "Trigger Health Factor",
-											value: (stateBackd.myProtectionEth[0] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether') : 0),
-										},
-										{
-											title: "Protection amount each time",
-											value: (stateBackd.myProtectionEth[5] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[5], 'gwei') * 10 : 0) + " ETH",
-										},
-										{
-											title: "Remaining prepaid gas free",
-											value: Number(stateBackd.myGasBankBalance).toFixed(2),
-										},
-									].map((item) => {
-										return (
-											<Grid item xs={12} key={item.title}>
-												<div style={{ padding: "10px 0px" }}>
-													<Grid container justifyContent={'space-between'}>
-														<Grid item>
-															<span className={`current-smart-vault-field`}>{item.title}</span>
+										{[
+											{
+												title: "Trigger Health Factor",
+												value: (stateBackd.myProtectionEth[0] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[0], 'ether') : 0),
+											},
+											{
+												title: "Protection amount each time",
+												value: (stateBackd.myProtectionEth[5] ? window.web3.utils.fromWei(stateBackd.myProtectionEth[5], 'gwei') * 10 : 0) + " ETH",
+											},
+											{
+												title: "Remaining prepaid gas free",
+												value: Number(stateBackd.myGasBankBalance).toFixed(2),
+											},
+										].map((item) => {
+											return (
+												<Grid item xs={12} key={item.title}>
+													<div style={{ padding: "10px 0px" }}>
+														<Grid container justifyContent={'space-between'}>
+															<Grid item>
+																<span className={`current-smart-vault-field`}>{item.title}</span>
+															</Grid>
+															<Grid item>
+																<span className={`current-smart-vault-value`}>{item.value}</span>
+															</Grid>
 														</Grid>
-														<Grid item>
-															<span className={`current-smart-vault-value`}>{item.value}</span>
-														</Grid>
-													</Grid>
-												</div>
-											</Grid>
-										)
-									})
-									}
+													</div>
+												</Grid>
+											)
+										})
+										}
 
-									<Grid item xs={12}>
-										<div style={{ width: "100%" }}>
-											<RoundShapeButton
-												label={"Withdraw All"}
-												onClick={() => {
-													if (stateBackd.myEthLpAmount <= 0) {
-														toggleNoAction(
-															deposit,
-															'Unable to withdraw all from Smart Vault',
-															'You do not have any BTC in Smart Vault.',
-															deposit + debt
-														)
-													} else {
-														toggleAction(
-															deposit,
-															"LEAVESMARTVAULTETH",
-															'Confirm to withdraw all from Smart Vault?',
-															'You are withdrawing <span class="fw-bold">' +
-															Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8) +
-															' ETH (~$' +
-															Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * stateLoanshark.priceOfEth / 100).toFixed(2) +
-															')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
-															,
-															deposit + debt,
-															stateBackd.myEthLpAmount
-														)
-													}
-												}}
-												color={"white"}
-											></RoundShapeButton>
-										</div>
+										<Grid item xs={12}>
+											<div style={{ width: "100%" }}>
+												<RoundShapeButton
+													label={"Withdraw All"}
+													onClick={() => {
+														if (stateBackd.myEthLpAmount <= 0) {
+															toggleNoAction(
+																deposit,
+																'Unable to withdraw all from Smart Vault',
+																'You do not have any BTC in Smart Vault.',
+																deposit + debt
+															)
+														} else {
+															toggleAction(
+																deposit,
+																"LEAVESMARTVAULTETH",
+																'Confirm to withdraw all from Smart Vault?',
+																'You are withdrawing <span class="fw-bold">' +
+																Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate).toFixed(8) +
+																' ETH (~$' +
+																Number(stateBackd.myEthLpAmount * stateBackd.ethLpExchangeRate * stateLoanshark.priceOfEth / 100).toFixed(2) +
+																')</span> from Smart Vault. Remaining gas fee of ' + parseFloat(stateBackd.myGasBankBalance) + ' AVAX will be returned. <span class="fw-bold" style="color: #ff7d47"><br/>Caution: you will lose your automatic loan protection if you withdraw.</span>'
+																,
+																deposit + debt,
+																stateBackd.myEthLpAmount
+															)
+														}
+													}}
+													color={"white"}
+												></RoundShapeButton>
+											</div>
+										</Grid>
 									</Grid>
-								</Grid>
-							</NoBorderCard>
+								</NoBorderCard>
 							</Grid>
 						</div>
 					</Grid>
@@ -1156,25 +1159,37 @@ function Manage() {
 														<div style={{ padding: "10px" }}>
 															<Grid container>
 																<Grid item xs={6}>
-																	<input
-																		style={{
-																			color: "rgba(51,51,51,1)",
-																			fontFamily: "Poppins-Bold",
-																			fontSize: "20px",
-																			fontWeight: "700",
-																			fontStyle: "normal",
-																			overflow: "hidden",
-																			width: "100%",
-																			height: "100%",
-																			border: "0px",
-																			backgroundColor: "transparent",
-																		}}
-																		value={collateralAmount}
-																		onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-																			setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
-																			dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
-																		}}
-																	></input>
+																	<Grid container>
+																		<Grid item xs={12}>
+																			<input
+																				style={{
+																					color: "rgba(51,51,51,1)",
+																					fontFamily: "Poppins-Bold",
+																					fontSize: "48px",
+																					fontWeight: "700",
+																					fontStyle: "normal",
+																					overflow: "hidden",
+																					width: "100%",
+																					height: "100%",
+																					border: "0px",
+																					backgroundColor: "transparent",
+																				}}
+																				value={collateralAmount}
+																				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+																					setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																					dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
+																				}}
+																			></input>
+																		</Grid>
+																		<Grid item xs={12}>
+																			<span style={{
+																				color: 'rgba(123,130,148,1)',
+																				fontFamily: 'poppins',
+																				fontSize: '14px',
+																			}}
+																			>{`$${(stateLoanshark.priceOfEth / 100 * collateralAmount).toFixed(2)}`}</span>
+																		</Grid>
+																	</Grid>
 																</Grid>
 																<Grid item xs={6}>
 																	<Grid container>
@@ -1215,11 +1230,11 @@ function Manage() {
 																						collateralCurrency={`eth`}
 																						onClick={() => {
 																							let tempList = [...depositTokenList]
-																							tempList.forEach((eachToken,index)=>{
+																							tempList.forEach((eachToken, index) => {
 																								tempList[index] = {
 																									...eachToken,
-																									apy:calculateNetInterestRate(),
-																									balance:Number(maxdepositAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
+																									apy: calculateNetInterestRate(),
+																									balance: Number(maxdepositAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																								}
 																							})
 																							dispatch(changeSelectTokenTitleState(`Select a token to ${collateralSelection.toLowerCase()}`))
@@ -1405,25 +1420,37 @@ function Manage() {
 														<div style={{ padding: "10px" }}>
 															<Grid container>
 																<Grid item xs={6}>
-																	<input
-																		style={{
-																			color: "rgba(51,51,51,1)",
-																			fontFamily: "Poppins-Bold",
-																			fontSize: "20px",
-																			fontWeight: "700",
-																			fontStyle: "normal",
-																			overflow: "hidden",
-																			width: "100%",
-																			height: "100%",
-																			border: "0px",
-																			backgroundColor: "transparent",
-																		}}
-																		value={debtAmount}
-																		onChange={(e) => {
-																			setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
-																			dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
-																		}}
-																	></input>
+																	<Grid container>
+																		<Grid item xs={12}>
+																			<input
+																				style={{
+																					color: "rgba(51,51,51,1)",
+																					fontFamily: "Poppins-Bold",
+																					fontSize: "48px",
+																					fontWeight: "700",
+																					fontStyle: "normal",
+																					overflow: "hidden",
+																					width: "100%",
+																					height: "100%",
+																					border: "0px",
+																					backgroundColor: "transparent",
+																				}}
+																				value={debtAmount}
+																				onChange={(e) => {
+																					setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
+																					dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
+																				}}
+																			></input>
+																		</Grid>
+																		<Grid item xs={12}>
+																			<span style={{
+																				color: 'rgba(123,130,148,1)',
+																				fontFamily: 'poppins',
+																				fontSize: '14px',
+																			}}
+																			>{`$${(stateLoanshark.priceOfBtc / 100 * debtAmount).toFixed(2)}`}</span>
+																		</Grid>
+																	</Grid>
 																</Grid>
 																<Grid item xs={6}>
 																	<Grid container>
@@ -1439,8 +1466,8 @@ function Manage() {
 																		<Grid item xs={12}>
 																			<Grid container justifyContent={'end'} alignItems={'center'}>
 																				<Grid item>
-																					<div 
-																					style={{ paddingRight: "1px" }}
+																					<div
+																						style={{ paddingRight: "1px" }}
 																					>
 																						<Button style={{
 																							backgroundColor: "white",
@@ -1460,13 +1487,13 @@ function Manage() {
 
 																							let tempList = [...borrowTokenList]
 																							console.log(stateLoanshark.aaveBtcBorrowRate)
-																							console.log(typeof(stateLoanshark.aaveBtcBorrowRate))
-																							
-																							tempList.forEach((eachToken,index)=>{
+																							console.log(typeof (stateLoanshark.aaveBtcBorrowRate))
+
+																							tempList.forEach((eachToken, index) => {
 																								tempList[index] = {
 																									...eachToken,
-																									apy:Number(Number(stateLoanshark.aaveBtcBorrowRate).toFixed(TOKEN_DISPLAY_DECIMAL)),
-																									balance:Number(maxdebtAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
+																									apy: Number(Number(stateLoanshark.aaveBtcBorrowRate).toFixed(TOKEN_DISPLAY_DECIMAL)),
+																									balance: Number(maxdebtAmount.toFixed(TOKEN_DISPLAY_DECIMAL)),
 																								}
 																							})
 																							dispatch(changeSelectTokenTitleState(`Select a token to ${debtSelection.toLowerCase()}`))
@@ -1488,11 +1515,11 @@ function Manage() {
 											<Grid item xs={12}>
 												<Grid container justifyContent={'space-between'}>
 													<Grid item>
-														<span style={{fontSize:"10px"}}>{debtSelection === IDebt.BORROW ? "Borrowing Power:" : "Payback Percentage"}</span>
+														<span style={{ fontSize: "10px" }}>{debtSelection === IDebt.BORROW ? "Borrowing Power:" : "Payback Percentage"}</span>
 													</Grid>
 													<Grid item>
-														<Grid container >
-															{[{
+														{/* <Grid container > */}
+														{/* {[{
 																value: 25,
 																name: "25%",
 															},
@@ -1530,8 +1557,17 @@ function Manage() {
 																		>{item.name}</button>
 																	</Grid>
 																)
-															})}
-														</Grid>
+															})} */}
+
+														<BorrwoingPowerButton
+															buttonStyle={'WHITE_SMALL'}
+															buttonSetSelect={'max90'}
+															onClick={(value) => {
+																let finalAmount = roundDown(maxdebtAmount * value, 8)
+																setDebtAmount(finalAmount)
+																dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
+															}}></BorrwoingPowerButton>
+														{/* </Grid> */}
 													</Grid>
 												</Grid>
 											</Grid>
@@ -1653,10 +1689,29 @@ function Manage() {
 														fontWeight: "600",
 														fontStyle: "normal",
 													}}>Health Factor</span>
-
 												</div>
 											</Grid>
 											<Grid item xs={12}>
+												<div style={{ width: '100%' }}>
+													<CustSlider
+														aria-label="healthFactor"
+														defaultValue={Number(calculateHealthFactor(
+															stateLoanshark.userDepositBalanceEth,
+															stateLoanshark.priceOfEth,
+															stateLoanshark.LTV["ETHBTC"],
+															stateLoanshark.userDebtBalanceBtc,
+															stateLoanshark.priceOfBtc
+														))}
+														value={0}
+														onChange={(e: any, newValue: number | number[], activeThumb: number) => { }}
+														valueLabelDisplay="auto"
+														step={0.05}
+														marks={false}
+														min={0}
+														max={10}
+														disabled={true}
+													></CustSlider>
+												</div>
 												<div style={{ width: "100%", textAlign: 'center' }}>
 													<span className={`health-factor-value`}>{calculateHealthFactor(
 														stateLoanshark.userDepositBalanceEth,
@@ -1700,7 +1755,7 @@ function Manage() {
 												* (stateLoanshark.priceOfBtc) / 100
 												/ (Number(stateLoanshark.userDepositBalanceEth))
 												/ stateLoanshark.LTV["ETHBTC"]).toFixed(2)}`,
-											textColor: "blue",
+											textColor: 'blue',
 										},
 										].map((item, index) => {
 											return (
@@ -1711,7 +1766,13 @@ function Manage() {
 																<span className={`current-price-box-title`}>{item.title}</span>
 															</Grid>
 															<Grid item>
-																<span className={`current-price-box-value`}>{item.value}</span>
+																{item.title !== 'Liquidation Price of ETH' &&
+																	<span className={`current-price-box-value`}>{item.value}</span>
+																}
+																{item.title === 'Liquidation Price of ETH' &&
+																	<span className={`current-price-box-value__liquidation`}>{item.value}</span>
+																}
+
 															</Grid>
 														</Grid>
 													</div>
