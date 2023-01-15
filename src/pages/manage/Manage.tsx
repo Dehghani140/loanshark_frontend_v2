@@ -976,7 +976,7 @@ function Manage() {
 								</NoBorderCard>
 							</Grid>
 
-							<Grid hidden={stateBackd.myEthLpAmount < 0} item xs={12}>
+							<Grid hidden={stateBackd.myEthLpAmount <= 0} item xs={12}>
 								<NoBorderCard>
 									<Grid container>
 										<Grid item xs={12}>
