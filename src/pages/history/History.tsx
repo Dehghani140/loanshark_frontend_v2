@@ -17,7 +17,17 @@ function History() {
 
 	const columns = [
 		{ field: 'date', headerName: 'Date', width: 150 },
-		{ field: 'borrowingPosition', headerName: 'Borrowing Position', width: 180 },
+		{ field: 'borrowingPosition', headerName: 'Borrowing Position', width: 180, renderCell: (params) => {
+			return <span>
+					<span style={{ position: "relative", minWidth: "60px" }}>
+						<img style={{ width: "30px", height: "30px" }} src={`/assets/icon/crypto/color/BTC.svg`} alt=""></img>
+						<span style={{ position: "absolute", top:"-10px", left:"20px" }}>
+							<img style={{ width: "30px", height: "30px" }} src={`/assets/icon/crypto/color/ETH.svg`} alt=""></img>
+						</span>
+					</span>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{params.row.borrowingPosition}
+			</span>
+		}},
 		{ field: 'actionType', headerName: 'Action Type', width: 150, renderCell: (params) => {
 			return <span style={{
 				color: (
@@ -26,10 +36,10 @@ function History() {
 				)
 			}}>{params.row.actionType}</span>
 		} },
-		{ field: 'amount', headerName: 'Amount', },
-		{ field: 'value', headerName: 'Value', description: 'This column has a value getter and is not sortable.' },
-		{ field: 'initialHealthFactor', headerName: 'Initial Health Factor', type: 'number', width: 180 },
-		{ field: 'newHealthFactor', headerName: 'New Health Factor', type: 'number', width: 180 },
+		{ field: 'amount', headerName: 'Amount', width: 170  },
+		{ field: 'value', headerName: 'Value', description: 'This column has a value getter and is not sortable.', width: 140  },
+		{ field: 'initialHealthFactor', headerName: 'Initial Health Factor', type: 'number', width: 170 },
+		{ field: 'newHealthFactor', headerName: 'New Health Factor', type: 'number', width: 170 },
 		
 		{ field: 'content', headerName: 'Explorer', width: 100, renderCell: (params) => {
 			return <a target="_blank" rel="noreferrer" href={"https://testnet.snowtrace.io/tx/" + params.row.content}>link</a>
@@ -120,6 +130,7 @@ function History() {
 						<DataGrid
 							style={{
 								borderRadius: '6px',
+    							fontFamily: "poppins",
 								boxShadow: '0px 0px 10px rgba(138,171,170, 0.3)',
 								opacity: '0.902725',
 								background: "linear-gradient(180deg, rgba(253, 251, 251, 0.9) 100%, rgba(235, 237, 238, 0.9) 100%)",

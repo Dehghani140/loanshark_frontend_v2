@@ -7,6 +7,10 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import ClipLoader from "react-spinners/ClipLoader";
 
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import { useAppSelector } from '../../hooks';
 import SelectToken from 'src/components/SelectToken/SelectToken';
 import Web3 from 'web3';
@@ -27,6 +31,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const stateLayout = useAppSelector((state) => state.layout)
 
   let [color, setColor] = useState("#000000");
+  let [showBar, setShowBar] = useState(true);
 
   const override: CSSProperties = {
     position: 'fixed',
@@ -92,11 +97,25 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         >
 
           <Box display="block">
-            <div style={{ width: '100%', height: '25px', textAlign:"center", backgroundColor: '#FFFF00' }}>
+            <div style={{ 
+              display: (showBar? 'relative':'none'),
+              fontFamily: "poppins", 
+              width: '100%', 
+              height: '30px', 
+              lineHeight: '34px', 
+              verticalAlign: "middle", 
+              textAlign:"center", 
+              backgroundColor: (state.currentChainID == 43113?  '#b4ebfa' : '#FFCC00') }}>
               {state.currentChainID == 43113? 
               "Loanshark has saved borrowers $" + 
               Number((state.traderJoeBtcBorrowRate - state.aaveBtcBorrowRate) / 100 * state.totalUserDebtBalanceBtc * state.priceOfBtc / 100).toLocaleString() + 
               " in interest fee already!" : "Please connect your wallet to Avalanche Testnet"}
+              {state.currentChainID == 43113? 
+                <Button aria-label="delete" color="primary" size="small"
+                  onClick={() => {
+                    setShowBar(!showBar)
+                  }}> X </Button> : null
+              }
             </div>
             <div style={{ width: '100vw' }}>
               <Outlet />

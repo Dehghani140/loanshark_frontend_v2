@@ -724,7 +724,7 @@ function Borrow() {
 											textColor: "green",
 										},
 										{
-											title: "Trader Joe",
+											title: "Banker Joe",
 											value: `${stateLoanshark.traderJoeBtcBorrowRate}%`,
 											textColor: "green",
 										}].map((item, index) => {
