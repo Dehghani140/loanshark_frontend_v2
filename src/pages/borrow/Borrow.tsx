@@ -412,25 +412,38 @@ function Borrow() {
 																</span>
 															</Grid>
 															<Grid item xs={7}>
-																<input
-																	style={{
-																		color: "rgba(51,51,51,1)",
-																		fontFamily: "poppins",
-																		fontSize: "48px",
-																		fontWeight: "700",
-																		fontStyle: "normal",
-																		overflow: "hidden",
-																		width: "100%",
-																		height: "100%",
-																		paddingTop: "10px",
-																		border: "0px",
-																		backgroundColor: "transparent",
-																	}}
-																	value={stateLoanshark.inputEthDeposit}
-																	onChange={(e) => {
-																		dispatch(changeInputEthDeposit(e.target.value))
-																	}}
-																></input>
+																<Grid container>
+																	<Grid item xs={12}>
+																		<input
+																			style={{
+																				color: "rgba(51,51,51,1)",
+																				fontFamily: "poppins",
+																				fontSize: "48px",
+																				fontWeight: "700",
+																				fontStyle: "normal",
+																				overflow: "hidden",
+																				width: "100%",
+																				height: "100%",
+																				paddingTop: "10px",
+																				border: "0px",
+																				backgroundColor: "transparent",
+																			}}
+																			value={stateLoanshark.inputEthDeposit}
+																			onChange={(e) => {
+																				dispatch(changeInputEthDeposit(e.target.value))
+																			}}
+																		></input>
+																	</Grid>
+																	<Grid item xs={12}>
+																		<span style={{
+																			color: 'rgba(123,130,148,1)',
+																			fontFamily: 'poppins',
+																			fontSize: '14px',
+																		}}
+																		>{`$${(stateLoanshark.priceOfEth / 100 * stateLoanshark.inputEthDeposit).toFixed(2)}`}</span>
+																	</Grid>
+																</Grid>
+
 															</Grid>
 															<Grid item xs={5}>
 
@@ -522,7 +535,9 @@ function Borrow() {
 																</span>
 															</Grid>
 															<Grid item xs={7}>
-																<input
+																<Grid container>
+																	<Grid item xs={12}>
+																	<input
 																	style={{
 																		color: "rgba(51,51,51,1)",
 																		fontFamily: "poppins",
@@ -541,6 +556,17 @@ function Borrow() {
 																		dispatch(changeInputBtcDebt(e.target.value))
 																	}}
 																></input>
+																	</Grid>
+																	<Grid item xs={12}>
+																	<span style={{
+																				color: 'rgba(123,130,148,1)',
+																				fontFamily: 'poppins',
+																				fontSize: '14px',
+																			}}
+																			>{`$${(stateLoanshark.priceOfBtc / 100 * stateLoanshark.inputBtcDept).toFixed(2)}`}</span>
+																	</Grid>
+																</Grid>
+																
 															</Grid>
 															<Grid item xs={5}>
 
@@ -694,7 +720,7 @@ function Borrow() {
 														stateLoanshark.LTV["ETHBTC"],
 														Number(stateLoanshark.userDebtBalanceBtc) + Number(stateLoanshark.inputBtcDept),
 														stateLoanshark.priceOfBtc))}
-													onChange={(e: any, newValue: number | number[], activeThumb: number) => {}}
+													onChange={(e: any, newValue: number | number[], activeThumb: number) => { }}
 													valueLabelDisplay="on"
 													step={0.05}
 													marks={false}
