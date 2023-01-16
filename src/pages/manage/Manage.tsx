@@ -850,7 +850,7 @@ function Manage() {
 						<div style={{ height: `${FIRST_ROW_CARD_HEIGHT}px` }}>
 							<Grid hidden={stateBackd.myBtcLpAmount <= 0} item xs={12}>
 								<NoBorderCard >
-									<Grid hidden={stateBackd.myEthLpAmount > 0} container>
+									<Grid container>
 										<Grid item xs={12}>
 											<CardTitle title={"Current Smart Vault Balance"}></CardTitle>
 										</Grid>
@@ -889,7 +889,7 @@ function Manage() {
 																		<ImageList sx={{ maxWidth: 30, maxHeight: 30 }} cols={1} gap={0}>
 																			<ImageListItem>
 																				<img
-																					style={{ width: '18px', height: '30px' }}
+																					style={{ width: '30px', height: '30px' }}
 																					src={`/assets/icon/btc-logo.svg`}
 																					alt={""}
 																					loading="lazy"
@@ -976,7 +976,7 @@ function Manage() {
 								</NoBorderCard>
 							</Grid>
 
-							<Grid hidden={stateBackd.myEthLpAmount < 0} item xs={12}>
+							<Grid hidden={stateBackd.myEthLpAmount <= 0} item xs={12}>
 								<NoBorderCard>
 									<Grid container>
 										<Grid item xs={12}>
