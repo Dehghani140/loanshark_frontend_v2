@@ -92,7 +92,7 @@ interface SelectionButtonProps {
 	label: string;
 	isLeft: boolean;
 	onClick: any;
-	select: boolean;
+	select: boolean;	
 }
 
 function SelectionButton(props: SelectionButtonProps) {
@@ -169,11 +169,11 @@ function Manage() {
 	const [barData, setBarData] = useState(null)
 
 	const [collateralSelection, setCollateralSelection] = useState<ICollateral | null>(ICollateral.DEPOSIT)
-	const [collateralAmount, setCollateralAmount] = useState<any>(0)
+	const [collateralAmount, setCollateralAmount] = useState<number>(0)
 	const [maxdepositAmount, setMaxdepositAmount] = useState<number>(0)
 
 	const [debtSelection, setDebtSelection] = useState<IDebt | null>(IDebt.BORROW)
-	const [debtAmount, setDebtAmount] = useState<any>(0)
+	const [debtAmount, setDebtAmount] = useState<number>(0)
 	const [maxdebtAmount, setMaxdebtAmount] = useState<number>(0)
 
 	const [modal, setModal] = useState<boolean>(false);
@@ -566,7 +566,7 @@ function Manage() {
 				break;
 			case "LEAVESMARTVAULTETH":
 				let args2 = [
-					window.web3.utils.toBN(window.web3.utils.toWei(modalInputValue, 'ether')).toString(),
+					window.web3.utils.toBN((modalInputValue * 1000000000000000000).toFixed(0)).toString(),
 				];
 
 				setModal(!modal);
@@ -976,7 +976,7 @@ function Manage() {
 								</NoBorderCard>
 							</Grid>
 
-							<Grid hidden={stateBackd.myEthLpAmount <= 0} item xs={12}>
+							<Grid hidden={stateBackd.myEthLpAmount < 0} item xs={12}>
 								<NoBorderCard>
 									<Grid container>
 										<Grid item xs={12}>
@@ -1166,7 +1166,7 @@ function Manage() {
 																			<input
 																				style={{
 																					color: "rgba(51,51,51,1)",
-																					fontFamily: "Poppins-Bold",
+																					fontFamily: "poppins",
 																					fontSize: "48px",
 																					fontWeight: "700",
 																					fontStyle: "normal",
@@ -1178,7 +1178,7 @@ function Manage() {
 																				}}
 																				value={collateralAmount}
 																				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-																					setCollateralAmount(e.target.value === "" ? 0 : (e.target.value))
+																					setCollateralAmount(e.target.value === "" ? 0 : Number(e.target.value))
 																					dispatch(changeInputEthDeposit(Number(e.target.value) * (collateralSelection === ICollateral.DEPOSIT ? 1 : -1)));
 																				}}
 																			></input>
@@ -1200,7 +1200,7 @@ function Manage() {
 																				padding: "5px",
 																				textAlign: "end",
 																			}}>
-																				<span>Balance: </span>
+																				<span>Balance </span>
 																				<span style={{ fontWeight: "800" }}>{`${Number(Number(maxdepositAmount.toFixed(2))).toLocaleString()}`}</span>
 																			</div>
 
@@ -1427,7 +1427,7 @@ function Manage() {
 																			<input
 																				style={{
 																					color: "rgba(51,51,51,1)",
-																					fontFamily: "Poppins-Bold",
+																					fontFamily: "poppins",
 																					fontSize: "48px",
 																					fontWeight: "700",
 																					fontStyle: "normal",
@@ -1439,10 +1439,10 @@ function Manage() {
 																				}}
 																				value={debtAmount}
 																				onChange={(e) => {
-																					setDebtAmount(e.target.value === "" ? 0 : (e.target.value))
+																					setDebtAmount(e.target.value === "" ? 0 : Number(e.target.value))
 																					dispatch(changeInputBtcDebt(Number(e.target.value) * (debtSelection === IDebt.BORROW ? 1 : -1)));
 																				}}
-																			></input> 
+																			></input>
 																		</Grid>
 																		<Grid item xs={12}>
 																			<span style={{
@@ -1461,8 +1461,8 @@ function Manage() {
 																				padding: "5px",
 																				textAlign: "end",
 																			}}>
-																				<span>{maxdebtAmount > stateLoanshark.myBTCAmount ? "Balance: " : "Debt: "}</span>
-																				<span style={{ fontWeight: "800" }}>{`${Number(Number((maxdebtAmount > stateLoanshark.myBTCAmount ? stateLoanshark.myBTCAmount : maxdebtAmount).toFixed(2))).toLocaleString()}`}</span>
+																				<span>Max borrow: </span>
+																				<span style={{ fontWeight: "800" }}>{`${Number(Number(maxdebtAmount.toFixed(2))).toLocaleString()}`}</span>
 																			</div>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -1565,8 +1565,7 @@ function Manage() {
 															buttonStyle={'WHITE_SMALL'}
 															buttonSetSelect={'max90'}
 															onClick={(value) => {
-																let debt = maxdebtAmount > stateLoanshark.myBTCAmount ? stateLoanshark.myBTCAmount  : maxdebtAmount;
-																let finalAmount = roundDown(debt * value, 8)
+																let finalAmount = roundDown(maxdebtAmount * value, 8)
 																setDebtAmount(finalAmount)
 																dispatch(changeInputBtcDebt(finalAmount * (debtSelection === IDebt.BORROW ? 1 : -1)));
 															}}></BorrwoingPowerButton>
