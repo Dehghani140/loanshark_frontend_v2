@@ -46,6 +46,7 @@ function CustSlider(props: CustSliderProps) {
         // railColor, trackColor 
     } = props
 
+    console.log(`valueLabelDisplay`,props)
     return (
         <>
             <CustomSlider
@@ -59,6 +60,11 @@ function CustSlider(props: CustSliderProps) {
                 min={min}
                 max={max}
                 disabled={disabled}
+                valueLabelFormat={()=>{
+                    return (
+                        <span>{value}</span>
+                    )
+                }}
                 marks={[{
                     value: 1,
                     label:
@@ -77,59 +83,3 @@ function CustSlider(props: CustSliderProps) {
 }
 
 export default CustSlider;
-
-// import React, { useEffect, useState, useMemo } from "react";
-// import PropTypes from "prop-types";
-// import { Slider } from '@mui/material';
-// import { withStyles } from '@mui/styles';
-
-// import './CustSlider.scss'
-
-
-// interface CustSliderProps {
-//     defaultValue: number | null;
-//     value: number | null;
-//     onChange: (e: any) => any;
-//     step: number | null;
-//     marks: boolean | null;
-//     min: number | null;
-//     max: number | null;
-//     railColor:any;
-//     trackColor:any;
-// }
-
-// function CustSlider(props: CustSliderProps) {
-//     const { defaultValue, value, onChange, step, marks, min, max, railColor, trackColor } = props
-//     const CustomSlider = withStyles({
-//         rail: {
-//             backgroundImage:
-//                 "linear-gradient(to left, #00dc5f, #8eb000, #b67f00, #c14812, #af003d)"
-//         },
-//         track: {
-//             backgroundImage:
-//                 "linear-gradient(to left, #009d44, #637b00, #7e5600, #832d0d, #720028)"
-//         }
-//     })(Slider);
-
-//     return (
-//         <>
-//             <CustomSlider
-//                 aria-label="healthFactor"
-//                 defaultValue={defaultValue}
-//                 value={value}
-//                 onChange={onChange}
-//                 // onChange={(e: any) => {
-//                 //     // console.log(e?.target?.value??0)
-//                 //     setHealthFactorPercentage(e?.target?.value ?? 0)
-//                 // }}
-//                 valueLabelDisplay="auto"
-//                 step={step}
-//                 marks={marks}
-//                 min={min}
-//                 max={max}
-//             ></CustomSlider>
-//         </>
-//     )
-// }
-
-// export default CustSlider;

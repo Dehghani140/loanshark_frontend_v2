@@ -714,6 +714,7 @@ function Borrow() {
 												<CustSlider
 													aria-label="healthFactor"
 													defaultValue={0}
+													// value={100}
 													value={Number(calculateHealthFactor(
 														Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit),
 														stateLoanshark.priceOfEth,
