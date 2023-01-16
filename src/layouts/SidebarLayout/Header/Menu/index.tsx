@@ -217,6 +217,12 @@ function HeaderMenu() {
               window.open("https://app.aave.com/faucet/")
               handleMenuClose()
             }}>Mint ETH/BTC</MenuItem>
+            <MenuItem 
+            className={`nav-item-menu-item`}
+            onClick={() => {
+              window.open("https://docs.loanshark.tech/v2-user-guide/getting-started")
+              handleMenuClose()
+            }}>User Guide</MenuItem>
           </Menu>
         </List>
       </ListWrapper>
