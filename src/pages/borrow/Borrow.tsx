@@ -795,7 +795,7 @@ function Borrow() {
 											textColor: "black",
 										},
 										{
-											title: "Max Borrow Power",
+											title: "Max borrow capacity",
 											value: `${Number(((Number(stateLoanshark.userDepositBalanceEth) + Number(stateLoanshark.inputEthDeposit))
 												* stateLoanshark.priceOfEth
 												* stateLoanshark.LTV["ETHBTC"]
