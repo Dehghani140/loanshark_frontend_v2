@@ -92,7 +92,7 @@ interface SelectionButtonProps {
 	label: string;
 	isLeft: boolean;
 	onClick: any;
-	select: boolean;
+	select: boolean;	
 }
 
 function SelectionButton(props: SelectionButtonProps) {
@@ -1166,7 +1166,7 @@ function Manage() {
 																			<input
 																				style={{
 																					color: "rgba(51,51,51,1)",
-																					fontFamily: "Poppins-Bold",
+																					fontFamily: "poppins",
 																					fontSize: "48px",
 																					fontWeight: "700",
 																					fontStyle: "normal",
@@ -1427,7 +1427,7 @@ function Manage() {
 																			<input
 																				style={{
 																					color: "rgba(51,51,51,1)",
-																					fontFamily: "Poppins-Bold",
+																					fontFamily: "poppins",
 																					fontSize: "48px",
 																					fontWeight: "700",
 																					fontStyle: "normal",
