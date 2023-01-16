@@ -14,7 +14,7 @@ export function borrowBTC(address, hash, userHealthRatioBefore, userHealthRatioA
                     healthFactor: "${userHealthRatioBefore}",
                     actionType: "Borrow BTC",
                     amount: "${amount} BTC",
-                    value: "$${amount * price / 100}",
+                    value: "$${Number(amount * price / 100).toFixed(2)}",
                     newHealthFactor: "${userHealthRatioAfter}",
                     publishDate: "${date.toISOString()}"
               }
@@ -43,7 +43,7 @@ export function repayBTC(address, hash, userHealthRatioBefore, userHealthRatioAf
                     healthFactor: "${userHealthRatioBefore}",
                     actionType: "Repay BTC",
                     amount: "${amount} BTC",
-                    value: "$${amount * price / 100}",
+                    value: "$${Number(amount * price / 100).toFixed(2)}",
                     newHealthFactor: "${userHealthRatioAfter}",
                     publishDate: "${date.toISOString()}"
               }
@@ -72,7 +72,7 @@ export function depositETH(address, hash, userHealthRatioBefore, userHealthRatio
                     healthFactor: "${userHealthRatioBefore}",
                     actionType: "Deposit ETH",
                     amount: "${amount} ETH",
-                    value: "$${amount * price / 100}",
+                    value: "$${Number(amount * price / 100).toFixed(2)}",
                     newHealthFactor: "${userHealthRatioAfter}",
                     publishDate: "${date.toISOString()}"
               }
@@ -101,7 +101,7 @@ export function withdrawETH(address, hash, userHealthRatioBefore, userHealthRati
                     healthFactor: "${userHealthRatioBefore}",
                     actionType: "Withdraw ETH",
                     amount: "${amount} ETH",
-                    value: "$${amount * price / 100}",
+                    value: "$${Number(amount * price / 100).toFixed(2)}",
                     newHealthFactor: "${userHealthRatioAfter}",
                     publishDate: "${date.toISOString()}"
               }

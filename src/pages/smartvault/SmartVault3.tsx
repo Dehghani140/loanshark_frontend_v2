@@ -31,97 +31,105 @@ function SmartVault1() {
   return (
     <>
       <div style={{ paddingTop: "50px", width: "1260px", marginLeft: "auto", marginRight: "auto" }}>
-        <Grid container spacing={3}>
-					<Grid item xs={12}>
-              <span className={'card-title'}>Select a smart vault to deposit</span><span className={'card-subtitle'}> (3/4 steps)</span>
-					</Grid>
-          <Grid hidden={!(stateSmarvault.myProtectingPair === "ETHBTC" && stateSmarvault.myProtectionType === "repay")} item xs={5}>
-            <DashboardCard
-              label={`BTC`}
-              labelInUSD={``}
-              numberOfAssest={1}
-              assest1Code={`btc`}
-              assest2Code={``}
-              pair={
-                [
-                  {
-                    amountInUsdt: Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
-                    amountInCurrency: Number(Number(stateBackd.totalBtcLpAmount).toFixed(2)).toLocaleString(),
-                    currency: "BTC",
-                  },
-                ]
-              }
-              detail={
-                [
-                  {
-                    title: "APY",
-                    value: "5.4%"
-                  },
-                  {
-                    title: "TVL",
-                    value: "$" + Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString()
-                  },
-                ]
-              }
-              button={
-                [
-                  {
-                    label: "SELECT",
-                    callbackFunction: (() => {
-                      console.log(`on click payback`)
-                      dispatch(changeMyProtectingSmartVault("BTC"))
-                      navigate("/app/main/smartVault4")
-                    }),
-                    color: "white"
-                  },
-                ]
-              }
-            >
-            </DashboardCard>
+
+        <Grid item xs={12}>
+          <span className={'card-title'}>Select a smart vault to deposit</span><span className={'card-subtitle'}> (3/4 steps)</span>
+        </Grid>
+        <Grid hidden={stateBackd.myBtcLpAmount == 0 && stateBackd.myEthLpAmount == 0} container spacing={3}>
+          <Grid item xs={12}>
+            You are already protected.
           </Grid>
-          <Grid hidden={!(stateSmarvault.myProtectingPair === "ETHBTC" && stateSmarvault.myProtectionType === "topup")} item xs={5}>
-            <DashboardCard
-              label={`ETH`}
-              labelInUSD={``}
-              numberOfAssest={1}
-              assest1Code={`eth`}
-              assest2Code={``}
-              pair={
-                [
-                  {
-                    amountInUsdt: Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
-                    amountInCurrency: Number(Number((stateBackd.totalEthLpAmount)).toFixed(2)).toLocaleString(),
-                    currency: "ETH",
-                  },
-                ]
-              }
-              detail={
-                [
-                  {
-                    title: "APY",
-                    value: "5.4%"
-                  },
-                  {
-                    title: "TVL",
-                    value: "$" + Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()
-                  },
-                ]
-              }
-              button={
-                [
-                  {
-                    label: "SELECT",
-                    callbackFunction: (() => {
-                      console.log(`on click payback`)
-                      dispatch(changeMyProtectingSmartVault("ETH"))
-                      navigate("/app/main/smartVault4")
-                    }),
-                    color: "white"
-                  },
-                ]
-              }
-            >
-            </DashboardCard>
+        </Grid>
+        <Grid hidden={stateBackd.myBtcLpAmount > 0 || stateBackd.myEthLpAmount > 0}>
+          <Grid container spacing={3}>
+            <Grid hidden={!(stateSmarvault.myProtectingPair === "ETHBTC" && stateSmarvault.myProtectionType === "repay")} item xs={5}>
+              <DashboardCard
+                label={`BTC`}
+                labelInUSD={``}
+                numberOfAssest={1}
+                assest1Code={`btc`}
+                assest2Code={``}
+                pair={
+                  [
+                    {
+                      amountInUsdt: Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString(),
+                      amountInCurrency: Number(Number(stateBackd.totalBtcLpAmount).toFixed(2)).toLocaleString(),
+                      currency: "BTC",
+                    },
+                  ]
+                }
+                detail={
+                  [
+                    {
+                      title: "APY",
+                      value: "5.4%"
+                    },
+                    {
+                      title: "TVL",
+                      value: "$" + Number((stateBackd.totalBtcLpAmount * stateBackd.btcLpExchangeRate * state.priceOfBtc / 100).toFixed(2)).toLocaleString()
+                    },
+                  ]
+                }
+                button={
+                  [
+                    {
+                      label: "SELECT",
+                      callbackFunction: (() => {
+                        console.log(`on click payback`)
+                        dispatch(changeMyProtectingSmartVault("BTC"))
+                        navigate("/app/main/smartVault4")
+                      }),
+                      color: "white"
+                    },
+                  ]
+                }
+              >
+              </DashboardCard>
+            </Grid>
+            <Grid hidden={!(stateSmarvault.myProtectingPair === "ETHBTC" && stateSmarvault.myProtectionType === "topup")} item xs={5}>
+              <DashboardCard
+                label={`ETH`}
+                labelInUSD={``}
+                numberOfAssest={1}
+                assest1Code={`eth`}
+                assest2Code={``}
+                pair={
+                  [
+                    {
+                      amountInUsdt: Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString(),
+                      amountInCurrency: Number(Number((stateBackd.totalEthLpAmount)).toFixed(2)).toLocaleString(),
+                      currency: "ETH",
+                    },
+                  ]
+                }
+                detail={
+                  [
+                    {
+                      title: "APY",
+                      value: "5.4%"
+                    },
+                    {
+                      title: "TVL",
+                      value: "$" + Number((stateBackd.totalEthLpAmount * stateBackd.ethLpExchangeRate * state.priceOfEth / 100).toFixed(2)).toLocaleString()
+                    },
+                  ]
+                }
+                button={
+                  [
+                    {
+                      label: "SELECT",
+                      callbackFunction: (() => {
+                        console.log(`on click payback`)
+                        dispatch(changeMyProtectingSmartVault("ETH"))
+                        navigate("/app/main/smartVault4")
+                      }),
+                      color: "white"
+                    },
+                  ]
+                }
+              >
+              </DashboardCard>
+            </Grid>
           </Grid>
         </Grid>
       </div>
