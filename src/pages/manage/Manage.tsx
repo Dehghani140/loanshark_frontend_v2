@@ -1558,7 +1558,7 @@ function Manage() {
 																			}}
 																		>{item.name}</button>
 																	</Grid>
-																)
+																)asdf
 															})} */}
 
 														<BorrwoingPowerButton
