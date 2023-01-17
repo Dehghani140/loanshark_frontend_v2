@@ -35,7 +35,7 @@ function SmartVault1() {
         <Grid item xs={12}>
           <span className={'card-title'}>Select a smart vault to deposit</span><span className={'card-subtitle'}> (3/4 steps)</span>
         </Grid>
-        <Grid hidden={stateBackd.myBtcLpAmount == 0 && stateBackd.myEthLpAmount == 0} container spacing={3}>
+        <Grid hidden={stateBackd.myBtcLpAmount == 0 && stateBackd.myEthLpAmount == 0} spacing={3}>
           <Grid item xs={12}>
             You are already protected.
           </Grid>
