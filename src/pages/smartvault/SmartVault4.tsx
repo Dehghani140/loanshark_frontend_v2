@@ -503,19 +503,19 @@ function SmartVault1() {
                                     console.log(`stake smart vault`)
                                     toggleAction(
                                         stateSmartvault.myProtectingSmartVault,
-                                        (healthFactorPercentage < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
+                                        (Number(healthFactorPercentage) < 1.05 || Number(singleTopupAmount) > Number(stakeAmount) || Number(stakeAmount) > Number(state.myBTCAmount) ?
                                             "NOACTION" : "STAKESMARTVAULT"),
-                                        (healthFactorPercentage < 1.05 || singleTopupAmount > stakeAmount || stakeAmount > state.myBTCAmount ?
+                                        (Number(healthFactorPercentage) < 1.05 || Number(singleTopupAmount) > Number(stakeAmount) || Number(stakeAmount) > Number(state.myBTCAmount) ?
                                             "Cannot add Smart Vault" : "Confirm to add Smart Vault?"),
                                         (isNaN(healthFactorPercentage) ?
                                             "Please enter a valid health factor"
-                                            : healthFactorPercentage < 1.05 ?
+                                            : Number(healthFactorPercentage) < 1.05 ?
                                                 "Please set the target health factor higher than 1.05"
                                                 :
-                                                singleTopupAmount > stakeAmount ?
+                                                Number(singleTopupAmount) >  Number(stakeAmount)  ?
                                                     "Please deposit more than the amount to repay for you each time the target heath factor is hit."
                                                     :
-                                                    stakeAmount > state.myBTCAmount ?
+                                                    Number(stakeAmount)  > Number(state.myBTCAmount) ?
                                                         "You do not have " + stakeAmount + " " + stateSmartvault.myProtectingSmartVault + " to stake. You have " + (stateSmartvault.myProtectingSmartVault == "BTC" ? state.myBTCAmount : state.myETHAmount) + " " + stateSmartvault.myProtectingSmartVault + " only."
                                                         :
                                                         "When the health factor drops below <span style='color: #00ff00'>" + healthFactorPercentage + "</span>, " +
