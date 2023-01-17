@@ -140,16 +140,14 @@ export function connectContract(dispatch) {
 }
 
 export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") => {
-    
-    dispatch(changeCurrentChainId(window.ethereum.networkVersion))
-
+    let networkVersion = window?.ethereum?.networkVersion ?? null
+    dispatch(changeCurrentChainId(networkVersion))
     try {
-        if (window.ethereum.networkVersion != 43113) {
+        if (networkVersion != 43113) {
             dispatch(reset());
             dispatch(resetBackd());
             return
         }
-        console.log(action)
         if (action === "GET_NEW") {
             console.log(state.myFujiVaultETHBTC)
             if (state.myFujiVaultETHBTC) {
@@ -166,7 +164,7 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                     dispatch(changeUserDebtBalanceBtc(parseFloat((window.web3.utils.fromWei(result, 'gwei') * 10).toFixed(8))));
                 });
                 state.myFujiVaultETHBTC?.methods.collatF().call({}, (error, result) => {
-                    dispatch(changeLTV({ "ETHBTC": result.b / result.a }));             
+                    dispatch(changeLTV({ "ETHBTC": result.b / result.a }));
                 });
                 state.myFujiVaultETHBTC?.methods.safetyF().call({}, (error, result) => {
                     dispatch(changeLiqudationPrice({ "ETHBTC": result.b / result.a }));
@@ -182,9 +180,9 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                 state.myFujiVaultAVAXUSDT?.methods.userDebtBalance(state.myAccount).call({}, (error, result) => {
                     dispatch(changeUserDebtBalanceUsdt(window.web3.utils.fromWei(result, 'picoether')));
                 });
-                
+
                 state.myFujiVaultETHBTC?.methods.borrowBalance(AAVEAVAX).call({}, (error, result) => {
-                    dispatch(changeTotalUserDebtBalanceBtc(window.web3.utils.fromWei(result, 'gwei')  * 10 ));
+                    dispatch(changeTotalUserDebtBalanceBtc(window.web3.utils.fromWei(result, 'gwei') * 10));
                 });
 
                 state.myFujiVaultAVAXUSDT?.methods.collatF().call({}, (error, result) => {
@@ -313,10 +311,10 @@ export const refreshPrice = (state, stateBackd, dispatch, action = "GET_NEW") =>
                             const amount = window.web3.utils.toBN(resultStakerVault[7]);
                             const amountToAdd = window.web3.utils.toBN(previousResult);
                             const newAmountInWei = amount.add(amountToAdd);
-                            dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei , 'ether')));
+                            dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(newAmountInWei, 'ether')));
                         });
                     } else {
-                        dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(previousResult , 'ether')));
+                        dispatch(changeMyEthLpAmount(window.web3.utils.fromWei(previousResult, 'ether')));
                     }
                 });
 
